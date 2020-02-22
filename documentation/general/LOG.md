@@ -11,3 +11,6 @@ Include things here that are important to note with regards to project planning.
   - [x] Add some more risks to the risk assessment
     - Team disputes and time estimates
   - Also added rough usage of Trello to [README.md](README.md) 
+
+- *20/02/20*: Starting Sprint 1
+  - Sprint will end

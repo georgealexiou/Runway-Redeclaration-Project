@@ -14,3 +14,5 @@ Include things here that are important to note with regards to project planning.
 
 - *20/02/20*: Starting Sprint 1
   - Sprint will end
+  
+- *23/02/20*: Finished the interface design / planning stage of Sprint 1

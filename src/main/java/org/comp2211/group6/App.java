@@ -7,10 +7,10 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 public class App extends Application {
-  public static void main(String[] args) {
-    launch(args);
-  }
 
+  /** Public Properties */
+
+  /** Public Methods */
   @Override
   public void start(Stage primaryStage) throws Exception {
     String javaVersion = System.getProperty("java.version");
@@ -21,7 +21,12 @@ public class App extends Application {
     primaryStage.show();
   }
 
-  public void sampleMethod() {
-    System.out.println("hello");
+  /** Private Methods */
+
+  /** Private Properties */
+
+  /** Main Method */
+  public static void main(String[] args) {
+    
   }
 }

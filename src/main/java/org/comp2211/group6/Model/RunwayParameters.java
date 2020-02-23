@@ -15,12 +15,17 @@ public class RunwayParameters {
      @param  lda   The landing distance available
    */
   public RunwayParameters(double tora, double toda,
-                          double asda, double lda) {}
+                          double asda, double lda) {
+    takeOffRunAvailable = tora;
+    takeOffDistanceAvailable = toda;
+    accelerateStopDistanceAvailable = asda;
+    landingDistanceAvailable = lda;
+  }
 
-  public double getTORA() { return null; }
-  public double getTODA() { return null; }
-  public double getASDA() { return null; }
-  public double getLDA() { return null; }
+  public double getTORA() { return 0; }
+  public double getTODA() { return 0; }
+  public double getASDA() { return 0; }
+  public double getLDA() { return 0; }
 
   /**
      Private Properties

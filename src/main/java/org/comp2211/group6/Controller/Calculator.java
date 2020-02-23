@@ -10,7 +10,9 @@ public class Calculator {
   public static final double CentreLineThreshold = 75;
 
   /** Public Methods */
-  public Calculator(Runway runway) { }
+  public Calculator(Runway runway) {
+    this.runway = runway;
+  }
 
   /**
      Recalculates the runway parameters for the attached runway

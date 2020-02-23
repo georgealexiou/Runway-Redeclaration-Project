@@ -17,13 +17,18 @@ public class LogicalRunway {
      @param  params  The base runway parameters
    */
   public LogicalRunway(int heading, double displacedThreshold,
-                       char position, RunwayParameters params) {}
+                       char position, RunwayParameters params) {
+    this.heading = heading;
+    this.displacedThreshold = displacedThreshold;
+    this.position = position;
+    this.originalParameters = params;
+  }
 
   /** Returns an identifier e.g. 09L */
-  public string getIdentifier() { return null; }
-  public RunwayParameters getParameters() { return null; }
+  public String getIdentifier() { return ""; }
+  public RunwayParameters getParameters() { return new RunwayParameters(0,0,0,0); }
   public void setRecalculatedParameters() {}
-  public RunwayParameters getRecalculatedParameters() { return null;}
+  public RunwayParameters getRecalculatedParameters() { return new RunwayParameters(0,0,0,0);}
 
   /**
      Private Methods

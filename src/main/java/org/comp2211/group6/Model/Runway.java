@@ -1,6 +1,7 @@
 package org.comp2211.group6.Model;
 
 import java.util.List;
+import java.util.ArrayList;
 
 import org.comp2211.group6.Model.LogicalRunway;
 import org.comp2211.group6.Model.Obstacle;
@@ -10,13 +11,15 @@ public class Runway {
   /**
      Public Methods
    */
-  public Runway(string name){}
+  public Runway(String name){
+    this.name = name;
+  }
 
-  public Obstacle getObstacle() { return null; }
+  public Obstacle getObstacle() { return new Obstacle("", "", 0, 0, 0); }
   public void setObstacle(Obstacle obstacle) {}
   public void addRunway(LogicalRunway runway) {}
-  public List<LogicalRunway> getLogicalRunways() {return null;}
-  public LogicalRunway getLogicalRunway(int id) {return null;}
+  public List<LogicalRunway> getLogicalRunways() {return new ArrayList<LogicalRunway>();}
+  public LogicalRunway getLogicalRunway(int id) {return new LogicalRunway(0, 0, 'C', new RunwayParameters(0, 0, 0, 0));}
 
   /**
      Private Methods
@@ -25,7 +28,7 @@ public class Runway {
   /**
      Private Properties
    */
-  private final string name;
+  private final String name;
   private List<LogicalRunway> logicalRunways;
   private Obstacle obstacle;
 

@@ -1,6 +1,7 @@
 package org.comp2211.group6;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -23,7 +24,10 @@ public class RunwayParametersTest {
 	private double lda;
 	private String errorMsg;
 	private Class errorClass;
-	private static String msg = "Error. Invalid TORA, TODA, ASDA, LDA. Only positive numbers are allowed"; 
+	private static String msg1 = ("Error. Invalid TORA. Only positive numbers are allowed.");
+	private static String msg2 = ("Error. Invalid TODA. Only positive numbers are allowed.");
+	private static String msg3 = ("Error. Invalid ASDA. Only positive numbers are allowed.");
+	private static String msg4 = ("Error. Invalid LDA. Only positive numbers are allowed.");
 	
 	public RunwayParametersTest(
 			double tora, 
@@ -43,11 +47,12 @@ public class RunwayParametersTest {
 	@Parameters
 	public static Collection testData() {
 		return Arrays.asList(new Object[][] {
-			{0,0,0,0,IllegalArgumentException.class,msg},
-			{-1,0,0,0,IllegalArgumentException.class,msg},
-			{0,-1,0,0,IllegalArgumentException.class,msg},
-			{0,0,-1,0,IllegalArgumentException.class,msg},
-			{-1,-1,-1,-1,IllegalArgumentException.class,msg},
+			{0,0,0,0,IllegalArgumentException.class,msg1},
+			{-1,0,0,0,IllegalArgumentException.class,msg1},
+			{1,-1,1,1,IllegalArgumentException.class,msg2},
+			{1,1,-1,0,IllegalArgumentException.class,msg3},
+			{1,1,1,-1,IllegalArgumentException.class,msg4},
+			{-1,-1,-1,-1,IllegalArgumentException.class,msg1},
 			{1,1,1,1,null,null},
 			{3660,3660,3660,3660,null,null},
 			{3902,3902,3902,3595,null,null}});
@@ -68,11 +73,13 @@ public class RunwayParametersTest {
 	
 	@Test
 	public void testGetParameters() {
-		if(msg == null) {
-			assertEquals(tora, runwayParam.getTORA());
-			assertEquals(toda, runwayParam.getTODA());
-			assertEquals(asda, runwayParam.getASDA());
-			assertEquals(lda, runwayParam.getLDA());
+		if(errorMsg == null) {
+			runwayParam = new RunwayParameters(tora,toda,asda,lda);
+			assertTrue(tora - runwayParam.getTORA() == 0);
+			assertTrue(toda - runwayParam.getTODA() == 0);
+			assertTrue(asda - runwayParam.getASDA() == 0);
+			assertTrue(lda - runwayParam.getLDA() == 0);
 		}
+		
 	}
 }

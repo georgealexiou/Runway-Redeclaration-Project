@@ -12,15 +12,23 @@ public class RunwayParameters {
    */
   public RunwayParameters(double tora, double toda,
                           double asda, double lda) {
-	  if(tora <= 0 | toda <= 0 | asda <= 0 | lda <= 0) {
+	  if(tora <= 0) 
 		  throw new IllegalArgumentException(
-				  "Error. Invalid TORA, TODA, ASDA, LDA. Only positive numbers are allowed");
-	  }else {
+				  "Error. Invalid TORA. Only positive numbers are allowed.");
+	  if (toda <= 0)
+		  throw new IllegalArgumentException(
+				  "Error. Invalid TODA. Only positive numbers are allowed.");
+	  if (asda <= 0)
+		  throw new IllegalArgumentException(
+				  "Error. Invalid ASDA. Only positive numbers are allowed.");
+	  if (lda <= 0)
+		  throw new IllegalArgumentException(
+				  "Error. Invalid LDA. Only positive numbers are allowed.");
+		  
 		  takeOffRunAvailable = tora;
 		  takeOffDistanceAvailable = toda;
 		  accelerateStopDistanceAvailable = asda;
 		  landingDistanceAvailable = lda;
-	  }
   }
 
   /**

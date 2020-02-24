@@ -3,16 +3,16 @@ package org.comp2211.group6.Model;
 public class RunwayParameters {
 
   /**
-     Public Methods
+      Public Methods
    */
 
   /**
-     Create a new set of runway parameters
+      Create a new set of runway parameters
 
-     @param  tora  The take off run available
-     @param  toda  The take off distance available
-     @param  asda  The accelerate stop distance available
-     @param  lda   The landing distance available
+      @param  tora  The take off run available
+      @param  toda  The take off distance available
+      @param  asda  The accelerate stop distance available
+      @param  lda   The landing distance available
    */
   public RunwayParameters(double tora, double toda,
                           double asda, double lda) {

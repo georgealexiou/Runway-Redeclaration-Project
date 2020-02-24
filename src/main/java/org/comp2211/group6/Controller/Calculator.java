@@ -16,7 +16,6 @@ public class Calculator {
 
   /**
      Recalculates the runway parameters for the attached runway
-
      @param direction The direction to recalculate for
    */
   public void recalculateRunwayParameters(String direction) { }

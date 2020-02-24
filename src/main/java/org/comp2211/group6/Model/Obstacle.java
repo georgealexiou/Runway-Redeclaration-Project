@@ -7,21 +7,21 @@ public class Obstacle {
    */
 
   /**
-     Distance of the obstacle from the centre line of the runway
+      Distance of the obstacle from the centre line of the runway
 
-     Positive if above centre line
-     Negative if below centre line
-     Zero if on the centre line
+      Positive if above centre line
+      Negative if below centre line
+      Zero if on the centre line
    */
   public double distanceToCentreLine;
 
   /**
-     Distance from the left threshold in metres
+      Distance from the left threshold in metres
    */
   public double distanceFromLeftThreshold;
 
   /**
-     Distance from the left threshold in metres
+      Distance from the left threshold in metres
    */
   public double distanceFromRightThreshold;
 
@@ -30,12 +30,12 @@ public class Obstacle {
    */
 
   /**
-     Create a new obstacle
-     @param  name  The short name of the obstacle
-     @param  desc  The longer description of the obstacle
-     @param  l     The length - inline with the runway
-     @param  w     The width - perpendicular to runway
-     @param  h     The height
+      Create a new obstacle
+      @param  name  The short name of the obstacle
+      @param  desc  The longer description of the obstacle
+      @param  l     The length - inline with the runway
+      @param  w     The width - perpendicular to runway
+      @param  h     The height
    */
   public Obstacle(String name, String desc, double l, double w, double h) {
   }
@@ -51,10 +51,10 @@ public class Obstacle {
   public double getHeigth() { return 0; }
 
   /**
-     Update the dimensions of the obstacle
-     @param  l    The length - inline with the runway
-     @param  w    The width - perpendicular to runway
-     @param  h    The height
+      Update the dimensions of the obstacle
+      @param  l    The length - inline with the runway
+      @param  w    The width - perpendicular to runway
+      @param  h    The height
    */
   public void setDimensions(double l, double w, double h) {}
 

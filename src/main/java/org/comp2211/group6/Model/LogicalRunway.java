@@ -5,16 +5,16 @@ import org.comp2211.group6.Model.RunwayParameters;
 public class LogicalRunway {
 
   /**
-     Public Methods
+      Public Methods
   */
 
   /**
-     Create a new logical runway
+      Create a new logical runway
 
-     @param  heading  The heading of the runway 1-36
-     @param  displacedThreshold  The displaed threshold of the runway
-     @param  position  The position of the runway L,R,C
-     @param  params  The base runway parameters
+      @param  heading  The heading of the runway 1-36
+      @param  displacedThreshold  The displaed threshold of the runway
+      @param  position  The position of the runway L,R,C
+      @param  params  The base runway parameters
    */
   public LogicalRunway(int heading, double displacedThreshold,
                        char position, RunwayParameters params) {
@@ -31,11 +31,11 @@ public class LogicalRunway {
   public RunwayParameters getRecalculatedParameters() { return new RunwayParameters(0,0,0,0);}
 
   /**
-     Private Methods
+      Private Methods
    */
 
   /**
-     Private Properties
+      Private Properties
    */
   private final int heading;
   private final char position;

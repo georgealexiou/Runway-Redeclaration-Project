@@ -9,7 +9,7 @@ import org.comp2211.group6.Model.Obstacle;
 public class Runway {
 
   /**
-     Public Methods
+      Public Methods
    */
   public Runway(String name){
     this.name = name;
@@ -22,11 +22,11 @@ public class Runway {
   public LogicalRunway getLogicalRunway(int id) {return new LogicalRunway(0, 0, 'C', new RunwayParameters(0, 0, 0, 0));}
 
   /**
-     Private Methods
+      Private Methods
    */
 
   /**
-     Private Properties
+      Private Properties
    */
   private final String name;
   private List<LogicalRunway> logicalRunways;

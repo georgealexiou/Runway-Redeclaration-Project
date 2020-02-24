@@ -3,10 +3,6 @@ package org.comp2211.group6.Model;
 public class RunwayParameters {
 
   /**
-      Public Methods
-   */
-
-  /**
       Create a new set of runway parameters
 
       @param  tora  The take off run available
@@ -16,16 +12,24 @@ public class RunwayParameters {
    */
   public RunwayParameters(double tora, double toda,
                           double asda, double lda) {
-    takeOffRunAvailable = tora;
-    takeOffDistanceAvailable = toda;
-    accelerateStopDistanceAvailable = asda;
-    landingDistanceAvailable = lda;
+	  if(tora <= 0 | toda <= 0 | asda <= 0 | lda <= 0) {
+		  throw new IllegalArgumentException(
+				  "Error. Invalid TORA, TODA, ASDA, LDA. Only positive numbers are allowed");
+	  }else {
+		  takeOffRunAvailable = tora;
+		  takeOffDistanceAvailable = toda;
+		  accelerateStopDistanceAvailable = asda;
+		  landingDistanceAvailable = lda;
+	  }
   }
 
-  public double getTORA() { return 0; }
-  public double getTODA() { return 0; }
-  public double getASDA() { return 0; }
-  public double getLDA() { return 0; }
+  /**
+      Public Methods
+   */
+  public double getTORA() { return takeOffRunAvailable; }
+  public double getTODA() { return takeOffDistanceAvailable; }
+  public double getASDA() { return accelerateStopDistanceAvailable; }
+  public double getLDA() { return landingDistanceAvailable; }
 
   /**
      Private Properties

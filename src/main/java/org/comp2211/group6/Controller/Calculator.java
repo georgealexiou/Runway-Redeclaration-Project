@@ -15,8 +15,9 @@ public class Calculator {
     public final double StripEndThreshold = 60;
     public final double CentreLineThreshold = 75;
 
-    /** Public Methods */
 
+    /** Public Method
+    
     /**
      * Constructor for Calculator
      * @param runway The runway whose parameters are going to be recalculated

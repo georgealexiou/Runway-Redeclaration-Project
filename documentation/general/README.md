@@ -38,3 +38,7 @@ Any tips or tricks to do with the tool chain can be added here to make it easier
 - Keep track of sprint progress
 - Each card is linked to one or many user stories
 - Each card can have a checklist that will store the smaller tasks that make it up
+
+## Understanding
+
+![Anotated Image of Heathrow Aiport](./anotatedairport.png)

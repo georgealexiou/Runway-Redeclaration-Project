@@ -8,9 +8,10 @@ import org.comp2211.group6.Model.RunwayParameters;
 public class Calculator {
 
   /** Public Properties */
-  public final double RunwayEndSafetyThreshold = 240;
-  public final double StripEndThreshold = 60;
-  public final double CentreLineThreshold = 75;
+
+  public static final double RunwayEndSafetyThreshold = 240;
+  public static final double StripEndThreshold = 60;
+  public static final double CentreLineThreshold = 75;
 
   /** Public Methods */
 
@@ -85,7 +86,7 @@ public class Calculator {
   private void takeOffTowards() {
 
   }
-
+  
   /** Private Properties */
   private final Runway runway;
   private final Obstacle obstacle;

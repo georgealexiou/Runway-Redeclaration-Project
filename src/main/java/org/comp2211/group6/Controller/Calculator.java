@@ -1,5 +1,6 @@
 package org.comp2211.group6.Controller;
 
+
 import java.util.Iterator;
 
 import org.comp2211.group6.Model.LogicalRunway;
@@ -98,6 +99,7 @@ public class Calculator {
         return "";
     }
 
+
     /**
      * Recalculates the TORA, TODA and ASDA when an aircraft is taking off towards the obstacle
      * 
@@ -125,4 +127,5 @@ public class Calculator {
     private final Obstacle obstacle;
     private boolean generateString = false;
     private CalculationOutput calculationOutput = null;
+
 }

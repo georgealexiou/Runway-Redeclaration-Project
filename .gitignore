@@ -403,4 +403,7 @@ fabric.properties
 .idea/**/markdown-navigator.xml
 .idea/**/markdown-navigator/
 
+# Mac Files
+.DSTORE
+
 # End of https://www.gitignore.io/api/intellij

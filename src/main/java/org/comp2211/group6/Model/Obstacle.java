@@ -11,25 +11,22 @@ public class Obstacle {
   private double height;
   private double width;
 
-  /**
-      Distance of the obstacle from the centre line of the runway
 
-      Positive if above centre line
-      Negative if below centre line
-      Zero if on the centre line
+  /**
+   * Public Properties
    */
-  public double distanceToCentreLine() {
-    return 0;
-  };
+  /**
+   * Distance of the obstacle from the centre line of the runway
+   * Positive if above centre line
+   * Negative if below centre line
+   * Zero if on the centre line
+   */
+  public double distanceToCentreLine;
 
   /**
-      Distance from the left threshold in metres
+      Distance from the left and right threshold in metres
    */
   public double distanceFromLeftThreshold;
-
-  /**
-      Distance from the left threshold in metres
-   */
   public double distanceFromRightThreshold;
 
   /**
@@ -44,12 +41,15 @@ public class Obstacle {
       @param  width     The width - perpendicular to runway
       @param  height     The height
    */
-  public Obstacle(String name, String description, double length, double width, double height) {
+  public Obstacle(String name, String description, double length, double width, double height, double distanceToCentreLine, double distanceFromLeftThreshold, double distanceFromRightThreshold) {
     this.name = name;
     this.description = description;
     this.length = length;
     this.width = width;
     this.height = height;
+    this.distanceToCentreLine = distanceToCentreLine;
+    this.distanceFromLeftThreshold = distanceFromLeftThreshold;
+    this.distanceFromRightThreshold = distanceFromRightThreshold;
   }
 
   public String getName() {

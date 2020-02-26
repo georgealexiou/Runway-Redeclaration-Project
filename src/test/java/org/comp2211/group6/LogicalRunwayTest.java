@@ -88,7 +88,7 @@ public class LogicalRunwayTest{
 		
 		logicalRunway = new LogicalRunway(heading, position, paramsOriginal);
 		
-		assertNull("get unset RecalculatedParameters Test Failed.", logicalRunway.getRecalculatedParameters());
+		assertNull("Unset RecalculatedParameters Returns Null Test Failed.", logicalRunway.getRecalculatedParameters());
 		
 		logicalRunway.setRecalculatedParameters(paramsRecalculated);
 		

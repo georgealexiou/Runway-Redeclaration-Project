@@ -51,26 +51,17 @@ public class LogicalRunway {
 	  return Integer.toString(heading) + position;
   }
   
-  /**
-   * @return The original RunwayParameters Object
-   */
+  /** @return The original RunwayParameters Object */
   public RunwayParameters getParameters() { return originalParameters; }
   
-  /**
-   * @param runwayParameters: Object that filled in with recalculated parameters 
-   */
+  /** @param runwayParameters: Object that filled in with recalculated parameters */
   public void setRecalculatedParameters(RunwayParameters runwayParameters) { recalculatedParameters = runwayParameters; }
   
   /**
-   * @return if no recalculation is performed, throws Exception, 
-   *         otherwise return the RunwayParameters Object filled in with recalculated parameters
+   * @return if no recalculation is performed, return null (member variable object default null) 
+   *         otherwise return the RunwayParameters Object containing recalculated parameters
    */
-  public RunwayParameters getRecalculatedParameters() {
-	  if(recalculatedParameters == null)
-		  throw new NullPointerException("Error. No recalculated runway parameters can be returned.");
-	  
-	  return recalculatedParameters;
-  }
+  public RunwayParameters getRecalculatedParameters() { return recalculatedParameters; }
 
   /**
       Private Methods

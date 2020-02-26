@@ -64,9 +64,7 @@ public class RunwayParametersTest {
 	@Rule
 	public ExpectedException exception = ExpectedException.none();
 	
-	/**
-	 * Test appropriate exception is threw and give exact error message
-	 */
+	/** Test appropriate exception is threw and give exact error message */
 	@Test
 	public void testExceptionThrow() {
 		if(errorClass != null)
@@ -77,9 +75,7 @@ public class RunwayParametersTest {
 		runwayParam = new RunwayParameters(tora, toda, asda, lda);
 	}
 	
-	/**
-	 * Test getParameters() outputs correct value.
-	 */
+	/** Test getParameters() outputs correct value. */
 	@Test
 	public void testGetParameters() {
 		if(errorClass == null) {
@@ -91,10 +87,7 @@ public class RunwayParametersTest {
 		}
 	}
 	
-	/**
-	 * pretty showing test failure trace
-	 */
-	
+	/** pretty showing test failure trace */
 	public String printTrace(String p, double expected, double actual) {
 		return p + " Getter Test Failed. Expecting: " + String.valueOf(expected) + " Actual: " + String.valueOf(actual);
 	}

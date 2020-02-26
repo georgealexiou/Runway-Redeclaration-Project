@@ -1,6 +1,7 @@
 package org.comp2211.group6;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import org.comp2211.group6.Model.LogicalRunway;
 import org.comp2211.group6.Model.RunwayParameters;
@@ -30,9 +31,7 @@ public class LogicalRunwayTest{
 	 * TEST METHODS BELOW. AND THE RELATED TEST DATA IS ASSIGNED (method = "testData").
 	 */
 	
-	/**
-	 * Test the validity of input parameters of Constructor with Displaced Threshold.
-	 */
+	/** Test the validity of input parameters of Constructor with Displaced Threshold */
 	@Test
 	@Parameters(method = "testDataForExceptionWithThreshold")
 	public void testExceptionWithThreshold(int heading, double displacedThreshold, char position, Class errorClass, String errorMsg) {
@@ -44,9 +43,7 @@ public class LogicalRunwayTest{
 		logicalRunway = new LogicalRunway(heading, displacedThreshold, position, sampleParams);
 	}
 	
-	/**
-	 * Test the validity of input parameters of Constructor without Displaced Threshold.
-	 */
+	/** Test the validity of input parameters of Constructor without Displaced Threshold */
 	@Test
 	@Parameters(method = "testDataForExceptionWithoutThreshold")
 	public void testExceptionWithoutThreshold(int heading, char position, Class errorClass, String errorMsg) {
@@ -58,9 +55,7 @@ public class LogicalRunwayTest{
 		logicalRunway = new LogicalRunway(heading, position, sampleParams);
 	}
 	
-	/**
-	 * Test getIdentifier() returns proper combination of heading and position.
-	 */
+	/** Test getIdentifier() returns proper combination of heading and position */
 	@Test
 	@Parameters(method = "testDataForGetIdentifier")
 	public void testGetIdentifier(int heading, char position, String expectedID) {
@@ -70,9 +65,7 @@ public class LogicalRunwayTest{
 					expectedID, logicalRunway.getIdentifier());
 	}
 	
-	/**
-	 * Test getParameters() returns correct RunwayParameters which is the current and original one. 
-	 */
+	/** Test getParameters() returns correct RunwayParameters (the original one) */
 	@Test
 	@Parameters(method = "testDataForGetParameters")
 	public void testGetParameters(int heading, char position, RunwayParameters params) {
@@ -84,7 +77,9 @@ public class LogicalRunwayTest{
 	}
 	
 	/**
-	 * Test if invoking setRecalculatedParameters(p) and getRecalculatedParameters() gets the object p passed in.
+	 * Test setRecalculatedParameters(p) & getRecalculatedParameters() 
+	 * if both are called sequentially returns the object p passed in;
+	 * if get method is called without set, returns null;
 	 */
 	@Test
 	@Parameters(method = "testDataForRecalculations")
@@ -92,29 +87,15 @@ public class LogicalRunwayTest{
 			RunwayParameters paramsOriginal, RunwayParameters paramsRecalculated) {
 		
 		logicalRunway = new LogicalRunway(heading, position, paramsOriginal);
+		
+		assertNull("get unset RecalculatedParameters Test Failed.", logicalRunway.getRecalculatedParameters());
+		
 		logicalRunway.setRecalculatedParameters(paramsRecalculated);
 		
 		assertEquals("RecalculatedParameters() Test Failed, including setter and getter."
 				+ "Expecting to get: " + prettyPrintParameters(paramsRecalculated) 
 				+ " While get: " + prettyPrintParameters(logicalRunway.getRecalculatedParameters()), 
 				paramsRecalculated, logicalRunway.getRecalculatedParameters());
-	}
-	
-	/**
-	 * Test proper Exception is threw and error message is given out 
-	 * when getRecalculated() is called before setRecalculated(p)
-	 */
-	@Test
-	@Parameters(method = "testDataForRecalculations")
-	public void testGetRecalculatedException(int heading, char position, 
-			RunwayParameters paramsOriginal, RunwayParameters paramsRecalculated) {
-		
-		logicalRunway = new LogicalRunway(heading, position, paramsOriginal);
-		
-		exception.expect(NullPointerException.class);
-		exception.expectMessage(msgRP);
-		
-		logicalRunway.getRecalculatedParameters();
 	}
 	
 	/**
@@ -128,9 +109,7 @@ public class LogicalRunwayTest{
 		+ ", LDA: " + String.valueOf(p.getLDA());
 	}
 	
-	/**
-	 * -------------------------- TEST DATA BELOW -----------------------------------------------
-	 */
+	/**-------------------------- TEST DATA BELOW --------------------------------------*/
 	
 	private Object[] testDataForExceptionWithThreshold(){
 		return new Object[] {

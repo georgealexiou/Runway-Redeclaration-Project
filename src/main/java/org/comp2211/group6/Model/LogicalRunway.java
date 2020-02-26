@@ -57,6 +57,27 @@ public class LogicalRunway {
   /** @param runwayParameters: Object that filled in with recalculated parameters */
   public void setRecalculatedParameters(RunwayParameters runwayParameters) { recalculatedParameters = runwayParameters; }
   
+  /** set individual runway parameters */
+  public void setRecalculatedParameter(String name, double params) {
+	  RunwayParameters runwayParameters = new RunwayParameters(
+			  originalParameters.getTORA(), originalParameters.getTODA(),
+			  originalParameters.getASDA(), originalParameters.getLDA());
+	  
+	  if(name == "TORA") {
+		  runwayParameters.setTORA(params);
+	  }else if(name == "TODA") {
+		  runwayParameters.setTODA(params);
+	  }else if(name == "TORA") {
+		  runwayParameters.setASDA(params);
+	  }else if(name == "LDA") {
+		  runwayParameters.setLDA(params);
+	  }else {
+		  throw new IllegalArgumentException("Failed to set recalculated parameter. Invalid name of parameter.");
+	  }
+	  
+	  setRecalculatedParameters(runwayParameters);
+  }
+  
   /**
    * @return if no recalculation is performed, return null (member variable object default null) 
    *         otherwise return the RunwayParameters Object containing recalculated parameters

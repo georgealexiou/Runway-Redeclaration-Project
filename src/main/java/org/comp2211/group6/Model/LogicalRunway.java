@@ -50,11 +50,21 @@ public class LogicalRunway {
 	  
 	  return Integer.toString(heading) + position;
   }
-    
+  
+  /**
+   * @return The original RunwayParameters Object
+   */
   public RunwayParameters getParameters() { return originalParameters; }
   
+  /**
+   * @param runwayParameters: Object that filled in with recalculated parameters 
+   */
   public void setRecalculatedParameters(RunwayParameters runwayParameters) { recalculatedParameters = runwayParameters; }
   
+  /**
+   * @return if no recalculation is performed, throws Exception, 
+   *         otherwise return the RunwayParameters Object filled in with recalculated parameters
+   */
   public RunwayParameters getRecalculatedParameters() {
 	  if(recalculatedParameters == null)
 		  throw new NullPointerException("Error. No recalculated runway parameters can be returned.");

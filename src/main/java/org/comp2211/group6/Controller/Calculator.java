@@ -1,6 +1,6 @@
 package org.comp2211.group6.Controller;
 
-
+import java.util.HashMap;
 import java.util.Iterator;
 
 import org.comp2211.group6.Model.LogicalRunway;
@@ -12,13 +12,13 @@ import org.comp2211.group6.Model.RunwayParameters;
 public class Calculator {
 
     /** Public Properties */
-    public final double RunwayEndSafetyThreshold = 240;
-    public final double StripEndThreshold = 60;
-    public final double CentreLineThreshold = 75;
+    public final double RESA = 240;
+    public final double StripEnd = 60;
+    public final double CentreLine = 75;
+    public RedeclarationMap outputMap;
 
+    /** Public Methods */
 
-    /** Public Method
-    
     /**
      * Constructor for Calculator
      * @param runway The runway whose parameters are going to be recalculated
@@ -26,17 +26,7 @@ public class Calculator {
     public Calculator(Runway runway){
         this.runway = runway;
         this.obstacle = runway.getObstacle();
-    }
-
-    /**
-     * Second constructor for Calculator
-     * @param runway The runway whose parameters are going to be recalculated
-     * @param generateString Indicates wether a string of calculations will be generated
-    */
-    public Calculator(Runway runway, Boolean generateString){
-        this.runway = runway;
-        this.obstacle = runway.getObstacle();
-        this.displayCalculations = displayCalculations;
+        this.outputMap = new RedeclarationMap();
     }
 
     /**
@@ -56,25 +46,26 @@ public class Calculator {
      * Determines the type of calculation to be performed and performs it on a logical runway
      * @param logicalRunway The logical runway on which the calculations will be performed on
     */
-    private String recalculate(LogicalRunway logicalRunway){
+    private void recalculate(LogicalRunway logicalRunway){
+
         if (obstacle.distanceFromLeftThreshold > obstacle.distanceFromRightThreshold){
-            if (logicalRunway.getIdentifier() == 'L'){
-                String takeOffTowardsOutput = takeOffTowards();
-                String landTowardsOutput = landingTowards();
+            if (logicalRunway.getIdentifier().contains("L")){
+                outputMap.put(logicalRunway.getIdentifier() + "_TT",takeOffTowards(logicalRunway, 'R'));
+                outputMap.put(logicalRunway.getIdentifier() + "_LT", landingTowards(logicalRunway, 'R'));
             }
             
-            else if (logicalRunway.getIdentifier() == 'R'){
-                String takeOffAwayOutput = takeOffAway();
-                String landTowardsOutput = landingTowards();
+            else if (logicalRunway.getIdentifier().contains("R")){
+                outputMap.put(logicalRunway.getIdentifier() + "_TA", takeOffAway(logicalRunway, 'R'));
+                outputMap.put(logicalRunway.getIdentifier() + "_LT", landingOver(logicalRunway, 'R'));
             }
         }
 
         else if (obstacle.distanceFromLeftThreshold < obstacle.distanceFromRightThreshold){
-            if (logicalRunway.getIdentifier() == 'L'){
+            if (logicalRunway.getIdentifier().contains("L")){
 
             }
 
-            else if (logicalRunway.getIdentifier() == 'R'){
+            else if (logicalRunway.getIdentifier().contains("R")){
 
             }
         }
@@ -86,8 +77,16 @@ public class Calculator {
      * 
      * RLDA = Distance from Threshold - RESA - Strip End
     */
-    private String landingOver() {
-        return "";
+    private void landingOver(LogicalRunway logicalRunway, char direction) {
+
+        int distanceFromThreshold = 0;
+        if(direction == 'L')
+            distanceFromThreshold = obstacle.distanceFromLeftThreshold;
+        else if(direction == 'R')
+            distanceFromThreshold = obstacle.distanceFromRightThreshold;
+
+        int RLDA = distanceFromThreshold - RESA - StripEnd;
+        
     }
 
     /**
@@ -95,10 +94,8 @@ public class Calculator {
      * 
      * RLDA = LDA - Distance from Threshold - Strip End - Slope Calculation
     */
-    private String landingTowards() {
-        return "";
+    private void landingTowards(LogicalRunway logicalRunway, char direction) {
     }
-
 
     /**
      * Recalculates the TORA, TODA and ASDA when an aircraft is taking off towards the obstacle
@@ -107,8 +104,8 @@ public class Calculator {
      * RASDA = RTORA + STOPWAY
      * RTODA = RTORA + CLEARWAY
     */
-    private String takeOffAway() {
-        return "";
+    private void takeOffAway(LogicalRunway logicalRunway, char direction) {
+
     }
 
     /**
@@ -118,8 +115,8 @@ public class Calculator {
      * RASDA = RTORA
      * RTODA = RTORA
     */
-    private String takeOffTowards() {
-        return "";
+    private void takeOffTowards(LogicalRunway logicalRunway, char direction) {
+
     }
 
     /** Private Properties */
@@ -127,5 +124,4 @@ public class Calculator {
     private final Obstacle obstacle;
     private boolean generateString = false;
     private CalculationOutput calculationOutput = null;
-
 }

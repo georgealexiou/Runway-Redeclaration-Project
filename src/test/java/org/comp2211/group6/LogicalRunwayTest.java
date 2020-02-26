@@ -2,6 +2,7 @@ package org.comp2211.group6;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import org.comp2211.group6.Model.LogicalRunway;
 import org.comp2211.group6.Model.RunwayParameters;
@@ -19,10 +20,18 @@ public class LogicalRunwayTest{
 	LogicalRunway logicalRunway;
 	RunwayParameters sampleParams = new RunwayParameters(3660, 3660, 3660, 3660);
 	
+	/**
+	 * msgH: error message for invalid heading.
+	 * msgDT: error message for invalid displaced threshold.
+	 * msgP: error message for invalid position.
+	 * msgRP: error message for getRecalculatedParameters(), no recalculation is performed.
+	 * msgSRP: error message for setRecalculatedParameter(String, double), invalid parameter name.
+	 */
 	private String msgH = "Error. Invalid heading, which should be an Integer between 1 and 36.";
 	private String msgDT = "Error. Invalid displaced threshold, which should be a positive number.";
 	private String msgP = "Error. Invalid position, which can be 'L' or 'R' or 'C'.";
 	private String msgRP = "Error. No recalculated runway parameters can be returned.";
+	private String msgSRP = "Failed to set recalculated parameter. Invalid name of parameter.";
 	
 	@Rule
 	public ExpectedException exception = ExpectedException.none();
@@ -34,7 +43,8 @@ public class LogicalRunwayTest{
 	/** Test the validity of input parameters of Constructor with Displaced Threshold */
 	@Test
 	@Parameters(method = "testDataForExceptionWithThreshold")
-	public void testExceptionWithThreshold(int heading, double displacedThreshold, char position, Class errorClass, String errorMsg) {
+	public void testExceptionWithThreshold(int heading, double displacedThreshold, char position, 
+											Class errorClass, String errorMsg) {
 		if(errorClass != null)
 			exception.expect(errorClass);
 		if(errorMsg != null)
@@ -46,7 +56,8 @@ public class LogicalRunwayTest{
 	/** Test the validity of input parameters of Constructor without Displaced Threshold */
 	@Test
 	@Parameters(method = "testDataForExceptionWithoutThreshold")
-	public void testExceptionWithoutThreshold(int heading, char position, Class errorClass, String errorMsg) {
+	public void testExceptionWithoutThreshold(int heading, char position, 
+												Class errorClass, String errorMsg) {
 		if(errorClass != null)
 			exception.expect(errorClass);
 		if(errorMsg != null)
@@ -60,7 +71,7 @@ public class LogicalRunwayTest{
 	@Parameters(method = "testDataForGetIdentifier")
 	public void testGetIdentifier(int heading, char position, String expectedID) {
 		logicalRunway = new LogicalRunway(heading, position, sampleParams);
-		assertEquals("getIdentifier() Test Failed. Expecting: " + expectedID 
+		assertEquals("getIdentifier() Test Failed. Expected: " + expectedID 
 				+ " Actual: " + logicalRunway.getIdentifier(), 
 					expectedID, logicalRunway.getIdentifier());
 	}
@@ -71,7 +82,7 @@ public class LogicalRunwayTest{
 	public void testGetParameters(int heading, char position, RunwayParameters params) {
 		logicalRunway = new LogicalRunway(heading, position, params);
 		
-		assertEquals("getParameters() Test Failed. Expecting: " + prettyPrintParameters(params) 
+		assertEquals("getParameters() Test Failed. Expected: " + prettyPrintParameters(params) 
 					+ " Actual: " + prettyPrintParameters(logicalRunway.getParameters()), 
 					params, logicalRunway.getParameters());
 	}
@@ -83,19 +94,58 @@ public class LogicalRunwayTest{
 	 */
 	@Test
 	@Parameters(method = "testDataForRecalculations")
-	public void testRecalculatedParameters(int heading, char position, 
-			RunwayParameters paramsOriginal, RunwayParameters paramsRecalculated) {
-		
-		logicalRunway = new LogicalRunway(heading, position, paramsOriginal);
-		
+	public void testRecalculatedParameters(LogicalRunway logicalRunway, 
+											RunwayParameters paramsRecalculated) {
 		assertNull("Unset RecalculatedParameters Returns Null Test Failed.", logicalRunway.getRecalculatedParameters());
 		
 		logicalRunway.setRecalculatedParameters(paramsRecalculated);
 		
 		assertEquals("RecalculatedParameters() Test Failed, including setter and getter."
-				+ "Expecting to get: " + prettyPrintParameters(paramsRecalculated) 
-				+ " While get: " + prettyPrintParameters(logicalRunway.getRecalculatedParameters()), 
+				+ "Expected: " + prettyPrintParameters(paramsRecalculated) 
+				+ " Actual: " + prettyPrintParameters(logicalRunway.getRecalculatedParameters()), 
 				paramsRecalculated, logicalRunway.getRecalculatedParameters());
+	}
+	
+	/**
+	 * Test set individual recalculated parameter method: setRecalculatedParameter(String, double)
+	 * @param logicalRunway to set recalculated parameters
+	 * @param name: name of parameter to set recalculated value
+	 * @param params: value to assign
+	 */
+	@Test
+	@Parameters(method = "testDataForSetIndividualRecalculatedParameter")
+	public void testSetIndividualRecalculatedParameter(LogicalRunway logicalRunway, String name, 
+														double params, RunwayParameters expected,
+														Class errorClass, String errorMsg) {
+		if(errorClass != null) {
+			exception.expect(IllegalArgumentException.class);
+			exception.expectMessage(msgSRP);
+		}
+		
+		logicalRunway.setRecalculatedParameter(name, params);
+		
+		if(errorClass != null)
+			assertNull("setRecalculatedParameter(String, double) exception Test Failed."
+					+ "Expected: null"  
+					+ " Actual: " + prettyPrintParameters(logicalRunway.getRecalculatedParameters()), 
+					logicalRunway.getRecalculatedParameters());
+		
+		if(errorClass == null)
+			assertTrue("setRecalculatedParameter(String, double) Test Failed."
+						+ "Expected: " + prettyPrintParameters(expected) 
+						+ " Actual: " + prettyPrintParameters(logicalRunway.getRecalculatedParameters()), 
+						equalRunwayParameters(expected, logicalRunway.getRecalculatedParameters()));
+	}
+	
+	/**	method to check expected RunwayParameters and actual one has equal parameters */
+	public boolean equalRunwayParameters(RunwayParameters expected, RunwayParameters actual) {
+		if(expected.getTORA() == actual.getTORA() 
+		&& expected.getTODA() == actual.getTODA()
+		&& expected.getASDA() == actual.getASDA()
+		&& expected.getLDA() == actual.getLDA())
+			return true;
+		
+		return false;
 	}
 	
 	/**
@@ -209,11 +259,21 @@ public class LogicalRunwayTest{
 	
 	private Object[] testDataForRecalculations(){
 		return new Object[] {
-			new Object[] {1,'L', new RunwayParameters(1, 1, 1, 1), new RunwayParameters(3660, 3660, 3660, 3660)},
-			new Object[] {9,'C', new RunwayParameters(3660, 3660, 3660, 3660), new RunwayParameters(34, 43, 56, 65)},
-			new Object[] {10,'L', new RunwayParameters(1234, 1111, 4321, 2222), new RunwayParameters(789, 425, 5657, 5655)},
-			new Object[] {11,'C', new RunwayParameters(1111, 2222, 3333, 4444), new RunwayParameters(1524, 6352, 8643, 2652)},
-			new Object[] {36,'R', new RunwayParameters(123, 234, 345, 567), new RunwayParameters(4143, 7357, 3155, 3357)}
+			new Object[] {new LogicalRunway(1,'L', new RunwayParameters(1, 1, 1, 1)), new RunwayParameters(3660, 3660, 3660, 3660)},
+			new Object[] {new LogicalRunway(9,'C', new RunwayParameters(3660, 3660, 3660, 3660)), new RunwayParameters(34, 43, 56, 65)},
+			new Object[] {new LogicalRunway(10,'L', new RunwayParameters(1234, 1111, 4321, 2222)), new RunwayParameters(789, 425, 5657, 5655)},
+			new Object[] {new LogicalRunway(11,'C', new RunwayParameters(1111, 2222, 3333, 4444)), new RunwayParameters(1524, 6352, 8643, 2652)},
+			new Object[] {new LogicalRunway(36,'R', new RunwayParameters(123, 234, 345, 567)), new RunwayParameters(4143, 7357, 3155, 3357)}
+			};
+	}
+	
+	private Object[] testDataForSetIndividualRecalculatedParameter(){
+		return new Object[] {
+			new Object[] {new LogicalRunway(1,'L', new RunwayParameters(1, 1, 1, 1)), "TORA", 3660, new RunwayParameters(3660, 1, 1, 1), null, null},
+			new Object[] {new LogicalRunway(9,'C', new RunwayParameters(3660, 3660, 3660, 3660)), "TODA", 5678, new RunwayParameters(3660, 5678, 3660, 3660), null, null},
+			new Object[] {new LogicalRunway(10,'L', new RunwayParameters(1234, 1111, 4321, 2222)), "ASDA", 888, new RunwayParameters(1234, 1111, 888, 2222), null ,null},
+			new Object[] {new LogicalRunway(11,'C', new RunwayParameters(1111, 2222, 3333, 4444)), "LDA", 9090, new RunwayParameters(1111, 2222, 3333, 9090), null, null},
+			new Object[] {new LogicalRunway(36,'R', new RunwayParameters(123, 234, 345, 567)), "INVALID", 777, null, IllegalArgumentException.class, msgSRP}
 			};
 	}
 }

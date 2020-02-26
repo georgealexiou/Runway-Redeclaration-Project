@@ -115,6 +115,6 @@ public class RunwayParametersTest {
 	
 	/** pretty showing test failure trace */
 	public String printTrace(String params, String testName, double expected, double actual) {
-		return params + " " + testName + " Test Failed. Expecting: " + String.valueOf(expected) + " Actual: " + String.valueOf(actual);
+		return params + " " + testName + " Test Failed. Expected: " + String.valueOf(expected) + " Actual: " + String.valueOf(actual);
 	}
 }

@@ -50,6 +50,9 @@ public class LogicalRunway {
 	  
 	  return Integer.toString(heading) + position;
   }
+
+  /** Returns the heading of the identifier e.g. 9, 27 etc. */
+  public int getHeading(){ return heading; }
   
   /** @return The original RunwayParameters Object */
   public RunwayParameters getParameters() { return originalParameters; }

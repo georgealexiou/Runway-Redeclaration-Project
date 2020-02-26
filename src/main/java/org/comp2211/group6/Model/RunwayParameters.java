@@ -12,28 +12,21 @@ public class RunwayParameters {
    */
   public RunwayParameters(double tora, double toda,
                           double asda, double lda) {
-	  if(tora <= 0) 
-		  throw new IllegalArgumentException(
-				  "Error. Invalid TORA. Only positive numbers are allowed.");
-	  if (toda <= 0)
-		  throw new IllegalArgumentException(
-				  "Error. Invalid TODA. Only positive numbers are allowed.");
-	  if (asda <= 0)
-		  throw new IllegalArgumentException(
-				  "Error. Invalid ASDA. Only positive numbers are allowed.");
-	  if (lda <= 0)
-		  throw new IllegalArgumentException(
-				  "Error. Invalid LDA. Only positive numbers are allowed.");
 		  
-		  takeOffRunAvailable = tora;
-		  takeOffDistanceAvailable = toda;
-		  accelerateStopDistanceAvailable = asda;
-		  landingDistanceAvailable = lda;
+		  takeOffRunAvailable = checkValidity("TORA", tora);
+		  takeOffDistanceAvailable = checkValidity("TODA", toda);
+		  accelerateStopDistanceAvailable = checkValidity("ASDA", asda);
+		  landingDistanceAvailable = checkValidity("LDA", lda);
   }
 
   /**
       Public Methods
    */
+  public void setTORA(double tora) { takeOffRunAvailable = checkValidity("TORA", tora); }
+  public void setTODA(double toda) { takeOffDistanceAvailable = checkValidity("TODA", toda); }
+  public void setASDA(double asda) { accelerateStopDistanceAvailable = checkValidity("ASDA", asda); }
+  public void setLDA(double lda) { landingDistanceAvailable = checkValidity("LDA", lda); }
+  
   public double getTORA() { return takeOffRunAvailable; }
   public double getTODA() { return takeOffDistanceAvailable; }
   public double getASDA() { return accelerateStopDistanceAvailable; }
@@ -42,9 +35,18 @@ public class RunwayParameters {
   /**
      Private Properties
    */
-  private final double takeOffRunAvailable;
-  private final double takeOffDistanceAvailable;
-  private final double accelerateStopDistanceAvailable;
-  private final double landingDistanceAvailable;
+  private double takeOffRunAvailable;
+  private double takeOffDistanceAvailable;
+  private double accelerateStopDistanceAvailable;
+  private double landingDistanceAvailable;
+  
+  /** check validity of parameters and throw exception for invalid ones. */
+  public double checkValidity(String name, double params) {
+	  if(params <= 0) 
+		  throw new IllegalArgumentException(
+				  "Error. Invalid "+ name +". Only positive numbers are allowed.");
+		  
+	  return params;
+  }
 
 }

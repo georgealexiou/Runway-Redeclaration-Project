@@ -12,6 +12,22 @@ Any tips or tricks to do with the tool chain can be added here to make it easier
 
 - [Google Code Style](https://google.github.io/styleguide/javaguide.html)
 
+### Installing the coding style settings in Intellij
+
+Download the intellij-java-google-style.xml file from https://raw.githubusercontent.com/google/styleguide/gh-pages/intellij-java-google-style.xml.
+
+#### Windows
+
+Under File->Settings -> Editor -> Code Style, click on the little gear next to Scheme. Click on import Scheme and select the google-styleguide file as the current code style for the Metanome project. Finish it off by clicking Apply.
+
+#### Mac
+
+Download it and go into Preferences -> Editor -> Code Style. Click on Manage and import the downloaded Style Setting file. Select GoogleStyle as new coding style.
+
+### Installing the coding style settings in Eclipse
+
+Download the eclipse-java-google-style.xml file from the http://code.google.com/p/google-styleguide/ repo. Under Window/Preferences select Java/Code Style/Formatter. Import the settings file by selecting Import.
+
 ## Logging
 - Log any major changes to the way we work or anything we do as a result of feedback
 - Log any big meetings we have

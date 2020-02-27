@@ -1,10 +1,8 @@
 package org.comp2211.group6;
 
 import static org.junit.Assert.assertTrue;
-
 import java.util.Arrays;
 import java.util.Collection;
-
 import org.comp2211.group6.Model.RunwayParameters;
 import org.junit.Rule;
 import org.junit.Test;
@@ -52,7 +50,7 @@ public class RunwayParametersTest {
 	 * Data for testing
 	 * TORA, TODA, ASDA, LDA, expected exception, expected error message
 	 */
-	@Parameters(name = "{index}: Test Runway Parameters Config (tora:{0} toda:{1} asda:{2} lda:{3}) throws {4} with message {5}. Test data for setters: {6},{7},{8},{9}")
+	@Parameters(name = "{index}: Config (tora:{0} toda:{1} asda:{2} lda:{3}) throws {4} with message {5} Test data for setters: {6},{7},{8},{9}")
 	public static Collection<Object[]> testData() {
 		return Arrays.asList(new Object[][] {
 			{0, 0, 0, 0, IllegalArgumentException.class, msgTORA, 1, 2, 3, 4},

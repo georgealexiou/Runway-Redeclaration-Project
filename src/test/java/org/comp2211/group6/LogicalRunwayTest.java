@@ -150,10 +150,13 @@ public class LogicalRunwayTest{
 	
 	/** @return a string containing values of TORA, TODA, ASDA, LDA */
 	  public String printParameters(RunwayParameters params) {
+	    if(params != null)
 	      return "TORA: " + String.valueOf(params.getTORA()) 
 	      + ", TODA: " + String.valueOf(params.getTODA()) 
 	      + ", ASDA: " + String.valueOf(params.getASDA())
 	      + ", LDA: " + String.valueOf(params.getLDA());
+	  
+	    return null;
 	  }
 	
 	/**-------------------------- TEST DATA BELOW --------------------------------------*/
@@ -266,10 +269,10 @@ public class LogicalRunwayTest{
 	
 	private Object[] testDataForSetIndividualRecalculatedParameter(){
 		return new Object[] {
-			new Object[] {new LogicalRunway(1,'L', new RunwayParameters(1, 1, 1, 1)), "TORA", 3660, new RunwayParameters(3660, 1, 1, 1), null, null},
-			new Object[] {new LogicalRunway(9,'C', new RunwayParameters(3660, 3660, 3660, 3660)), "TODA", 5678, new RunwayParameters(3660, 5678, 3660, 3660), null, null},
-			new Object[] {new LogicalRunway(10,'L', new RunwayParameters(1234, 1111, 4321, 2222)), "ASDA", 888, new RunwayParameters(1234, 1111, 888, 2222), null ,null},
-			new Object[] {new LogicalRunway(11,'C', new RunwayParameters(1111, 2222, 3333, 4444)), "LDA", 9090, new RunwayParameters(1111, 2222, 3333, 9090), null, null},
+			new Object[] {new LogicalRunway(1,'L', new RunwayParameters(1, 1, 1, 1)), "RTORA", 3660, new RunwayParameters(3660, 1, 1, 1), null, null},
+			new Object[] {new LogicalRunway(9,'C', new RunwayParameters(3660, 3660, 3660, 3660)), "RTODA", 5678, new RunwayParameters(3660, 5678, 3660, 3660), null, null},
+			new Object[] {new LogicalRunway(10,'L', new RunwayParameters(1234, 1111, 4321, 2222)), "RASDA", 888, new RunwayParameters(1234, 1111, 888, 2222), null ,null},
+			new Object[] {new LogicalRunway(11,'C', new RunwayParameters(1111, 2222, 3333, 4444)), "RLDA", 9090, new RunwayParameters(1111, 2222, 3333, 9090), null, null},
 			new Object[] {new LogicalRunway(36,'R', new RunwayParameters(123, 234, 345, 567)), "INVALID", 777, null, IllegalArgumentException.class, msgSRP}
 			};
 	}

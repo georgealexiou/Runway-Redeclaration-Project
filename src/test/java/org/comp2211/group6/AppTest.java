@@ -24,10 +24,11 @@ public class AppTest {
     private Calculator calculatorTest1;
 
 
-    /** Testing Take Off Away, Landing Over, Take Off Towards, Landing Towards */
+    /** Testing Take Off Away, Landing Over, Take Off Towards, Landing Towards 
+     * @throws Exception */
     @Test(timeout = 5000)
     @DisplayName("Test Scenario 1 from Heathrow_Scenarios.pdf")
-    public void test1() {
+    public void test1() throws Exception {
 
         // Creating the logical runways with their appropriate runway prameters.
         this.runwayParameters1 = new RunwayParameters(3902,3902,3902,3595);

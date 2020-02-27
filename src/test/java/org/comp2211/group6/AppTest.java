@@ -1,6 +1,5 @@
 package org.comp2211.group6;
 
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
 import org.comp2211.group6.Model.*;
 import org.comp2211.group6.Controller.*;
@@ -9,7 +8,6 @@ import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
 import org.junit.Test;
-import org.junit.internal.runners.statements.Fail;
 
 
 /**

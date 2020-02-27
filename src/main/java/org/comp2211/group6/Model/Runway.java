@@ -21,14 +21,14 @@ public class Runway {
   public Obstacle getObstacle() { return obstacle; }
   public void setObstacle(Obstacle obstacle) { this.obstacle = obstacle; }
   public void addRunway(LogicalRunway runway) throws Exception { 
-	  if(logicalRunways.size() < 3) {
-		  logicalRunways.add(runway);   
-	  }else {
-		  throw new Exception("Error. Logical runway cannot be added to this runway, which can have three logical runways at most.");
+    if(logicalRunways.size() < 3) {
+      logicalRunways.add(runway);   
+      }else {
+        throw new Exception("Error. Logical runway cannot be added to this runway, which can have three logical runways at most.");
 	  }
-	  
-	  if(runway == null)
-	    throw new IllegalArgumentException("Error. Invalid logical runway to be added to runway, cannot be null.");
+    
+    if(runway == null)
+      throw new IllegalArgumentException("Error. Invalid logical runway to be added to runway, cannot be null.");
   }
   
   public Set<LogicalRunway> getLogicalRunways() { return logicalRunways; }

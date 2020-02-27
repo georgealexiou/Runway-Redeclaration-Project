@@ -70,7 +70,7 @@ public class LogicalRunway {
 		  runwayParameters.setTORA(params);
 	  }else if(name == "RTODA") {
 		  runwayParameters.setTODA(params);
-	  }else if(name == "RTORA") {
+	  }else if(name == "RASDA") {
 		  runwayParameters.setASDA(params);
 	  }else if(name == "RLDA") {
 		  runwayParameters.setLDA(params);

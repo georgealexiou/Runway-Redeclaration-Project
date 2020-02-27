@@ -58,3 +58,23 @@ Download the eclipse-java-google-style.xml file from the http://code.google.com/
 ## Understanding
 
 ![Anotated Image of Heathrow Aiport](./anotatedairport.png)
+
+## Git
+### Branches
+All work is done on the develop branch until a milestone is reached such as a user story being completed.
+
+### Committing and Pushing
+
+**Committing**:
+- Add only the files relating to the portion of work you are committing
+- Commit regularly when you have finished a small chunk of work such as a method
+- Write a short commit message then on a newline go into detail
+
+**Pushing**:
+1. Check that `mvn install` is able to compile the code locally on your machine.
+2. Run `mvn formatter:format` to format the code according the google style.
+3. Pull to load any remote changes to your local copy
+4. Push to the develop branch
+
+### Pull Requests
+These will be opened when we want to merge into the master branch from develop. Someone will review the merge request and check that everything meets the Google Code Style and passes all tests before accepting it.

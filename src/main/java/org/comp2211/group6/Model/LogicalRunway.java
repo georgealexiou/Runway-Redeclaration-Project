@@ -66,13 +66,13 @@ public class LogicalRunway {
 			  originalParameters.getTORA(), originalParameters.getTODA(),
 			  originalParameters.getASDA(), originalParameters.getLDA());
 	  
-	  if(name == "TORA") {
+	  if(name == "RTORA") {
 		  runwayParameters.setTORA(params);
-	  }else if(name == "TODA") {
+	  }else if(name == "RTODA") {
 		  runwayParameters.setTODA(params);
-	  }else if(name == "TORA") {
+	  }else if(name == "RTORA") {
 		  runwayParameters.setASDA(params);
-	  }else if(name == "LDA") {
+	  }else if(name == "RLDA") {
 		  runwayParameters.setLDA(params);
 	  }else {
 		  throw new IllegalArgumentException("Failed to set recalculated parameter. Invalid name of parameter.");
@@ -80,6 +80,9 @@ public class LogicalRunway {
 	  
 	  setRecalculatedParameters(runwayParameters);
   }
+
+  /** Returns the displaced threshold */
+  public double getDisplacedThreshold() { return displacedThreshold; }
   
   /**
    * @return if no recalculation is performed, return null (member variable object default null) 

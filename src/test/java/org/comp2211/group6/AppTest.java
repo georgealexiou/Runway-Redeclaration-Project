@@ -32,7 +32,7 @@ public class AppTest {
     {
         this.runwayParameters1 = new RunwayParameters(3660,3660,3660,3353);
         this.logicalRunway1 = new LogicalRunway(9, 307,'R',runwayParameters1);
-        this.obstacle1 = new Obstacle("TestObstacle1", "For testing", 0,0,12);
+        this.obstacle1 = new Obstacle("TestObstacle1", "For testing", 0.0,0.0,12.0, 0.0, 0.0, 0.0);
         this.runway1 = new Runway("TestRunway1");
         this.runway1.setObstacle(this.obstacle1);
         this.runway1.addRunway(this.logicalRunway1);

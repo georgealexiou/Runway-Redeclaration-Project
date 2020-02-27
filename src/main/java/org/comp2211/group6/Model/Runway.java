@@ -15,7 +15,7 @@ public class Runway {
     this.name = name;
   }
 
-  public Obstacle getObstacle() { return new Obstacle("", "", 0, 0, 0); }
+  public Obstacle getObstacle() { return obstacle; }
   public void setObstacle(Obstacle obstacle) {}
   public void addRunway(LogicalRunway runway) {}
   public List<LogicalRunway> getLogicalRunways() {return new ArrayList<LogicalRunway>();}

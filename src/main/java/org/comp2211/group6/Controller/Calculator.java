@@ -1,12 +1,12 @@
-package main.java.org.comp2211.group6.Controller;
+package org.comp2211.group6.Controller;
 
 import java.util.HashMap;
+import java.util.Iterator;
 
 import org.comp2211.group6.Model.LogicalRunway;
 import org.comp2211.group6.Model.Obstacle;
 import org.comp2211.group6.Model.Runway;
-import org.comp2211.group6.Model.RunwayParameters;
-import org.graalvm.compiler.hotspot.stubs.OutOfBoundsExceptionStub;
+
 
 
 public class Calculator {
@@ -25,20 +25,16 @@ public class Calculator {
     public Calculator(Runway runway){
         this.runway = runway;
         this.obstacle = runway.getObstacle();
-        this.outputMap = new RedeclarationMap();
     }
 
     /**
      * Recalculates the runway parameters for the attached runway
     */
     public void recalculateRunwayParameters(){
-        if (runway.getLogicalRunways().size() != 2)
-            throw new Exception("The runway can only have two logical runways");
+        Iterator iterator = runway.getLogicalRunways().iterator();
 
-        Iterator<E> iterator = runway.getLogicalRunways().iterator();
-
-        while(iterator.hasNext()){
-            recalculate(iterator.next());
+        while (iterator.hasNext()){
+            recalculate((LogicalRunway) iterator.next());
         }
     }
 
@@ -51,21 +47,21 @@ public class Calculator {
     private void recalculate(LogicalRunway logicalRunway){
         if (logicalRunway.getHeading() < 18){
             if (obstacle.getDistanceFromLeft() < obstacle.getDistanceFromRight()){ //left side
-                String LO = landingOver(logicalRunway, obstacle.getDistanceFromLeft());
-                String TA = takeOffAway(logicalRunway, obstacle.getDistanceFromLeft());
+                landingOver(logicalRunway, obstacle.getDistanceFromLeft());
+                takeOffAway(logicalRunway, obstacle.getDistanceFromLeft());
             }
             else if (obstacle.getDistanceFromLeft() > obstacle.getDistanceFromRight()){ //right side
-                String LT = landingTowards(logicalRunway, obstacle.getDistanceFromRight());
-                String TT = takeOffTowards(logicalRunway, obstacle.getDistanceFromRight());
+                landingTowards(logicalRunway, obstacle.getDistanceFromRight());
+                takeOffTowards(logicalRunway, obstacle.getDistanceFromRight());
             }
         } else if (logicalRunway.getHeading() > 18){
             if (obstacle.getDistanceFromLeft() < obstacle.getDistanceFromRight()){ //left side
-                String LT =landingTowards(logicalRunway, obstacle.getDistanceFromLeft());
-                String TT = takeOffTowards(logicalRunway, obstacle.getDistanceFromLeft());
+                landingTowards(logicalRunway, obstacle.getDistanceFromLeft());
+                takeOffTowards(logicalRunway, obstacle.getDistanceFromLeft());
             }
             else if (obstacle.getDistanceFromLeft() > obstacle.getDistanceFromRight()){ //right side
-                String LO = landingOver(logicalRunway, obstacle.getDistanceFromRight());
-                String TA = takeOffAway(logicalRunway, obstacle.getDistanceFromRight());
+                landingOver(logicalRunway, obstacle.getDistanceFromRight());
+                takeOffAway(logicalRunway, obstacle.getDistanceFromRight());
             }
         }
     }
@@ -131,7 +127,7 @@ public class Calculator {
         output.concat("\n      = " + RTORA);
 
         output.concat("RASDA = RTORA + STOPWAY");
-        output.concat("      = " + RASDA);
+        output.concat("      = " + RASDA + "\n\n");
 
         output.concat("RTODA = RTORA + CLEARWAY");
         output.concat("      = " + RTODA);
@@ -156,6 +152,16 @@ public class Calculator {
         logicalRunway.setRecalculatedParameter("RTORA", RTORA);
         logicalRunway.setRecalculatedParameter("RASDA", RASDA);
         logicalRunway.setRecalculatedParameter("RTODA", RTODA);
+
+        String output = "RTORA = Distance from Threshold - Slope Calculation";
+        output.concat("\n      = " + thresholdDistance + " - (" + obstacle.getHeight() + "*" + 50 + ")");
+        output.concat("\n      = " + RTORA + "\n\n");
+
+        output.concat("RASDA = RTORA");
+        output.concat("      = " + RASDA + "\n\n");
+
+        output.concat("RTODA = RTORA");
+        output.concat("      = " + RTODA);
 
         outputMap.put(logicalRunway.getIdentifier() + "_TT", output);
     }

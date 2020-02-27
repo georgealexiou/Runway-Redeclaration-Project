@@ -1,6 +1,7 @@
 # COMP2211 Software Engineering Group Project
 
-[![Build Status](https://travis-ci.com/georgealexiou/Software-Engineering-Group-Project.svg?token=8Vc6u46HsTP3dNwQiGD1&branch=master)](https://travis-ci.com/georgealexiou/Software-Engineering-Group-Project)
+Master : [![Build Status](https://travis-ci.com/georgealexiou/Software-Engineering-Group-Project.svg?token=8Vc6u46HsTP3dNwQiGD1&branch=master)](https://travis-ci.com/georgealexiou/Software-Engineering-Group-Project) 
+Develop: [![Develop Build Status](https://travis-ci.com/georgealexiou/Software-Engineering-Group-Project.svg?token=8Vc6u46HsTP3dNwQiGD1&branch=develop)](https://travis-ci.com/georgealexiou/Software-Engineering-Group-Project)
 
 ## Installing local JavaFX
 

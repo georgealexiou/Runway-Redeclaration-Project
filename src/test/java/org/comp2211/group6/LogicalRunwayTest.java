@@ -8,6 +8,7 @@ import org.comp2211.group6.Model.LogicalRunway;
 import org.comp2211.group6.Model.RunwayParameters;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 
@@ -117,10 +118,10 @@ public class LogicalRunwayTest{
 	public void testSetIndividualRecalculatedParameter(LogicalRunway logicalRunway, String name, 
 														double params, RunwayParameters expected,
 														Class errorClass, String errorMsg) {
-		if(errorClass != null) {
+		if(errorClass != null) 
 			exception.expect(IllegalArgumentException.class);
+		if(errorMsg != null)
 			exception.expectMessage(msgSRP);
-		}
 		
 		logicalRunway.setRecalculatedParameter(name, params);
 		

@@ -5,7 +5,11 @@ import static org.junit.Assert.assertEquals;
 import org.comp2211.group6.Model.*;
 import org.comp2211.group6.Controller.*;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.runner.JUnitCore;
+import org.junit.runner.Result;
+import org.junit.runner.notification.Failure;
 import org.junit.Test;
+import org.junit.internal.runners.statements.Fail;
 
 
 /**
@@ -22,6 +26,18 @@ public class AppTest {
     private Obstacle obstacle1;
     private Runway runway1;
     private Calculator calculatorTest1;
+    
+    /**
+     * Test suite for all the basic configurations, including: Airport, Runway, LogicalRunway, RunwayParameters
+     */
+    @Test
+    public void testConfig() {
+      Result configTestResult = JUnitCore.runClasses(ConfigurationTestSuite.class);
+      for(Failure failure: configTestResult.getFailures()) 
+        System.out.println(failure.toString());
+      
+      System.out.println(configTestResult.wasSuccessful());
+    }
 
 
     /** Testing Take Off Away, Landing Over, Take Off Towards, Landing Towards 
@@ -34,7 +50,7 @@ public class AppTest {
         this.runwayParameters1 = new RunwayParameters(3902,3902,3902,3595);
         this.logicalRunway1 = new LogicalRunway(9, 306,'L',runwayParameters1);
         this.runwayParameters2 = new RunwayParameters(3884,3962,3884,3884);
-        this.logicalRunway2 = new LogicalRunway(27, 0,'R',runwayParameters2);
+        this.logicalRunway2 = new LogicalRunway(27, 0, 'R',runwayParameters2);
 
         // Creating the obstacle, runway and calculator.
         this.obstacle1 = new Obstacle("TestObstacle1", "For testing", 0.0,0.0,12.0, 0.0, 50.0, 3646.0);
@@ -66,4 +82,5 @@ public class AppTest {
         assertEquals(3346,this.runwayParameters1.getLDA(), 0.1);
 
     }
+
 }

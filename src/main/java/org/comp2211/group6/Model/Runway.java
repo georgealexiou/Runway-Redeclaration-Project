@@ -28,7 +28,7 @@ public class Runway {
 	  }
 	  
 	  if(runway == null)
-	    throw new IllegalArgumentException("Error. Invalid logical runway to add to runway, cannot be null.");
+	    throw new IllegalArgumentException("Error. Invalid logical runway to be added to runway, cannot be null.");
   }
   
   public Set<LogicalRunway> getLogicalRunways() { return logicalRunways; }

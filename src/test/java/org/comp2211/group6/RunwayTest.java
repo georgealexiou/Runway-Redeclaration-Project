@@ -31,7 +31,7 @@ public class RunwayTest {
   private LogicalRunway logicalEx;
   private String errorMsg;
   private static String errorMsg1 = "Error. Logical runway cannot be added to this runway, which can have three logical runways at most.";
-  private static String errorMsg2 = "Error. Invalid logical runway to add to runway, cannot be null.";
+  private static String errorMsg2 = "Error. Invalid logical runway to be added to runway, cannot be null.";
   
   public RunwayTest(String name, Obstacle obstacle, LogicalRunway logical1, LogicalRunway logical2, LogicalRunway logical3, LogicalRunway logicalEx, String errorMsg) {
     this.name = name;
@@ -100,10 +100,7 @@ public class RunwayTest {
     runway.addRunway(logical3);
     assertTrue("Runway should contain logical runway: ", runway.getLogicalRunways().contains(logical3));
     
-    Set<LogicalRunway> logicalRunways = new HashSet<LogicalRunway>();
-    logicalRunways.add(logical1);
-    logicalRunways.add(logical2);
-    logicalRunways.add(logical3);
+    Set<LogicalRunway> logicalRunways = new HashSet<LogicalRunway>(Arrays.asList(logical1, logical2, logical3));
     assertEquals("addRunway() Test Failed.", logicalRunways, runway.getLogicalRunways());
     
     if(logicalEx != null)

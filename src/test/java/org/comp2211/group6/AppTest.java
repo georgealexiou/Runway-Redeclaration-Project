@@ -18,27 +18,19 @@ public class AppTest {
     private Runway runway1;
     private Calculator calculatorTest1;
 
-    /**
-     * Rigorous Test :-)
-     */
-    @Test
-    public void shouldAnswerWithTrue()
-    {
-        assertTrue(true);
-    }
-
     @Test
     public void test1()
     {
         this.runwayParameters1 = new RunwayParameters(3660,3660,3660,3353);
         this.logicalRunway1 = new LogicalRunway(9, 307,'R',runwayParameters1);
-        this.obstacle1 = new Obstacle("TestObstacle1", "For testing", 0,0,12, 0, 50, 3646);
+        this.obstacle1 = new Obstacle("TestObstacle1", "For testing", 0.0,0.0,12.0, 0.0, 50.0, 3646.0);
         this.runway1 = new Runway("TestRunway1");
         this.runway1.setObstacle(this.obstacle1);
         this.runway1.addRunway(this.logicalRunway1);
         this.calculatorTest1 = new Calculator(this.runway1);
         this.calculatorTest1.recalculateRunwayParameters();
 
+        System.out.println("09L (Take Off Away, Landing Over)");
         // Checking TORA.
         assertEquals(3346,this.runwayParameters1.getTORA(), 0.1);
         // Checking TODA.
@@ -47,5 +39,6 @@ public class AppTest {
         assertEquals(3346,this.runwayParameters1.getASDA(), 0.1);
         // Checking LDA.
         assertEquals(2985,this.runwayParameters1.getLDA(), 0.1);
+
     }
 }

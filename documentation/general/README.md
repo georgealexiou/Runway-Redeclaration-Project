@@ -12,6 +12,22 @@ Any tips or tricks to do with the tool chain can be added here to make it easier
 
 - [Google Code Style](https://google.github.io/styleguide/javaguide.html)
 
+### Installing the coding style settings in Intellij
+
+Download the intellij-java-google-style.xml file from https://raw.githubusercontent.com/google/styleguide/gh-pages/intellij-java-google-style.xml.
+
+#### Windows
+
+Under File->Settings -> Editor -> Code Style, click on the little gear next to Scheme. Click on import Scheme and select the google-styleguide file as the current code style for the Metanome project. Finish it off by clicking Apply.
+
+#### Mac
+
+Download it and go into Preferences -> Editor -> Code Style. Click on Manage and import the downloaded Style Setting file. Select GoogleStyle as new coding style.
+
+### Installing the coding style settings in Eclipse
+
+Download the eclipse-java-google-style.xml file from the http://code.google.com/p/google-styleguide/ repo. Under Window/Preferences select Java/Code Style/Formatter. Import the settings file by selecting Import.
+
 ## Logging
 - Log any major changes to the way we work or anything we do as a result of feedback
 - Log any big meetings we have
@@ -42,3 +58,23 @@ Any tips or tricks to do with the tool chain can be added here to make it easier
 ## Understanding
 
 ![Anotated Image of Heathrow Aiport](./anotatedairport.png)
+
+## Git
+### Branches
+All work is done on the develop branch until a milestone is reached such as a user story being completed.
+
+### Committing and Pushing
+
+**Committing**:
+- Add only the files relating to the portion of work you are committing
+- Commit regularly when you have finished a small chunk of work such as a method
+- Write a short commit message then on a newline go into detail
+
+**Pushing**:
+1. Check that `mvn install` is able to compile the code locally on your machine.
+2. Run `mvn formatter:format` to format the code according the google style.
+3. Pull to load any remote changes to your local copy
+4. Push to the develop branch
+
+### Pull Requests
+These will be opened when we want to merge into the master branch from develop. Someone will review the merge request and check that everything meets the Google Code Style and passes all tests before accepting it.

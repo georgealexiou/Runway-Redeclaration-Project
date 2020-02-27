@@ -82,8 +82,8 @@ public class LogicalRunwayTest{
 	public void testGetParameters(int heading, char position, RunwayParameters params) {
 		logicalRunway = new LogicalRunway(heading, position, params);
 		
-		assertEquals("getParameters() Test Failed. Expected: " + prettyPrintParameters(params) 
-					+ " Actual: " + prettyPrintParameters(logicalRunway.getParameters()), 
+		assertEquals("getParameters() Test Failed. Expected: " + printParameters(params)
+					+ " Actual: " + printParameters(logicalRunway.getParameters()), 
 					params, logicalRunway.getParameters());
 	}
 	
@@ -101,8 +101,8 @@ public class LogicalRunwayTest{
 		logicalRunway.setRecalculatedParameters(paramsRecalculated);
 		
 		assertEquals("RecalculatedParameters() Test Failed, including setter and getter."
-				+ "Expected: " + prettyPrintParameters(paramsRecalculated) 
-				+ " Actual: " + prettyPrintParameters(logicalRunway.getRecalculatedParameters()), 
+				+ "Expected: " + printParameters(paramsRecalculated)
+				+ " Actual: " + printParameters(logicalRunway.getRecalculatedParameters()), 
 				paramsRecalculated, logicalRunway.getRecalculatedParameters());
 	}
 	
@@ -127,13 +127,13 @@ public class LogicalRunwayTest{
 		if(errorClass != null)
 			assertNull("setRecalculatedParameter(String, double) exception Test Failed."
 					+ "Expected: null"  
-					+ " Actual: " + prettyPrintParameters(logicalRunway.getRecalculatedParameters()), 
+					+ " Actual: " + printParameters(logicalRunway.getRecalculatedParameters()), 
 					logicalRunway.getRecalculatedParameters());
 		
 		if(errorClass == null)
 			assertTrue("setRecalculatedParameter(String, double) Test Failed."
-						+ "Expected: " + prettyPrintParameters(expected) 
-						+ " Actual: " + prettyPrintParameters(logicalRunway.getRecalculatedParameters()), 
+						+ "Expected: " + printParameters(expected)
+						+ " Actual: " + printParameters(logicalRunway.getRecalculatedParameters()), 
 						equalRunwayParameters(expected, logicalRunway.getRecalculatedParameters()));
 	}
 	
@@ -148,16 +148,13 @@ public class LogicalRunwayTest{
 		return false;
 	}
 	
-	/**
-	 * @param RunwayParameters object to print
-	 * @return a string containing values of TORA, TODA, ASDA, LDA
-	 */
-	public String prettyPrintParameters(RunwayParameters p) {
-		return "TORA: " + String.valueOf(p.getTORA()) 
-		+ ", TODA: " + String.valueOf(p.getTODA()) 
-		+ ", ASDA: " + String.valueOf(p.getASDA())
-		+ ", LDA: " + String.valueOf(p.getLDA());
-	}
+	/** @return a string containing values of TORA, TODA, ASDA, LDA */
+	  public String printParameters(RunwayParameters params) {
+	      return "TORA: " + String.valueOf(params.getTORA()) 
+	      + ", TODA: " + String.valueOf(params.getTODA()) 
+	      + ", ASDA: " + String.valueOf(params.getASDA())
+	      + ", LDA: " + String.valueOf(params.getLDA());
+	  }
 	
 	/**-------------------------- TEST DATA BELOW --------------------------------------*/
 	

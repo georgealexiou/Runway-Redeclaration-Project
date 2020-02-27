@@ -4,7 +4,5 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
-@Suite.SuiteClasses({RunwayParametersTest.class,LogicalRunwayTest.class})
-public class ConfigurationTestSuite {
-
-}
+@Suite.SuiteClasses({RunwayParametersTest.class, LogicalRunwayTest.class, RunwayTest.class, AirportTest.class})
+public class ConfigurationTestSuite {}

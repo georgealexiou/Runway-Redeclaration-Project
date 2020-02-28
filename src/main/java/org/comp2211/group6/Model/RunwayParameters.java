@@ -19,6 +19,11 @@ public class RunwayParameters {
 		  landingDistanceAvailable = checkValidity("LDA", lda);
   }
 
+    /**
+     * Second constructor that takes no parameters
+     */
+  public RunwayParameters(){}
+
   /**
       Public Methods
    */

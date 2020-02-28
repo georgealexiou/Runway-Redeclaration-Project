@@ -8,20 +8,20 @@ import javafx.stage.Stage;
 
 public class App extends Application {
 
-  /** Public Methods */
-  @Override
-  public void start(Stage primaryStage) throws Exception {
-    String javaVersion = System.getProperty("java.version");
-    String javafxVersion = System.getProperty("javafx.version");
-    Label l =
-        new Label("Hello, JavaFX " + javafxVersion + ", running on Java " + javaVersion + ".");
-    Scene scene = new Scene(new StackPane(l), 640, 480);
-    primaryStage.setScene(scene);
-    primaryStage.show();
-  }
+    /** Public Methods */
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        String javaVersion = System.getProperty("java.version");
+        String javafxVersion = System.getProperty("javafx.version");
+        Label l = new Label("Hello, JavaFX " + javafxVersion + ", running on Java " + javaVersion
+                        + ".");
+        Scene scene = new Scene(new StackPane(l), 640, 480);
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
 
-  /** Main Method */
-  public static void main(String[] args) {
+    /** Main Method */
+    public static void main(String[] args) {
 
-  }
+    }
 }

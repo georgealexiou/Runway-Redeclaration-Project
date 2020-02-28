@@ -5,6 +5,6 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({RunwayParametersTest.class, LogicalRunwayTest.class, RunwayTest.class,
-    AirportTest.class})
+                AirportTest.class})
 public class ConfigurationTestSuite {
 }

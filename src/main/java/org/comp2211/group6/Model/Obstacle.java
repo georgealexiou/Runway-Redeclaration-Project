@@ -84,22 +84,26 @@ public class Obstacle {
   /**
    * Update the dimensions of the obstacle
    * 
-   * @param l The length - inline with the runway
-   * @param w The width - perpendicular to runway
-   * @param h The height
+   * @param length The length - inline with the runway
+   * @param width The width - perpendicular to runway
+   * @param height The height
    */
-  public void setDimensions(double l, double w, double h) {}
+  public void setDimensions(double length, double width, double height) {
+    this.length = length;
+    this.width = width;
+    this.height = height;
+  }
 
   public double getDistanceToCentreLine() {
-    return 0;
+    return distanceToCentreLine;
   }
 
   public double getDistanceFromLeft() {
-    return 0;
+    return distanceFromLeftThreshold;
   }
 
   public double getDistanceFromRight() {
-    return 0;
+    return distanceFromRightThreshold;
   }
 
 }

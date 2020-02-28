@@ -4,8 +4,8 @@ import org.junit.Test;
 
 public class BreakdownTest {
 
-    @Test
-    public void m1(){
+  @Test
+  public void m1() {
 
-    }
+  }
 }

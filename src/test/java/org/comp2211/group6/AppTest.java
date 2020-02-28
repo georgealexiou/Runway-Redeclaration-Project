@@ -16,7 +16,7 @@ public class AppTest {
     /** Testing Take Off Away, Landing Over, Take Off Towards, Landing Towards */
     @Test(timeout = 5000)
     @DisplayName("Test Scenario 1 from Heathrow_Scenarios.pdf")
-    public void test1() {
+    public void test1() throws Exception {
 
         // Creating the logical runways with their appropriate runway parameters.
         RunwayParameters runwayParameters1 = new RunwayParameters(3902,3902,3902,3595);
@@ -26,7 +26,7 @@ public class AppTest {
 
         // Creating the obstacle, runway and calculator.
         Obstacle obstacle1 = new Obstacle("TestObstacle1", "For testing", 0.0,0.0,12.0,
-                                      0.0, -50.0, 3646.0);
+                0.0, -50.0, 3646.0);
         Runway runway1 = new Runway("TestRunway1");
         runway1.setObstacle(obstacle1);
         runway1.addRunway(logicalRunway1);
@@ -62,7 +62,7 @@ public class AppTest {
     /** Take Off Towards, Landing Towards, Take off Away, Landing Over */
     @Test(timeout = 5000)
     @DisplayName("Test Scenario 2 from Heathrow_Scenarios.pdf")
-    public void test2() {
+    public void test2() throws Exception {
         // Creating the logical runways with their appropriate runway parameters.
         RunwayParameters runwayParameters1 = new RunwayParameters(3660,3660,3660,3353);
         LogicalRunway logicalRunway1 = new LogicalRunway(9, 307,'R',runwayParameters1);
@@ -71,7 +71,7 @@ public class AppTest {
 
         // Creating the obstacle, runway and calculator.
         Obstacle obstacle1 = new Obstacle("TestObstacle1", "For testing", 0.0,0.0,25.0,
-                                      -20.0, 500.0,  2853.0);
+                -20.0, 500.0,  2853.0);
         Runway runway1 = new Runway("TestRunway1");
         runway1.setObstacle(obstacle1);
         runway1.addRunway(logicalRunway1);
@@ -107,7 +107,7 @@ public class AppTest {
     /** Take Off Away, Landing Over, Take Off Towards, Landing Towards */
     @Test(timeout = 5000)
     @DisplayName("Test Scenario 3 from Heathrow_Scenarios.pdf")
-    public void test3() {
+    public void test3() throws Exception {
         // Creating the logical runways with their appropriate runway parameters.
         RunwayParameters runwayParameters1 = new RunwayParameters(3660,3660,3660,3353);
         LogicalRunway logicalRunway1 = new LogicalRunway(9, 307,'R',runwayParameters1);
@@ -152,7 +152,7 @@ public class AppTest {
     /** Take Off Towards, Landing Towards, Take off Away, Landing Over */
     @Test(timeout = 5000)
     @DisplayName("Test Scenario 4 from Heathrow_Scenarios.pdf")
-    public void test4() {
+    public void test4() throws Exception {
 
         // Creating the logical runways with their appropriate runway parameters.
         RunwayParameters runwayParameters1 = new RunwayParameters(3902,3902,3902,3595);

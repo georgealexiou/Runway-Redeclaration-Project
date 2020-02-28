@@ -41,7 +41,7 @@ public class LogicalRunway {
   /** @return The original RunwayParameters Object */
   public RunwayParameters getParameters() { return originalParameters; }
 
-  /** @param runwayParameters: Object that filled in with recalculated parameters */
+  /** @param recalculatedParameters: Object that filled in with recalculated parameters */
   public void setRecalculatedParameters(RunwayParameters recalculatedParameters) { this.recalculatedParameters = recalculatedParameters; }
 
   /** Returns the displaced threshold */

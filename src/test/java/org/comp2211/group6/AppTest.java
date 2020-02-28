@@ -39,23 +39,23 @@ public class AppTest {
         // Testing results.
         System.out.println("09L (Take Off Away, Landing Over)");
         // Checking TORA.
-        assertEquals(3346, runwayParameters1.getTORA(), 0.1);
+        assertEquals(3346, logicalRunway1.getRecalculatedParameters().getTORA(), 0.1);
         // Checking TODA.
-        assertEquals(3346, runwayParameters1.getTODA(), 0.1);
+        assertEquals(3346, logicalRunway1.getRecalculatedParameters().getTODA(), 0.1);
         // Checking ASDA.
-        assertEquals(3346, runwayParameters1.getASDA(), 0.1);
+        assertEquals(3346, logicalRunway1.getRecalculatedParameters().getASDA(), 0.1);
         // Checking LDA.
-        assertEquals(2985, runwayParameters1.getLDA(), 0.1);
+        assertEquals(2985, logicalRunway1.getRecalculatedParameters().getLDA(), 0.1);
 
         System.out.println("27R (Take Off Towards, Landing Towards)");
         // Checking TORA.
-        assertEquals(2986, runwayParameters1.getTORA(), 0.1);
+        assertEquals(2986, logicalRunway2.getRecalculatedParameters().getTORA(), 0.1);
         // Checking TODA.
-        assertEquals(2986, runwayParameters1.getTODA(), 0.1);
+        assertEquals(2986, logicalRunway2.getRecalculatedParameters().getTODA(), 0.1);
         // Checking ASDA.
-        assertEquals(2986, runwayParameters1.getASDA(), 0.1);
+        assertEquals(2986, logicalRunway2.getRecalculatedParameters().getASDA(), 0.1);
         // Checking LDA.
-        assertEquals(3346, runwayParameters1.getLDA(), 0.1);
+        assertEquals(3346, logicalRunway2.getRecalculatedParameters().getLDA(), 0.1);
 
     }
 
@@ -84,23 +84,23 @@ public class AppTest {
         // Testing results.
         System.out.println("09R (Take Off Towards, Landing Towards)");
         // Checking TORA.
-        assertEquals(1850, runwayParameters1.getTORA(), 0.1);
+        assertEquals(1850, logicalRunway1.getRecalculatedParameters().getTORA(), 0.1);
         // Checking TODA.
-        assertEquals(1850, runwayParameters1.getTODA(), 0.1);
+        assertEquals(1850, logicalRunway1.getRecalculatedParameters().getTODA(), 0.1);
         // Checking ASDA.
-        assertEquals(1850, runwayParameters1.getASDA(), 0.1);
+        assertEquals(1850, logicalRunway1.getRecalculatedParameters().getASDA(), 0.1);
         // Checking LDA.
-        assertEquals(2553, runwayParameters1.getLDA(), 0.1);
+        assertEquals(2553, logicalRunway1.getRecalculatedParameters().getLDA(), 0.1);
 
         System.out.println("27L (Take off Away, Landing Over)");
         // Checking TORA.
-        assertEquals(2860, runwayParameters2.getTORA(), 0.1);
+        assertEquals(2860, logicalRunway2.getRecalculatedParameters().getTORA(), 0.1);
         // Checking TODA.
-        assertEquals(2860, runwayParameters2.getTODA(), 0.1);
+        assertEquals(2860, logicalRunway2.getRecalculatedParameters().getTODA(), 0.1);
         // Checking ASDA.
-        assertEquals(2860, runwayParameters2.getASDA(), 0.1);
+        assertEquals(2860, logicalRunway2.getRecalculatedParameters().getASDA(), 0.1);
         // Checking LDA.
-        assertEquals(1850, runwayParameters2.getLDA(), 0.1);
+        assertEquals(1850, logicalRunway2.getRecalculatedParameters().getLDA(), 0.1);
 
     }
 
@@ -129,23 +129,23 @@ public class AppTest {
         // Testing results.
         System.out.println("09R (Take Off Away, Landing Over)");
         // Checking TORA.
-        assertEquals(2903, runwayParameters1.getTORA(), 0.1);
+        assertEquals(2903, logicalRunway1.getRecalculatedParameters().getTORA(), 0.1);
         // Checking TODA.
-        assertEquals(2903, runwayParameters1.getTODA(), 0.1);
+        assertEquals(2903, logicalRunway1.getRecalculatedParameters().getTODA(), 0.1);
         // Checking ASDA.
-        assertEquals(2903, runwayParameters1.getASDA(), 0.1);
+        assertEquals(2903, logicalRunway1.getRecalculatedParameters().getASDA(), 0.1);
         // Checking LDA.
-        assertEquals(2393, runwayParameters1.getLDA(), 0.1);
+        assertEquals(2393, logicalRunway1.getRecalculatedParameters().getLDA(), 0.1);
 
         System.out.println("27L (Take Off Towards, Landing Towards)");
         // Checking TORA.
-        assertEquals(2393, runwayParameters2.getTORA(), 0.1);
+        assertEquals(2393, logicalRunway2.getRecalculatedParameters().getTORA(), 0.1);
         // Checking TODA.
-        assertEquals(2393, runwayParameters2.getTODA(), 0.1);
+        assertEquals(2393, logicalRunway2.getRecalculatedParameters().getTODA(), 0.1);
         // Checking ASDA.
-        assertEquals(2393, runwayParameters2.getASDA(), 0.1);
+        assertEquals(2393, logicalRunway2.getRecalculatedParameters().getASDA(), 0.1);
         // Checking LDA.
-        assertEquals(2903, runwayParameters2.getLDA(), 0.1);
+        assertEquals(2903, logicalRunway2.getRecalculatedParameters().getLDA(), 0.1);
 
     }
 
@@ -175,23 +175,23 @@ public class AppTest {
         // Testing results.
         System.out.println("09L (Take Off Towards, Landing Towards)");
         // Checking TORA.
-        assertEquals(2792, runwayParameters1.getTORA(), 0.1);
+        assertEquals(2792, logicalRunway1.getRecalculatedParameters().getTORA(), 0.1);
         // Checking TODA.
-        assertEquals(2792, runwayParameters1.getTODA(), 0.1);
+        assertEquals(2792, logicalRunway1.getRecalculatedParameters().getTODA(), 0.1);
         // Checking ASDA.
-        assertEquals(2792, runwayParameters1.getASDA(), 0.1);
+        assertEquals(2792, logicalRunway1.getRecalculatedParameters().getASDA(), 0.1);
         // Checking LDA.
-        assertEquals(3246, runwayParameters1.getLDA(), 0.1);
+        assertEquals(3246, logicalRunway1.getRecalculatedParameters().getLDA(), 0.1);
 
         System.out.println("27R (Take off Away, Landing Over)");
         // Checking TORA.
-        assertEquals(3534, runwayParameters1.getTORA(), 0.1);
+        assertEquals(3534, logicalRunway2.getRecalculatedParameters().getTORA(), 0.1);
         // Checking TODA.
-        assertEquals(3612, runwayParameters1.getTODA(), 0.1);
+        assertEquals(3612, logicalRunway2.getRecalculatedParameters().getTODA(), 0.1);
         // Checking ASDA.
-        assertEquals(3534, runwayParameters1.getASDA(), 0.1);
+        assertEquals(3534, logicalRunway2.getRecalculatedParameters().getASDA(), 0.1);
         // Checking LDA.
-        assertEquals(2774, runwayParameters1.getLDA(), 0.1);
+        assertEquals(2774, logicalRunway2.getRecalculatedParameters().getLDA(), 0.1);
 
     }
 }

@@ -54,21 +54,26 @@ public class Calculator {
                 landingTowards(logicalRunway, obstacle.getDistanceFromRight());
                 takeOffTowards(logicalRunway, obstacle.getDistanceFromRight());
             }
-        } else if (logicalRunway.getHeading() > 18){
-            if (obstacle.getDistanceFromLeft() < obstacle.getDistanceFromRight()){ //left side
+        } else if (logicalRunway.getHeading() > 18) {
+            if (obstacle.getDistanceFromLeft() < obstacle.getDistanceFromRight()) { //left side
                 landingTowards(logicalRunway, obstacle.getDistanceFromLeft());
                 takeOffTowards(logicalRunway, obstacle.getDistanceFromLeft());
-            }
-            else if (obstacle.getDistanceFromLeft() > obstacle.getDistanceFromRight()){ //right side
+            } else if (obstacle.getDistanceFromLeft() > obstacle.getDistanceFromRight()) { //right side
                 landingOver(logicalRunway, obstacle.getDistanceFromRight());
                 takeOffAway(logicalRunway, obstacle.getDistanceFromRight());
             }
+        } else if (logicalRunway.getHeading() == 18){
+
         }
     }
 
     /**
      * Recalculates the LDA when a plane attempts to land over an obstacle
+     *
+     * Format:
      * RLDA = Distance from Threshold - RESA - Strip End
+     *      = xxx - xxx
+     *      = xxx
      * 
      * @param logicalRunway The logical runway whose parameters are going to be recalculated
      * @param thresholdDistance The distance of the obstacle from the closest threshold
@@ -76,7 +81,7 @@ public class Calculator {
     private void landingOver(LogicalRunway logicalRunway, double thresholdDistance) {
         double RLDA = thresholdDistance - RESA - StripEnd;
 
-        logicalRunway.setRecalculatedParameter("RLDA", RLDA);
+        logicalRunway.getRecalculatedParameters().setLDA(RLDA);
 
         String output = "RLDA = Distance from Threshold - RESA - Strip End";
         output.concat("\n     = " + thresholdDistance + " - " + RESA + " - " + StripEnd);
@@ -87,7 +92,11 @@ public class Calculator {
 
     /**
      * Recalculates the LDA when a plane attempts to land towards an obstacle
+     *
+     * Format:
      * RLDA = LDA - Distance from Threshold - Strip End - Slope Calculation
+     *      = xxx - xxx - xxx - xxx
+     *      = xxx
      * 
      * @param logicalRunway The logical runway whose parameters are going to be recalculated
      * @param thresholdDistance The distance of the obstacle from the closest threshold
@@ -95,7 +104,7 @@ public class Calculator {
     private void landingTowards(LogicalRunway logicalRunway, double thresholdDistance) {
         double RLDA = logicalRunway.getParameters().getLDA() - thresholdDistance - StripEnd - (obstacle.getHeight() * 50);
 
-        logicalRunway.setRecalculatedParameter("RLDA", RLDA);
+        logicalRunway.getRecalculatedParameters().setLDA(RLDA);
 
         String output = "RLDA = Distance from Threshold - Strip End - Slope Calculation";
         output.concat("\n     = " + logicalRunway.getParameters().getLDA() + " - " + StripEnd + " - (" + obstacle.getHeight() + "*" + 50 + ")");
@@ -106,9 +115,15 @@ public class Calculator {
 
     /**
      * Recalculates the TORA, TODA and ASDA when an aircraft is taking off towards the obstacle
+     *
+     * Format:
      * RTORA = TORA - Blast Protection - Distance from Threshold - Displaced Threshold
+     *       = xxx - xxx - xxx - xxx
+     *       = xxx
      * RASDA = RTORA + STOPWAY
-     * RTODA = RTORA + CLEARWAY
+     *       = xxx
+     * RTODA = RTORA
+     *       = xxx
      * 
      * @param logicalRunway The logical runway whose parameters are going to be recalculated
      * @param thresholdDistance The distance of the obstacle from the closest threshold
@@ -118,16 +133,16 @@ public class Calculator {
         double RASDA = RTORA;
         double RTODA = RTORA;
 
-        logicalRunway.setRecalculatedParameter("RTORA", RTORA);
-        logicalRunway.setRecalculatedParameter("RASDA", RASDA);
-        logicalRunway.setRecalculatedParameter("RTODA", RTODA);
+        logicalRunway.getRecalculatedParameters().setTORA(RTORA);
+        logicalRunway.getRecalculatedParameters().setASDA(RASDA);
+        logicalRunway.getRecalculatedParameters().setTODA(RTODA);
 
         String output = "RTORA = TORA - Blast Protection - Distance from Threshold - Displaced Threshold";
         output.concat("\n      = " + logicalRunway.getParameters().getTORA() + " - " + 300 + " - " + thresholdDistance + " - " + logicalRunway.getDisplacedThreshold());
-        output.concat("\n      = " + RTORA);
+        output.concat("\n      = " + RTORA + "\n");
 
         output.concat("RASDA = RTORA + STOPWAY");
-        output.concat("      = " + RASDA + "\n\n");
+        output.concat("      = " + RASDA + "\n");
 
         output.concat("RTODA = RTORA + CLEARWAY");
         output.concat("      = " + RTODA);
@@ -138,8 +153,12 @@ public class Calculator {
     /**
      * Recalculates the TORA, TODA and ASDA when an aircraft is taking off away from an obstacle
      * RTORA = Distance from Threshold - Slope Calculation
+     *       = xxx - xxx
+     *       = xxx
      * RASDA = RTORA
+     *       = xxx
      * RTODA = RTORA
+     *       = xxx
      * 
      * @param logicalRunway The logical runway whose parameters are going to be recalculated
      * @param thresholdDistance The distance of the obstacle from the closest threshold
@@ -149,16 +168,16 @@ public class Calculator {
         double RASDA = RTORA;
         double RTODA = RTORA;
 
-        logicalRunway.setRecalculatedParameter("RTORA", RTORA);
-        logicalRunway.setRecalculatedParameter("RASDA", RASDA);
-        logicalRunway.setRecalculatedParameter("RTODA", RTODA);
+        logicalRunway.getRecalculatedParameters().setTORA(RTORA);
+        logicalRunway.getRecalculatedParameters().setASDA(RASDA);
+        logicalRunway.getRecalculatedParameters().setTODA(RTODA);
 
         String output = "RTORA = Distance from Threshold - Slope Calculation";
         output.concat("\n      = " + thresholdDistance + " - (" + obstacle.getHeight() + "*" + 50 + ")");
-        output.concat("\n      = " + RTORA + "\n\n");
+        output.concat("\n      = " + RTORA + "\n");
 
         output.concat("RASDA = RTORA");
-        output.concat("      = " + RASDA + "\n\n");
+        output.concat("      = " + RASDA + "\n");
 
         output.concat("RTODA = RTORA");
         output.concat("      = " + RTODA);

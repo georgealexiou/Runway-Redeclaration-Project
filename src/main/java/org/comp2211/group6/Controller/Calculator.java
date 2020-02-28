@@ -45,7 +45,7 @@ public class Calculator {
      * @param logicalRunway The logical runway whose parameters are going to be recalculated
     */
     private void recalculate(LogicalRunway logicalRunway){
-        if (logicalRunway.getHeading() < 18){
+        if (logicalRunway.getHeading() <= 18){
             if (obstacle.getDistanceFromLeft() < obstacle.getDistanceFromRight()){ //left side
                 landingOver(logicalRunway, obstacle.getDistanceFromLeft());
                 takeOffAway(logicalRunway, obstacle.getDistanceFromLeft());
@@ -62,8 +62,6 @@ public class Calculator {
                 landingOver(logicalRunway, obstacle.getDistanceFromRight());
                 takeOffAway(logicalRunway, obstacle.getDistanceFromRight());
             }
-        } else if (logicalRunway.getHeading() == 18){
-
         }
     }
 

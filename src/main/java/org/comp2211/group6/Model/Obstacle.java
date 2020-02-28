@@ -39,6 +39,9 @@ public class Obstacle {
      * @param length The length - inline with the runway
      * @param width The width - perpendicular to runway
      * @param height The height
+     * @param distanceToCentreLine
+     * @param distanceFromLeftThreshold
+     * @param distanceFromRightThreshold
      */
     public Obstacle(String name, String description, double length, double width, double height,
                     double distanceToCentreLine, double distanceFromLeftThreshold,

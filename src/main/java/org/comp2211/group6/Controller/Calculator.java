@@ -59,13 +59,13 @@ public class Calculator {
                 takeOffAway(logicalRunway, obstacle.getDistanceFromLeft());
             } else if (obstacle.getDistanceFromLeft() > obstacle.getDistanceFromRight()) { // right
                                                                                            // side
-                landingTowards(logicalRunway, obstacle.getDistanceFromRight());
-                takeOffTowards(logicalRunway, obstacle.getDistanceFromRight());
+                landingTowards(logicalRunway, obstacle.getDistanceFromLeft());
+                takeOffTowards(logicalRunway, obstacle.getDistanceFromLeft());
             }
         } else if (logicalRunway.getHeading() > 18) {
             if (obstacle.getDistanceFromLeft() < obstacle.getDistanceFromRight()) { // left side
-                landingTowards(logicalRunway, obstacle.getDistanceFromLeft());
-                takeOffTowards(logicalRunway, obstacle.getDistanceFromLeft());
+                landingTowards(logicalRunway, obstacle.getDistanceFromRight());
+                takeOffTowards(logicalRunway, obstacle.getDistanceFromRight());
             } else if (obstacle.getDistanceFromLeft() > obstacle.getDistanceFromRight()) { // right
                                                                                            // side
                 landingOver(logicalRunway, obstacle.getDistanceFromRight());
@@ -128,10 +128,15 @@ public class Calculator {
      * @param thresholdDistance The distance of the obstacle from the closest threshold
      */
     private void takeOffAway(LogicalRunway logicalRunway, double thresholdDistance) {
-        double RTORA = logicalRunway.getParameters().getTORA() - 300 - thresholdDistance
-                        - logicalRunway.getDisplacedThreshold();
-        double RASDA = RTORA;
-        double RTODA = RTORA;
+        // Clearway = TODA - TORA
+        // Stopway = ASDA - TORA
+        double stopway = (logicalRunway.getParameters().getASDA()-
+                          logicalRunway.getParameters().getTORA());
+        double clearway = (logicalRunway.getParameters().getTODA()-
+                           logicalRunway.getParameters().getTORA());
+        double RTORA = logicalRunway.getParameters().getTORA() - 300 - thresholdDistance - logicalRunway.getDisplacedThreshold();
+        double RASDA = RTORA + stopway;
+        double RTODA = RTORA + clearway;
 
         logicalRunway.getRecalculatedParameters().setTORA(RTORA);
         logicalRunway.getRecalculatedParameters().setASDA(RASDA);
@@ -143,10 +148,10 @@ public class Calculator {
         output.concat("\n      = " + RTORA + "\n");
 
         output.concat("RASDA = RTORA + STOPWAY");
-        output.concat("      = " + RASDA + "\n");
+        output.concat("      = " + RASDA + " + " + stopway + "\n");
 
         output.concat("RTODA = RTORA + CLEARWAY");
-        output.concat("      = " + RTODA);
+        output.concat("      = " + RTODA + " + " + clearway);
 
         outputMap.put(logicalRunway.getIdentifier() + "_TA", output);
     }
@@ -160,7 +165,7 @@ public class Calculator {
      * @param thresholdDistance The distance of the obstacle from the closest threshold
      */
     private void takeOffTowards(LogicalRunway logicalRunway, double thresholdDistance) {
-        double RTORA = thresholdDistance - (obstacle.getHeight() * 50);
+        double RTORA = thresholdDistance + logicalRunway.getDisplacedThreshold() - (obstacle.getHeight() * 50) - StripEnd;
         double RASDA = RTORA;
         double RTODA = RTORA;
 

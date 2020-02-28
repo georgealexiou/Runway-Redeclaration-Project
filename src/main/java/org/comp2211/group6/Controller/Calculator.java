@@ -72,47 +72,48 @@ public class Calculator {
     }
   }
 
-  /**
-   * Recalculates the LDA when a plane attempts to land over an obstacle
-   *
-   * Format: RLDA = Distance from Threshold - RESA - Strip End = xxx - xxx = xxx
-   * 
-   * @param logicalRunway The logical runway whose parameters are going to be recalculated
-   * @param thresholdDistance The distance of the obstacle from the closest threshold
-   */
+    /**
+     * Recalculates the LDA when a plane attempts to land over an obstacle
+     *
+     * Format: RLDA = LDA - Distance from Threshold - Strip End - Slope Calculation = xxx - xxx - xxx
+     * - xxx = xxx
+     *
+     * @param logicalRunway The logical runway whose parameters are going to be recalculated
+     * @param thresholdDistance The distance of the obstacle from the closest threshold
+     */
   private void landingOver(LogicalRunway logicalRunway, double thresholdDistance) {
-    double RLDA = thresholdDistance - RESA - StripEnd;
+      double RLDA = logicalRunway.getParameters().getLDA() - thresholdDistance - StripEnd
+              - (obstacle.getHeight() * 50);
 
-    logicalRunway.getRecalculatedParameters().setLDA(RLDA);
+      logicalRunway.getRecalculatedParameters().setLDA(RLDA);
 
-    String output = "RLDA = Distance from Threshold - RESA - Strip End";
-    output.concat("\n     = " + thresholdDistance + " - " + RESA + " - " + StripEnd);
-    output.concat("\n     = " + RLDA);
+      String output = "RLDA = Distance from Threshold - Strip End - Slope Calculation";
+      output.concat("\n     = " + logicalRunway.getParameters().getLDA() + " - " + StripEnd + " - ("
+              + obstacle.getHeight() + "*" + 50 + ")");
+      output.concat("\n     = " + RLDA);
 
-    outputMap.put(logicalRunway.getIdentifier() + "_LO", output);
+      outputMap.put(logicalRunway.getIdentifier() + "_LT", output);
+
   }
 
-  /**
-   * Recalculates the LDA when a plane attempts to land towards an obstacle
-   *
-   * Format: RLDA = LDA - Distance from Threshold - Strip End - Slope Calculation = xxx - xxx - xxx
-   * - xxx = xxx
-   * 
-   * @param logicalRunway The logical runway whose parameters are going to be recalculated
-   * @param thresholdDistance The distance of the obstacle from the closest threshold
-   */
+    /**
+     * Recalculates the LDA when a plane attempts to land towards an obstacle
+     *
+     * Format: RLDA = Distance from Threshold - RESA - Strip End = xxx - xxx = xxx
+     *
+     * @param logicalRunway The logical runway whose parameters are going to be recalculated
+     * @param thresholdDistance The distance of the obstacle from the closest threshold
+     */
   private void landingTowards(LogicalRunway logicalRunway, double thresholdDistance) {
-    double RLDA = logicalRunway.getParameters().getLDA() - thresholdDistance - StripEnd
-        - (obstacle.getHeight() * 50);
+      double RLDA = thresholdDistance - RESA - StripEnd;
 
-    logicalRunway.getRecalculatedParameters().setLDA(RLDA);
+      logicalRunway.getRecalculatedParameters().setLDA(RLDA);
 
-    String output = "RLDA = Distance from Threshold - Strip End - Slope Calculation";
-    output.concat("\n     = " + logicalRunway.getParameters().getLDA() + " - " + StripEnd + " - ("
-        + obstacle.getHeight() + "*" + 50 + ")");
-    output.concat("\n     = " + RLDA);
+      String output = "RLDA = Distance from Threshold - RESA - Strip End";
+      output.concat("\n     = " + thresholdDistance + " - " + RESA + " - " + StripEnd);
+      output.concat("\n     = " + RLDA);
 
-    outputMap.put(logicalRunway.getIdentifier() + "_LT", output);
+      outputMap.put(logicalRunway.getIdentifier() + "_LO", output);
   }
 
   /**

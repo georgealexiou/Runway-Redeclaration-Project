@@ -116,7 +116,7 @@ public class AppTest {
 
         // Creating the obstacle, runway and calculator.
         Obstacle obstacle1 = new Obstacle("TestObstacle1", "For testing", 0.0, 0.0, 15.0, 60.0,
-                                          150.0,3203.0);
+                        150.0, 3203.0);
         Runway runway1 = new Runway("TestRunway1");
         runway1.setObstacle(obstacle1);
         runway1.addRunway(logicalRunway1);

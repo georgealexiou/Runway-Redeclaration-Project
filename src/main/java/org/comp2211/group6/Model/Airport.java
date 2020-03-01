@@ -1,29 +1,39 @@
 package org.comp2211.group6.Model;
 
-import java.util.List;
-import java.util.ArrayList;
+import java.util.Set;
+import java.util.HashSet;
 
 public class Airport {
 
-  /**
-     Public Methods
-   */
-  public Airport(String name) {
-    this.name = name;
-  }
+    /**
+     * Private Properties
+     */
+    private final String name;
+    private Set<Runway> runways = new HashSet<Runway>();
 
-  public void addRunway(Runway runway) {}
-  public void removeRunway(Runway runway) {}
-  public List<Runway> getRunways() { return new ArrayList<Runway>(); }
+    /**
+     * Public Methods
+     */
+    public Airport(String name) {
+        this.name = name;
+    }
 
-  /**
-     Private Methods
-   */
+    public void addRunway(Runway runway) {
+        if (runway != null) {
+            runways.add(runway);
+        } else {
+            throw new IllegalArgumentException(
+                            "Error. Invalid runway to be added to airport, cannot be null.");
+        }
 
-  /**
-     Private Properties
-   */
-  private final String name;
-  private List<Runway> runways;
+    }
+
+    public void removeRunway(Runway runway) {
+        runways.remove(runway);
+    }
+
+    public Set<Runway> getRunways() {
+        return runways;
+    }
 
 }

@@ -1,35 +1,50 @@
 package org.comp2211.group6.Model;
 
-import java.util.List;
-import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
-import org.comp2211.group6.Model.LogicalRunway;
-import org.comp2211.group6.Model.Obstacle;
-
+/**
+ * A runway can have three logical runways at most, for example, 09L, 09C, 27R.
+ */
 public class Runway {
 
-  /**
-      Public Methods
-   */
-  public Runway(String name){
-    this.name = name;
-  }
+    /**
+     * Private Properties
+     */
+    private final String name;
+    private Set<LogicalRunway> logicalRunways = new HashSet<LogicalRunway>();
+    private Obstacle obstacle;
 
-  public Obstacle getObstacle() { return new Obstacle("", "", 0, 0, 0); }
-  public void setObstacle(Obstacle obstacle) {}
-  public void addRunway(LogicalRunway runway) {}
-  public List<LogicalRunway> getLogicalRunways() {return new ArrayList<LogicalRunway>();}
-  public LogicalRunway getLogicalRunway(int id) {return new LogicalRunway(0, 0, 'C', new RunwayParameters(0, 0, 0, 0));}
+    /**
+     * Public Methods
+     */
+    public Runway(String name) {
+        this.name = name;
+    }
 
-  /**
-      Private Methods
-   */
+    public Obstacle getObstacle() {
+        return obstacle;
+    }
 
-  /**
-      Private Properties
-   */
-  private final String name;
-  private List<LogicalRunway> logicalRunways;
-  private Obstacle obstacle;
+    public void setObstacle(Obstacle obstacle) {
+        this.obstacle = obstacle;
+    }
+
+    public void addRunway(LogicalRunway runway) throws Exception {
+        if (logicalRunways.size() < 3) {
+            logicalRunways.add(runway);
+        } else {
+            throw new Exception(
+                            "Error. Logical runway cannot be added to this runway, which can have three logical runways at most.");
+        }
+
+        if (runway == null)
+            throw new IllegalArgumentException(
+                            "Error. Invalid logical runway to be added to runway, cannot be null.");
+    }
+
+    public Set<LogicalRunway> getLogicalRunways() {
+        return logicalRunways;
+    }
 
 }

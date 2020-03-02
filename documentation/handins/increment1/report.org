@@ -1,0 +1,104 @@
+#+options: ':t *:t -:t ::t <:t H:5 \n:nil ^:t arch:headline author:t
+#+options: broken-links:nil c:nil creator:nil d:(not "LOGBOOK") date:t e:t
+#+options: email:nil f:t inline:t num:t p:nil pri:nil prop:nil stat:t tags:t
+#+options: tasks:t tex:t timestamp:t title:t toc:t todo:t |:t
+#+title: Increment 1 Report
+#+author: Jonathan Bartlett \\ George Alexiou \\ Odysseas Kalatzis \\ Manqi Dong \\ Liyu Su
+#+language: en
+#+select_tags: export
+#+exclude_tags: noexport
+#+latex_class: article
+#+subtitle: COMP2211 SEG - Group 6
+#+date: \today
+* Summary
+
+Our aims for this sprint were to achieve the backend functionality for the runway redeclaration tool.
+We hoped to achieve some TUI (Terminal User Interface) for this functionality in order to demonstrate the work done.
+In addition to this functionality we wanted to have a comprehensive suite of unit tests for the backend functionality that covered the provided scenarios.
+
+* Design Artifacts
+
+#+CAPTION: Class Diagram for the Backend Functionality
+#+LABEL: fig:class-diagram
+#+ATTR_LATEX: :placement [H]
+[[file:ClassDiagram.png]]
+
+#+CAPTION: Anotated Runway Diagram - used to help visualise the problem
+#+LABEL: fig:runway-diagram
+#+ATTR_LATEX: :placement [H]
+[[file:runwaydiagram.png]]
+
+** Storyboards and Scenarios
+
+We created some scenarios for this sprint to help guide the terminal user interface.
+These cover the functionality we intended to implement in this sprint:
+- Performing a calculation
+- Viewing a breakdown of calculations
+- Configuring an airport
+
+*** Terminal User Interface - Basic Recalculation
+Chris Wickens opens the terminal on his computer and types in the command ‘runwayredeclaration’.
+A prompt is displayed asking Chris to select a predefined airport to load or to add a new one.
+Chris selects a predefined airport.
+He is prompted to select the runway he wishes to perform redeclaration for.
+Chris selects the runway he wants to use.
+He is now asked for some values relating to the Obstacle such as its width and positions from the threshold of the runway.
+Chris enters these values for the obstacle.
+He is asked to confirm all of the input given.
+Chris confirms.
+The applications displays the recalculated values for each of the logical runways in his selected runway.
+*** Terminal User Interface - Showing a Breakdown
+Chris Wickens wants to see a breakdown of the calculations performed by the system, so he types ‘breakdown’ into the terminal.
+Chris is presented with a menu of all of the areas that could be broken down.
+Chris selects the area he wishes to see.
+Chris is presented with a formatted set of calculations used to achieve the results previously presented to him.
+*** Terminal User Interface - Adding a new Airport
+Hallie Reeves starts the applications by typing ‘runwayredeclaration’ into her terminal.
+A prompt is displayed asking Hallie to select a predefined airport to load or to add a new one.
+Hallie selects to add a new one and is prompted to give a name to the new airport.
+She enters a name and is then prompted to add a new Runway.
+She is asked for an identifier and the number of logical runways to be added.
+She enters the information.
+She is asked, for each logical runway, to provide the displaced threshold, heading, position and parameters.
+She is then prompted to add another Runway or finish.
+She selects to finish and perform calculations.
+
+* Design Choices
+** Model View Controller
+We elected to start with MVC from the beginning despite not implementing any graphics in this sprint.
+This meant that our code is packaged into ~Model~, ~View~ and ~Controller~ packages so it is clear how the elements of our application will interact and the purpose they serve.
+This design choice helped us to keep in mind the way future developments will interact with the backend.
+
+** Key Classes
+As shown in the class diagram in figure \ref{fig:class-diagram}, we have broken down and abstracted the airport into various classes.
+The main classes of interest are ~LogicalRunway~ and ~Calculator~ since these represent most of the data and data processing required in this sprint.
+
+* Testing
+#+CAPTION: Evidence of Testing from runnning 'mvn test' command
+#+LABEL: fig:testing-evidence
+#+ATTR_LATEX: :placement [H]
+[[file:testingevidence.png]]
+
+- *AppTest*: Tests the functionality of the calculator with the scenarios from the Heathrow Example
+- *LogicalRunwayTest*: A suite of tests to check the functionality of the logical runway methods
+- *BreakdownTest*: Checks the format of the breakdown of calculations
+- *AirportTest*: Checks the configuration of the airport
+- *RunwayParametersTest*: Checks the configuration of runway parameters (TORA,TODA,ASDA,LDA)
+- *RunwayTest*: Checks the configuration of a runway
+
+* Responses to Feedback
+** User Stories 
+Following the envisioning feedback sessions we updated our user stories to ensure that each one followed the INVEST critera.
+We also added each user story to a board on Trello in card format so that we could better monitor our progress and intentions for future sprints.
+
+** Trello Changes
+We separated our sprints and product backlog, which were previously in one board, so as to make it clearer what our intentions for the current sprint were.
+
+** Risk Assessment
+We added the following risks to the risk assessment:
+- Team disagreement
+- Technology stack isn't capable of meeting requirements
+- Time estimates are significantly out
+
+* Burndown Chart
+* Sprint 2 Plan

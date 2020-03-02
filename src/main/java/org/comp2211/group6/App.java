@@ -1,5 +1,7 @@
 package org.comp2211.group6;
 
+import org.comp2211.group6.Controller.TUI;
+
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -18,6 +20,11 @@ public class App extends Application {
         Scene scene = new Scene(new StackPane(l), 640, 480);
         primaryStage.setScene(scene);
         primaryStage.show();
+    }
+
+    public static void main(String[] args) {
+        TUI tui = new TUI();
+        tui.run();
     }
 
 }

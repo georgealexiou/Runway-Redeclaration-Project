@@ -30,17 +30,21 @@ public class Runway {
         this.obstacle = obstacle;
     }
 
-    public String getName() { return name; }
+    public String getName() {
+        return name;
+    }
 
     public void addRunway(LogicalRunway runway) throws Exception {
         if (logicalRunways.size() < 3)
             logicalRunways.add(runway);
         else
-            throw new Exception("Error. Logical runway cannot be added to this runway, which can have three logical runways at most.");
+            throw new Exception(
+                            "Error. Logical runway cannot be added to this runway, which can have three logical runways at most.");
 
 
         if (runway == null)
-            throw new IllegalArgumentException("Error. Invalid logical runway to be added to runway, cannot be null.");
+            throw new IllegalArgumentException(
+                            "Error. Invalid logical runway to be added to runway, cannot be null.");
     }
 
     public Set<LogicalRunway> getLogicalRunways() {

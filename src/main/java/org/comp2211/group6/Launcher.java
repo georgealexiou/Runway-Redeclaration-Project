@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Scanner;
 
-public class Launcher{
+public class Launcher {
 
     private static ArrayList<Airport> airports = new ArrayList<Airport>();
     private static Scanner sc = new Scanner(System.in);
@@ -18,7 +18,7 @@ public class Launcher{
     private static Airport airport;
     private static Runway runway;
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
 
         airports.add(new Airport("Demo Airport"));
         airports.get(0).addRunway(new Runway("Demo Runway"));
@@ -30,21 +30,21 @@ public class Launcher{
 
     }
 
-    private static void selectAirport(){
+    private static void selectAirport() {
         System.out.println("\nSelect an Airport or one of the other options");
         Iterator iter = airports.iterator();
         int i = 1;
 
-        while (iter.hasNext()){
+        while (iter.hasNext()) {
             Airport airport = (Airport) iter.next();
             System.out.println(i + ". " + airport.getName());
             i++;
         }
-        System.out.println(i + ". Create New Airport" );
-        System.out.println(i+1 + ". Quit\n" );
+        System.out.println(i + ". Create New Airport");
+        System.out.println(i + 1 + ". Quit\n");
 
         int selection = 0;
-        while (selection < 1 || selection > i+1) {
+        while (selection < 1 || selection > i + 1) {
             System.out.println("Input an integer");
             selection = sc.nextInt();
         }
@@ -54,7 +54,7 @@ public class Launcher{
             createAirport();
 
 
-        if (selection == i+1 ) {
+        if (selection == i + 1) {
             System.out.println("\nThe program will now quit.");
             System.exit(0);
         }
@@ -65,21 +65,22 @@ public class Launcher{
         }
     }
 
-    private static void selectRunway(){
-        System.out.println("\nSelect a runway for Airport \"" + airport.getName() + "\" or one of the other options");
+    private static void selectRunway() {
+        System.out.println("\nSelect a runway for Airport \"" + airport.getName()
+                        + "\" or one of the other options");
         Iterator iter = airport.getRunways().iterator();
         int i = 1;
 
-        while (iter.hasNext()){
+        while (iter.hasNext()) {
             Runway runway = (Runway) iter.next();
             System.out.println(i + ". " + runway.getName());
             i++;
         }
-        System.out.println(i + ". Create new Runway" );
-        System.out.println(i+1 + ". Select Different Airport\n" );
+        System.out.println(i + ". Create new Runway");
+        System.out.println(i + 1 + ". Select Different Airport\n");
 
         int selection = 0;
-        while (selection < 1 || selection > i+1) {
+        while (selection < 1 || selection > i + 1) {
             System.out.println("Input an integer");
             selection = sc.nextInt();
         }
@@ -87,13 +88,13 @@ public class Launcher{
         if (selection == i)
             createRunway();
 
-        if (selection == i+1)
+        if (selection == i + 1)
             selectAirport();
 
         iter = airport.getRunways().iterator();
-        for(i = 0; i < airport.getRunways().size(); i++){
+        for (i = 0; i < airport.getRunways().size(); i++) {
             Runway currentRunway = (Runway) iter.next();
-            if(i == selection - 1){
+            if (i == selection - 1) {
                 runway = currentRunway;
                 runwayMenu();
             }
@@ -101,12 +102,12 @@ public class Launcher{
 
     }
 
-    private static void runwayMenu(){
+    private static void runwayMenu() {
         System.out.println("\nRunway Menu");
         System.out.println("1. Display Logical Runways");
         System.out.println("2. Add Logical Runway");
 
-        if(runway.getLogicalRunways().size() != 3){
+        if (runway.getLogicalRunways().size() != 3) {
             System.out.println("3. Add logical runway");
         }
 
@@ -114,7 +115,7 @@ public class Launcher{
 
     }
 
-    private static void createAirport(){
+    private static void createAirport() {
         System.out.println("\nPlease input Airport Information");
         System.out.println("Name:");
         String name = sc.next();
@@ -123,7 +124,7 @@ public class Launcher{
         selectAirport();
     }
 
-    private static void createRunway(){
+    private static void createRunway() {
         System.out.println("Please input Airport Information");
         System.out.println("Name:");
         String name = sc.next();
@@ -131,8 +132,9 @@ public class Launcher{
         airport.addRunway(new Runway(name));
     }
 
-    private static void createObstacle(){
-        System.out.println("\nPlease input obstruction information for runway \"" + runway.getName() + "\"");
+    private static void createObstacle() {
+        System.out.println("\nPlease input obstruction information for runway \"" + runway.getName()
+                        + "\"");
         System.out.println("Name:");
         String name = sc.next();
 
@@ -171,11 +173,12 @@ public class Launcher{
         boolean confirm = false;
         System.out.println("\n Yes ('Y') or No ('N')");
 
-        while(selection.charAt(0) != 'Y' || selection.charAt(0) != 'N')
+        while (selection.charAt(0) != 'Y' || selection.charAt(0) != 'N')
             selection = sc.next();
 
-        if (selection.charAt(0) == 'Y'){
-            runway.setObstacle(new Obstacle(name,description,length,width,height,dcentreLine,dleftThreshold,drightThreshold));
+        if (selection.charAt(0) == 'Y') {
+            runway.setObstacle(new Obstacle(name, description, length, width, height, dcentreLine,
+                            dleftThreshold, drightThreshold));
         }
 
         else

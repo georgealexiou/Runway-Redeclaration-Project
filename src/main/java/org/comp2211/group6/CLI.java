@@ -271,7 +271,7 @@ public class CLI {
 
         if (selection.charAt(0) == 'Y') {
             try {
-                runway.addRunway(new LogicalRunway(heading, position, displacedThreshold, new RunwayParameters(TORA, TODA, ASDA, LDA)));
+                runway.addRunway(new LogicalRunway(heading, displacedThreshold, position, new RunwayParameters(TORA, TODA, ASDA, LDA)));
             }catch (Exception e){
                 System.out.println(e.getMessage());
             }
@@ -312,7 +312,7 @@ public class CLI {
     private void createAirport() {
         System.out.println("\nPlease input Airport Information");
         System.out.println("Name:");
-        String name = sc.next();
+        String name = sc.nextLine();
 
         airports.add(new Airport(name));
         selectAirport();
@@ -324,7 +324,7 @@ public class CLI {
     private void createRunway() {
         System.out.println("Please input Runway Information");
         System.out.println("Name:");
-        String name = sc.next();
+        String name = sc.nextLine();
 
         airport.addRunway(new Runway(name));
         selectRunway();
@@ -337,7 +337,7 @@ public class CLI {
         System.out.println("\nPlease input obstruction information for runway \"" + runway.getName()
                         + "\"");
         System.out.println("Name:");
-        String name = sc.next();
+        String name = sc.nextLine();
 
         System.out.println("Description:");
         String description = sc.next();

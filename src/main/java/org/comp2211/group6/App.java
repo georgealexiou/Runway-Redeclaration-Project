@@ -6,10 +6,10 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
-public class App extends Application { 
+public class App extends Application {  
 
-    /** Public Methods */
-    @Override
+    /** Public Methods */ 
+    @Override 
     public void start(Stage primaryStage) throws Exception {
         String javaVersion = System.getProperty("java.version");
         String javafxVersion = System.getProperty("javafx.version");

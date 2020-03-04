@@ -19,13 +19,11 @@ public class Airport {
     }
 
     public void addRunway(Runway runway) {
-        if (runway != null) {
+        if (runway != null)
             runways.add(runway);
-        } else {
+        else
             throw new IllegalArgumentException(
                             "Error. Invalid runway to be added to airport, cannot be null.");
-        }
-
     }
 
     public void removeRunway(Runway runway) {
@@ -36,4 +34,7 @@ public class Airport {
         return runways;
     }
 
+    public String getName() {
+        return name;
+    }
 }

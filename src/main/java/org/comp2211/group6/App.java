@@ -20,8 +20,9 @@ public class App extends Application {
         primaryStage.show();
     }
 
-    /** Main Method */
     public static void main(String[] args) {
-
+        CLI CLI = new CLI();
+        CLI.run();
     }
+
 }

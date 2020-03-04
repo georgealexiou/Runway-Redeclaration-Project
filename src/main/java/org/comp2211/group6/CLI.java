@@ -137,9 +137,10 @@ public class CLI {
         System.out.println("2. Add Logical Runway");
         System.out.println("3. Create obstacle");
         System.out.println("4. View Recalculated Values");
+        System.out.println("5. Select Different Runway");
 
         int selection = 0;
-        while (selection < 1 || selection > 4) {
+        while (selection < 1 || selection > 5) {
             System.out.println("Input an integer");
             selection = sc.nextInt();
         }
@@ -164,6 +165,10 @@ public class CLI {
                 recalculatedValues();
                 break;
 
+            case 5:
+                selectRunway();
+                break;
+
             default:
                 break;
         }
@@ -178,10 +183,39 @@ public class CLI {
         Calculator calculator = new Calculator(runway);
         calculator.recalculateRunwayParameters();
 
-        Map<String,String> reversedMap = new TreeMap<String,String>(calculator.getOutputMap());
-        for (Map.Entry entry : reversedMap.entrySet()) {
-            System.out.println(entry.getKey() + "\n" + entry.getValue() + "\n");
+        Iterator iter = runway.getLogicalRunways().iterator();
+
+        while(iter.hasNext()){
+            LogicalRunway lr = (LogicalRunway) iter.next();
+            System.out.println(lr.getIdentifier());
+            System.out.println("  TORA: " + lr.getParameters().getTORA() + " -> " + lr.getRecalculatedParameters().getTODA());
+            System.out.println("  TODA: " + lr.getParameters().getTODA() + " -> " + lr.getRecalculatedParameters().getTODA());
+            System.out.println("  ASDA: " + lr.getParameters().getASDA() + " -> " + lr.getRecalculatedParameters().getASDA());
+            System.out.println("  LDA: " + lr.getParameters().getLDA() + " -> " + lr.getRecalculatedParameters().getLDA());
+            System.out.println("");
         }
+
+        System.out.println("Do you want to see a breakdown of the calculations?");
+
+        String selection = "hahaha";
+        while (selection.charAt(0) != 'Y' && selection.charAt(0) != 'N') {
+            System.out.println("\nYes ('Y') or No ('N')");
+            selection = sc.next();
+        }
+
+        switch (selection.charAt(0)){
+            case 'Y':
+                //print stuff
+                break;
+
+            case 'N':
+                break;
+
+            default:
+                break;
+        }
+
+        runwayMenu();
     }
 
     /**
@@ -221,7 +255,7 @@ public class CLI {
         String selection = "temp";
 
         while (selection.charAt(0) != 'Y' && selection.charAt(0) != 'N') {
-            System.out.println("\n Yes ('Y') or No ('N')");
+            System.out.println("\nYes ('Y') or No ('N')");
             selection = sc.next();
         }
 
@@ -232,9 +266,6 @@ public class CLI {
                 System.out.println(e.getMessage());
             }
         }
-
-        else
-            createObstacle();
 
         runwayMenu();
     }

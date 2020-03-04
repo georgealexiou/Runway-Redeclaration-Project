@@ -191,7 +191,7 @@ public class CLI {
         while(iter.hasNext()){
             LogicalRunway lr = (LogicalRunway) iter.next();
             System.out.println(lr.getIdentifier());
-            System.out.println("  TORA: " + lr.getParameters().getTORA() + " -> " + lr.getRecalculatedParameters().getTODA());
+            System.out.println("  TORA: " + lr.getParameters().getTORA() + " -> " + lr.getRecalculatedParameters().getTORA());
             System.out.println("  TODA: " + lr.getParameters().getTODA() + " -> " + lr.getRecalculatedParameters().getTODA());
             System.out.println("  ASDA: " + lr.getParameters().getASDA() + " -> " + lr.getRecalculatedParameters().getASDA());
             System.out.println("  LDA: " + lr.getParameters().getLDA() + " -> " + lr.getRecalculatedParameters().getLDA());

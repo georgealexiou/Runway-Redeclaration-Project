@@ -11,7 +11,7 @@ public class CLI {
     private ArrayList<Airport> airports = new ArrayList<Airport>();
     private Scanner sc = new Scanner(System.in);
 
-    //current airport and runway that the simulation uses
+    // current airport and runway that the simulation uses
     private Airport airport;
     private Runway runway;
 
@@ -29,7 +29,8 @@ public class CLI {
             RunwayParameters runwayParameters2 = new RunwayParameters(3884, 3962, 3884, 3884);
             LogicalRunway logicalRunway2 = new LogicalRunway(27, 0, 'R', runwayParameters2);
 
-            Obstacle obstacle = new Obstacle("TestObstacle1", "For testing", 0.0, 0.0, 12.0, 0.0, -50.0, 3646.0);
+            Obstacle obstacle = new Obstacle("TestObstacle1", "For testing", 0.0, 0.0, 12.0, 0.0,
+                            -50.0, 3646.0);
 
             Runway runway1 = new Runway("Demo Runway");
             runway1.addRunway(logicalRunway1);
@@ -44,7 +45,7 @@ public class CLI {
 
             selectAirport();
 
-        } catch(Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
@@ -93,7 +94,8 @@ public class CLI {
      * Menu for the user to select a runway or create a new one
      */
     private void selectRunway() {
-        System.out.println("\nSelect a runway for Airport \"" + airport.getName() + "\" or one of the other options");
+        System.out.println("\nSelect a runway for Airport \"" + airport.getName()
+                        + "\" or one of the other options");
         Iterator<Runway> iter = airport.getRunways().iterator();
         int i = 1;
 
@@ -131,8 +133,7 @@ public class CLI {
     /**
      * Method that displays everything that can be done within a runway
      *
-     * ex. View Recalculated parameters
-     *     Add new logical runway etc.
+     * ex. View Recalculated parameters Add new logical runway etc.
      */
     private void runwayMenu() {
         System.out.println("\nRunway Menu");
@@ -179,22 +180,26 @@ public class CLI {
     }
 
     /**
-     * Prints all recalculated Values and asks if the user wants to see a breakdown
-     * Prints breakdown if the user aswers YES
+     * Prints all recalculated Values and asks if the user wants to see a breakdown Prints breakdown
+     * if the user aswers YES
      */
-    private void recalculatedValues(){
+    private void recalculatedValues() {
         Calculator calculator = new Calculator(runway);
         calculator.recalculateRunwayParameters();
 
         Iterator iter = runway.getLogicalRunways().iterator();
 
-        while(iter.hasNext()){
+        while (iter.hasNext()) {
             LogicalRunway lr = (LogicalRunway) iter.next();
             System.out.println(lr.getIdentifier());
-            System.out.println("  TORA: " + lr.getParameters().getTORA() + " -> " + lr.getRecalculatedParameters().getTORA());
-            System.out.println("  TODA: " + lr.getParameters().getTODA() + " -> " + lr.getRecalculatedParameters().getTODA());
-            System.out.println("  ASDA: " + lr.getParameters().getASDA() + " -> " + lr.getRecalculatedParameters().getASDA());
-            System.out.println("  LDA: " + lr.getParameters().getLDA() + " -> " + lr.getRecalculatedParameters().getLDA());
+            System.out.println("  TORA: " + lr.getParameters().getTORA() + " -> "
+                            + lr.getRecalculatedParameters().getTORA());
+            System.out.println("  TODA: " + lr.getParameters().getTODA() + " -> "
+                            + lr.getRecalculatedParameters().getTODA());
+            System.out.println("  ASDA: " + lr.getParameters().getASDA() + " -> "
+                            + lr.getRecalculatedParameters().getASDA());
+            System.out.println("  LDA: " + lr.getParameters().getLDA() + " -> "
+                            + lr.getRecalculatedParameters().getLDA());
             System.out.println("");
         }
 
@@ -206,12 +211,12 @@ public class CLI {
             selection = sc.next();
         }
 
-        switch (selection.charAt(0)){
+        switch (selection.charAt(0)) {
             case 'Y':
                 ArrayList<String> breakdowns = calculator.getLogicalRunwayBreakDown();
                 Iterator iter1 = breakdowns.iterator();
 
-                while(iter1.hasNext()){
+                while (iter1.hasNext()) {
                     String output = (String) iter1.next();
                     System.out.println(output);
                     System.out.println("");
@@ -231,8 +236,9 @@ public class CLI {
     /**
      * Method that prompts the user to add a new logical runway
      */
-    private void addLogicalRunway(){
-        System.out.println("\nPlease input logcal runway information for runway \"" + runway.getName() + "\"");
+    private void addLogicalRunway() {
+        System.out.println("\nPlease input logcal runway information for runway \""
+                        + runway.getName() + "\"");
         System.out.println("Heading: (1-36)");
         int heading = sc.nextInt();
 
@@ -271,8 +277,9 @@ public class CLI {
 
         if (selection.charAt(0) == 'Y') {
             try {
-                runway.addRunway(new LogicalRunway(heading, displacedThreshold, position, new RunwayParameters(TORA, TODA, ASDA, LDA)));
-            }catch (Exception e){
+                runway.addRunway(new LogicalRunway(heading, displacedThreshold, position,
+                                new RunwayParameters(TORA, TODA, ASDA, LDA)));
+            } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
         }
@@ -283,16 +290,16 @@ public class CLI {
     /**
      * Method that displays all the runway parameters of each logical runway
      */
-    private void displayLogicalRunways(){
+    private void displayLogicalRunways() {
         System.out.println("Logical Runways for runway " + runway.getName());
 
-        if(runway.getLogicalRunways().size() == 0)
+        if (runway.getLogicalRunways().size() == 0)
             System.out.println("No logical runways");
 
-        else{
+        else {
             Iterator iter = runway.getLogicalRunways().iterator();
             int i = 1;
-            while(iter.hasNext()){
+            while (iter.hasNext()) {
                 LogicalRunway logicalRunway = (LogicalRunway) iter.next();
                 System.out.println(i + ". " + logicalRunway.getIdentifier());
                 System.out.println("   TORA:" + logicalRunway.getParameters().getTORA());
@@ -377,7 +384,7 @@ public class CLI {
         String selection = "temp";
 
 
-        while (selection.charAt(0) != 'Y' && selection.charAt(0) != 'N'){
+        while (selection.charAt(0) != 'Y' && selection.charAt(0) != 'N') {
             System.out.println("\n Yes ('Y') or No ('N')");
             selection = sc.next();
         }

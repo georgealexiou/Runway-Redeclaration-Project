@@ -161,7 +161,7 @@ public class AppTest {
 
         // Creating the obstacle, runway and calculator.
         Obstacle obstacle1 = new Obstacle("TestObstacle1", "For testing", 0.0, 0.0, 20.0, 20.0,
-                3546.0, 50.0);
+                        3546.0, 50.0);
         Runway runway1 = new Runway("TestRunway1");
         runway1.setObstacle(obstacle1);
         runway1.addRunway(logicalRunway1);
@@ -207,7 +207,7 @@ public class AppTest {
 
         // Creating the obstacle, runway and calculator.
         Obstacle obstacle1 = new Obstacle("TestObstacle1", "For testing", 0.0, 0.0, 20.0, 80.0,
-                3546.0, 50.0);
+                        3546.0, 50.0);
         Runway runway1 = new Runway("TestRunway1");
         runway1.setObstacle(obstacle1);
         runway1.addRunway(logicalRunway1);
@@ -253,7 +253,7 @@ public class AppTest {
 
         // Creating the obstacle, runway and calculator.
         Obstacle obstacle1 = new Obstacle("TestObstacle1", "For testing", 0.0, 0.0, 20.0, -80.0,
-                3546.0, 50.0);
+                        3546.0, 50.0);
         Runway runway1 = new Runway("TestRunway1");
         runway1.setObstacle(obstacle1);
         runway1.addRunway(logicalRunway1);
@@ -299,7 +299,7 @@ public class AppTest {
 
         // Creating the obstacle, runway and calculator.
         Obstacle obstacle1 = new Obstacle("TestObstacle1", "For testing", 0.0, 0.0, 20.0, 20.0,
-                3546.0, -70.0);
+                        3546.0, -70.0);
         Runway runway1 = new Runway("TestRunway1");
         runway1.setObstacle(obstacle1);
         runway1.addRunway(logicalRunway1);
@@ -345,7 +345,7 @@ public class AppTest {
 
         // Creating the obstacle, runway and calculator.
         Obstacle obstacle1 = new Obstacle("TestObstacle1", "For testing", 0.0, 0.0, 20.0, 20.0,
-                -70.0, 3546.0);
+                        -70.0, 3546.0);
         Runway runway1 = new Runway("TestRunway1");
         runway1.setObstacle(obstacle1);
         runway1.addRunway(logicalRunway1);
@@ -391,7 +391,7 @@ public class AppTest {
 
         // Creating the obstacle, runway and calculator.
         Obstacle obstacle1 = new Obstacle("TestObstacle1", "For testing", 0.0, 0.0, 12.0, 0.0,
-                -50.0, 3646.0);
+                        -50.0, 3646.0);
         Runway runway1 = new Runway("TestRunway1");
         runway1.setObstacle(obstacle1);
         runway1.addRunway(logicalRunway1);
@@ -405,27 +405,26 @@ public class AppTest {
         System.out.println("Breakdown of 09L (Take Off Away, Landing Over)");
         // Checking Landing Over for 09L.
         assertEquals("09L_LO",
-                "RLDA=LDA-DistancefromThreshold-StripEnd-SlopeCalculation=3595.0-60.0-(12.0*50)=2985.0",
-                calculatorTest1.getBreakDown("09L_LO").replaceAll("\\s+",""));
+                        "RLDA=LDA-DistancefromThreshold-StripEnd-SlopeCalculation=3595.0-60.0-(12.0*50)=2985.0",
+                        calculatorTest1.getBreakDown("09L_LO").replaceAll("\\s+", ""));
 
         // Checking Take Away for 09L.
         assertEquals("09L_TA",
-                "RTORA=TORA-BlastProtection-DistancefromThreshold-DisplacedThreshold=" +
-                        "3902.0-300.0--50.0-306.0=3346.0RASDA=RTORA+STOPWAY=3346.0+0.0RTODA=RTORA+CLEARWAY=3346.0+0.0",
-                calculatorTest1.getBreakDown("09L_TA").replaceAll("\\s+",""));
+                        "RTORA=TORA-BlastProtection-DistancefromThreshold-DisplacedThreshold="
+                                        + "3902.0-300.0--50.0-306.0=3346.0RASDA=RTORA+STOPWAY=3346.0+0.0RTODA=RTORA+CLEARWAY=3346.0+0.0",
+                        calculatorTest1.getBreakDown("09L_TA").replaceAll("\\s+", ""));
 
         System.out.println("Breakdown of 27R (Take Off Towards, Landing Towards)");
 
         // Checking Take Off Towards for 27R.
         assertEquals("27R_TT",
-                "RTORA=DistancefromThreshold+DisplacedThreshold-SlopeCalculation-StripEnd" +
-                        "=3646.0+0.0-(12.0*50)-60.0=2986.0RASDA=RTORA=2986.0RTODA=RTORA=2986.0",
-                calculatorTest1.getBreakDown("27R_TT").replaceAll("\\s+",""));
+                        "RTORA=DistancefromThreshold+DisplacedThreshold-SlopeCalculation-StripEnd"
+                                        + "=3646.0+0.0-(12.0*50)-60.0=2986.0RASDA=RTORA=2986.0RTODA=RTORA=2986.0",
+                        calculatorTest1.getBreakDown("27R_TT").replaceAll("\\s+", ""));
 
         // Checking Landing Towards for 27R.
-        assertEquals("27R_LT",
-                "RLDA=DistancefromThreshold-RESA-StripEnd=3646.0-240.0-60.0=3346.0",
-                calculatorTest1.getBreakDown("27R_LT").replaceAll("\\s+",""));
+        assertEquals("27R_LT", "RLDA=DistancefromThreshold-RESA-StripEnd=3646.0-240.0-60.0=3346.0",
+                        calculatorTest1.getBreakDown("27R_LT").replaceAll("\\s+", ""));
 
     }
 }

@@ -12,7 +12,7 @@ Develop: [![Develop Build Status](https://travis-ci.com/georgealexiou/Software-E
 
 ```bash
 mvn clean javafx:jlink
-target/runwayredeclaration/bin/launcher
+target/runwayredeclaration/bin/launcher 
 ```
 
 ## Running the Application

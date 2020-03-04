@@ -3,7 +3,7 @@ package org.comp2211.group6.Model;
 import java.util.Set;
 import java.util.HashSet;
 
-public class Airport { 
+public class Airport {
 
     /**
      * Private Properties

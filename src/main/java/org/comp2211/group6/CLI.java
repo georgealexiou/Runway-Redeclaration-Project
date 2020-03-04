@@ -312,7 +312,9 @@ public class CLI {
     private void createAirport() {
         System.out.println("\nPlease input Airport Information");
         System.out.println("Name:");
-        String name = sc.nextLine();
+        String name = sc.next();
+        name += sc.nextLine();
+
 
         airports.add(new Airport(name));
         selectAirport();
@@ -324,7 +326,8 @@ public class CLI {
     private void createRunway() {
         System.out.println("Please input Runway Information");
         System.out.println("Name:");
-        String name = sc.nextLine();
+        String name = sc.next();
+        name += sc.nextLine();
 
         airport.addRunway(new Runway(name));
         selectRunway();
@@ -337,7 +340,8 @@ public class CLI {
         System.out.println("\nPlease input obstruction information for runway \"" + runway.getName()
                         + "\"");
         System.out.println("Name:");
-        String name = sc.nextLine();
+        String name = sc.next();
+        name += sc.nextLine();
 
         System.out.println("Description:");
         String description = sc.next();

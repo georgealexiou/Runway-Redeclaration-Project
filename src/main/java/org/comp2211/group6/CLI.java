@@ -249,10 +249,10 @@ public class CLI {
             while(iter.hasNext()){
                 LogicalRunway logicalRunway = (LogicalRunway) iter.next();
                 System.out.println(i + ". " + logicalRunway.getIdentifier());
-                System.out.println("   TORA:" + logicalRunway.getRecalculatedParameters().getTORA());
-                System.out.println("   TODA:" + logicalRunway.getRecalculatedParameters().getTODA());
-                System.out.println("   ASDA:" + logicalRunway.getRecalculatedParameters().getASDA());
-                System.out.println("   LDA:" + logicalRunway.getRecalculatedParameters().getLDA());
+                System.out.println("   TORA:" + logicalRunway.getParameters().getTORA());
+                System.out.println("   TODA:" + logicalRunway.getParameters().getTODA());
+                System.out.println("   ASDA:" + logicalRunway.getParameters().getASDA());
+                System.out.println("   LDA:" + logicalRunway.getParameters().getLDA());
                 i++;
             }
         }

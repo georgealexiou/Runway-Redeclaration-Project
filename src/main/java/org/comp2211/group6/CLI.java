@@ -21,6 +21,8 @@ public class CLI {
     public void run() {
         try {
 
+            String selection = "temp";
+
             RunwayParameters runwayParameters1 = new RunwayParameters(3902, 3902, 3902, 3595);
             LogicalRunway logicalRunway1 = new LogicalRunway(9, 306, 'L', runwayParameters1);
 
@@ -218,9 +220,10 @@ public class CLI {
 
         String selection = "temp";
 
-        while (selection.charAt(0) != 'Y' || selection.charAt(0) != 'N')
+        while (selection.charAt(0) != 'Y' && selection.charAt(0) != 'N') {
             System.out.println("\n Yes ('Y') or No ('N')");
             selection = sc.next();
+        }
 
         if (selection.charAt(0) == 'Y') {
             try {
@@ -274,7 +277,7 @@ public class CLI {
      * Method used to create a runway
      */
     private void createRunway() {
-        System.out.println("Please input Airport Information");
+        System.out.println("Please input Runway Information");
         System.out.println("Name:");
         String name = sc.next();
 
@@ -322,11 +325,13 @@ public class CLI {
         System.out.println("Distance from right threshold: " + drightThreshold);
 
         String selection = "temp";
-        boolean confirm = false;
-        System.out.println("\n Yes ('Y') or No ('N')");
 
-        while (selection.charAt(0) != 'Y' || selection.charAt(0) != 'N')
+
+        while (selection.charAt(0) != 'Y' && selection.charAt(0) != 'N'){
+            System.out.println("\n Yes ('Y') or No ('N')");
             selection = sc.next();
+        }
+
 
         if (selection.charAt(0) == 'Y') {
             runway.setObstacle(new Obstacle(name, description, length, width, height, dcentreLine,

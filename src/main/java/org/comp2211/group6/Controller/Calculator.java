@@ -35,6 +35,8 @@ public class Calculator {
         this.obstacle = runway.getObstacle();
     }
 
+    public HashMap<String, String> getOutputMap() { return outputMap; }
+
     /**
      * Recalculates the runway parameters for the attached runway
      */

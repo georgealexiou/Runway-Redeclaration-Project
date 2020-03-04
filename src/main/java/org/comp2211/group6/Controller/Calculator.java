@@ -38,25 +38,27 @@ public class Calculator {
         this.obstacle = runway.getObstacle();
     }
 
-    public HashMap<String, String> getOutputMap() { return outputMap; }
+    public HashMap<String, String> getOutputMap() {
+        return outputMap;
+    }
 
     /**
      * Returns the breakdown of a specific calculation as specified by the key.
      */
-    public String getBreakDown(String key){
+    public String getBreakDown(String key) {
         return outputMap.get(key);
     }
 
     /**
      * Returns an arraylist of all the calculation breakdowns
      */
-    public ArrayList<String> getLogicalRunwayBreakDown(){
+    public ArrayList<String> getLogicalRunwayBreakDown() {
         ArrayList<String> outputs = new ArrayList<>();
-        HashMap<String,String> temp = outputMap;
+        HashMap<String, String> temp = outputMap;
         Iterator iter = temp.entrySet().iterator();
 
         while (iter.hasNext()) {
-            Map.Entry pair = (Map.Entry)iter.next();
+            Map.Entry pair = (Map.Entry) iter.next();
 
             outputs.add(pair.getKey() + "\n" + pair.getValue());
             iter.remove(); // avoids a ConcurrentModificationException
@@ -71,20 +73,26 @@ public class Calculator {
     public void recalculateRunwayParameters() {
         Iterator<LogicalRunway> iterator = runway.getLogicalRunways().iterator();
 
-        /** EDGE CASES:
-         *  Absolute distance from centreline must be equal or less than 75, the CentreLine value.
-         *  Distance from either the left or right threshold cannot be less than -60, the negative of the StripEnd.
+        /**
+         * EDGE CASES: Absolute distance from centreline must be equal or less than 75, the
+         * CentreLine value. Distance from either the left or right threshold cannot be less than
+         * -60, the negative of the StripEnd.
          */
-        if (obstacle.getDistanceFromLeft() < -StripEnd || obstacle.getDistanceFromRight() < -StripEnd ||
-                Math.abs(obstacle.distanceToCentreLine) > CentreLine){
+        if (obstacle.getDistanceFromLeft() < -StripEnd
+                        || obstacle.getDistanceFromRight() < -StripEnd
+                        || Math.abs(obstacle.distanceToCentreLine) > CentreLine) {
             while (iterator.hasNext()) {
                 LogicalRunway logicalRunway = iterator.next();
-                logicalRunway.getRecalculatedParameters().setTORA(logicalRunway.getParameters().getTORA());
-                logicalRunway.getRecalculatedParameters().setTODA(logicalRunway.getParameters().getTODA());
-                logicalRunway.getRecalculatedParameters().setASDA(logicalRunway.getParameters().getASDA());
-                logicalRunway.getRecalculatedParameters().setLDA(logicalRunway.getParameters().getLDA());
+                logicalRunway.getRecalculatedParameters()
+                                .setTORA(logicalRunway.getParameters().getTORA());
+                logicalRunway.getRecalculatedParameters()
+                                .setTODA(logicalRunway.getParameters().getTODA());
+                logicalRunway.getRecalculatedParameters()
+                                .setASDA(logicalRunway.getParameters().getASDA());
+                logicalRunway.getRecalculatedParameters()
+                                .setLDA(logicalRunway.getParameters().getLDA());
             }
-            return ;
+            return;
         }
 
         while (iterator.hasNext()) {
@@ -137,8 +145,8 @@ public class Calculator {
         logicalRunway.getRecalculatedParameters().setLDA(RLDA);
 
         String output = "RLDA = LDA - Distance from Threshold - Strip End - Slope Calculation";
-        output = output.concat("\n     = " + logicalRunway.getParameters().getLDA() + " - " + StripEnd
-                                + " - (" + obstacle.getHeight() + "*" + 50 + ")");
+        output = output.concat("\n     = " + logicalRunway.getParameters().getLDA() + " - "
+                        + StripEnd + " - (" + obstacle.getHeight() + "*" + 50 + ")");
         output = output.concat("\n     = " + RLDA);
 
         outputMap.put(logicalRunway.getIdentifier() + "_LO", output);
@@ -191,9 +199,9 @@ public class Calculator {
         logicalRunway.getRecalculatedParameters().setTODA(RTODA);
 
         String output = "RTORA = TORA - Blast Protection - Distance from Threshold - Displaced Threshold";
-        output = output.concat("\n      = " + logicalRunway.getParameters().getTORA() + " - " + BlastDistance
-                                + " - " + thresholdDistance + " - "
-                                + logicalRunway.getDisplacedThreshold());
+        output = output.concat("\n      = " + logicalRunway.getParameters().getTORA() + " - "
+                        + BlastDistance + " - " + thresholdDistance + " - "
+                        + logicalRunway.getDisplacedThreshold());
         output = output.concat("\n      = " + RTORA + "\n");
 
         output = output.concat("RASDA = RTORA + STOPWAY");
@@ -225,8 +233,8 @@ public class Calculator {
 
         String output = "RTORA = Distance from Threshold + Displaced Threshold - Slope Calculation - Strip End";
         output = output.concat("\n      = " + thresholdDistance + " + "
-                                + logicalRunway.getDisplacedThreshold() + " - (" + obstacle.getHeight()
-                                + "*" + 50 + ")" + " - " + StripEnd);
+                        + logicalRunway.getDisplacedThreshold() + " - (" + obstacle.getHeight()
+                        + "*" + 50 + ")" + " - " + StripEnd);
         output = output.concat("\n      = " + RTORA + "\n");
 
         output = output.concat("RASDA = RTORA");

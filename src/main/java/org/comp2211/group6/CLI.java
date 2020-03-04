@@ -235,6 +235,8 @@ public class CLI {
 
         else
             createObstacle();
+
+        runwayMenu();
     }
 
     /**
@@ -259,6 +261,8 @@ public class CLI {
                 i++;
             }
         }
+
+        runwayMenu();
     }
 
     /**
@@ -282,6 +286,7 @@ public class CLI {
         String name = sc.next();
 
         airport.addRunway(new Runway(name));
+        selectRunway();
     }
 
     /**
@@ -340,5 +345,7 @@ public class CLI {
 
         else
             createObstacle();
+
+        runwayMenu();
     }
 }

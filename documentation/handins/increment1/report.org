@@ -73,15 +73,35 @@ This design choice helped us to keep in mind the way future developments will in
 As shown in the class diagram in figure \ref{fig:class-diagram}, we have broken down and abstracted the airport into various classes.
 The main classes of interest are ~LogicalRunway~ and ~Calculator~ since these represent most of the data and data processing required in this sprint.
 
+\newpage
 * Testing
 #+CAPTION: Evidence of Testing from runnning 'mvn test' command
 #+LABEL: fig:testing-evidence
-#+ATTR_LATEX: :placement [H]
-[[file:testingevidence.png]]
+#+begin_src java
+-------------------------------------------------------
+ T E S T S
+-------------------------------------------------------
+Running org.comp2211.group6.AppTest
+Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.087 sec
+Running org.comp2211.group6.BreakdownTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 sec
+Running org.comp2211.group6.LogicalRunwayTest
+Tests run: 52, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.167 sec
+Running org.comp2211.group6.AirportTest
+Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.007 sec
+Running org.comp2211.group6.RunwayParametersTest
+Tests run: 39, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.023 sec
+Running org.comp2211.group6.RunwayTest
+Tests run: 20, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.01 sec
 
-- *AppTest*: Tests the functionality of the calculator with the scenarios from the Heathrow Example
+Results :
+
+Tests run: 126, Failures: 0, Errors: 0, Skipped: 0
+#+end_src
+
+
+- *AppTest*: Tests the functionality of the calculator with the scenarios from the Heathrow Example and also breakdown format
 - *LogicalRunwayTest*: A suite of tests to check the functionality of the logical runway methods
-- *BreakdownTest*: Checks the format of the breakdown of calculations
 - *AirportTest*: Checks the configuration of the airport
 - *RunwayParametersTest*: Checks the configuration of runway parameters (TORA,TODA,ASDA,LDA)
 - *RunwayTest*: Checks the configuration of a runway
@@ -101,4 +121,16 @@ We added the following risks to the risk assessment:
 - Time estimates are significantly out
 
 * Burndown Chart
+#+CAPTION: Sprint 1 Burndown Chart
+#+LABEL: fig:burndownchart
+#+ATTR_LATEX: :placement [H]
+[[file:burndownchart.png]]
 * Sprint 2 Plan
+#+CAPTION: Sprint 2 Day Zero Burndown Chart
+#+LABEL: fig:dayzero-burndown
+#+ATTR_LATEX: :placement [H]
+[[file:dayzeroburndownchart.png]]
+#+CAPTION: Sprint 2 Task List
+#+LABEL: fig:tasks
+#+ATTR_LATEX: :placement [H]
+[[file:tasks.png]]

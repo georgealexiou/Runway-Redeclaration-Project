@@ -240,7 +240,7 @@ public class CLI {
         char position = sc.next().charAt(0);
 
         System.out.println("Displaced Threshold:");
-        char displacedThreshold = sc.next().charAt(0);
+        double displacedThreshold = sc.nextDouble();
 
         System.out.println("TORA (double):");
         double TODA = sc.nextDouble();

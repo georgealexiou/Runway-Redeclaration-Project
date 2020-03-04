@@ -11,9 +11,13 @@ public class CLI {
     private ArrayList<Airport> airports = new ArrayList<Airport>();
     private Scanner sc = new Scanner(System.in);
 
+    //current airport and runway that the simulation uses
     private Airport airport;
     private Runway runway;
 
+    /**
+     * Creates the appropreate demo objects and runs the main menu
+     */
     public void run() {
         try {
 
@@ -41,6 +45,10 @@ public class CLI {
     }
 
 
+    /**
+     * Menu for the user to choose an airport or create a new one
+     *
+     */
     private void selectAirport() {
         System.out.println("\nSelect an Airport or one of the other options");
         Iterator<Airport> iter = airports.iterator();
@@ -76,9 +84,11 @@ public class CLI {
         }
     }
 
+    /**
+     * Menu for the user to select a runway or create a new one
+     */
     private void selectRunway() {
-        System.out.println("\nSelect a runway for Airport \"" + airport.getName()
-                        + "\" or one of the other options");
+        System.out.println("\nSelect a runway for Airport \"" + airport.getName() + "\" or one of the other options");
         Iterator<Runway> iter = airport.getRunways().iterator();
         int i = 1;
 
@@ -113,6 +123,12 @@ public class CLI {
 
     }
 
+    /**
+     * Method that displays everything that can be done within a runway
+     *
+     * ex. View Recalculated parameters
+     *     Add new logical runway etc.
+     */
     private void runwayMenu() {
         System.out.println("\nRunway Menu");
         System.out.println("1. Display Logical Runways");
@@ -152,6 +168,10 @@ public class CLI {
 
     }
 
+    /**
+     * Prints all recalculated Values and asks if the user wants to see a breakdown
+     * Prints breakdown if the user aswers YES
+     */
     private void recalculatedValues(){
         Calculator calculator = new Calculator(runway);
         calculator.recalculateRunwayParameters();
@@ -162,6 +182,9 @@ public class CLI {
         }
     }
 
+    /**
+     * Method that prompts the user to add a new logical runway
+     */
     private void addLogicalRunway(){
         System.out.println("\nPlease input logcal runway information for runway \"" + runway.getName() + "\"");
         System.out.println("Heading: (1-36)");
@@ -211,6 +234,9 @@ public class CLI {
             createObstacle();
     }
 
+    /**
+     * Method that displays all the runway parameters of each logical runway
+     */
     private void displayLogicalRunways(){
         System.out.println("Logical Runways for runway " + runway.getName());
 
@@ -232,6 +258,9 @@ public class CLI {
         }
     }
 
+    /**
+     * Method used to create an airport
+     */
     private void createAirport() {
         System.out.println("\nPlease input Airport Information");
         System.out.println("Name:");
@@ -241,6 +270,9 @@ public class CLI {
         selectAirport();
     }
 
+    /**
+     * Method used to create a runway
+     */
     private void createRunway() {
         System.out.println("Please input Airport Information");
         System.out.println("Name:");
@@ -249,6 +281,9 @@ public class CLI {
         airport.addRunway(new Runway(name));
     }
 
+    /**
+     * Method used to create ab obstacle
+     */
     private void createObstacle() {
         System.out.println("\nPlease input obstruction information for runway \"" + runway.getName()
                         + "\"");

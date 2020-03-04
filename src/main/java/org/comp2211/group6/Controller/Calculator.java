@@ -1,7 +1,10 @@
 package org.comp2211.group6.Controller;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import org.comp2211.group6.Model.LogicalRunway;
 import org.comp2211.group6.Model.Obstacle;
@@ -43,6 +46,25 @@ public class Calculator {
     public String getBreakDown(String key){
         return outputMap.get(key);
     }
+
+    /**
+     * Returns an arraylist of all the calculation breakdowns
+     */
+    public ArrayList<String> getLogicalRunwayBreakDown(){
+        ArrayList<String> outputs = new ArrayList<>();
+        HashMap<String,String> temp = outputMap;
+        Iterator iter = temp.entrySet().iterator();
+
+        while (iter.hasNext()) {
+            Map.Entry pair = (Map.Entry)iter.next();
+
+            outputs.add(pair.getKey() + "\n" + pair.getValue());
+            iter.remove(); // avoids a ConcurrentModificationException
+        }
+
+        return outputs;
+    }
+
     /**
      * Recalculates the runway parameters for the attached runway
      */

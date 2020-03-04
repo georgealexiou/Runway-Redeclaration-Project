@@ -29,9 +29,12 @@ public class CLI {
             RunwayParameters runwayParameters2 = new RunwayParameters(3884, 3962, 3884, 3884);
             LogicalRunway logicalRunway2 = new LogicalRunway(27, 0, 'R', runwayParameters2);
 
+            Obstacle obstacle = new Obstacle("TestObstacle1", "For testing", 0.0, 0.0, 12.0, 0.0, -50.0, 3646.0);
+
             Runway runway1 = new Runway("Demo Runway");
             runway1.addRunway(logicalRunway1);
             runway1.addRunway(logicalRunway2);
+            runway1.setObstacle(obstacle);
 
             airports.add(new Airport("Demo Airport"));
             airports.get(0).addRunway(runway1);
@@ -95,8 +98,8 @@ public class CLI {
         int i = 1;
 
         while (iter.hasNext()) {
-            Runway runway = (Runway) iter.next();
-            System.out.println(i + ". " + runway.getName());
+            Runway runway1 = (Runway) iter.next();
+            System.out.println(i + ". " + runway1.getName());
             i++;
         }
         System.out.println(i + ". Create new Runway");
@@ -205,7 +208,14 @@ public class CLI {
 
         switch (selection.charAt(0)){
             case 'Y':
-                //print stuff
+                ArrayList<String> breakdowns = calculator.getLogicalRunwayBreakDown();
+                Iterator iter1 = breakdowns.iterator();
+
+                while(iter1.hasNext()){
+                    String output = (String) iter1.next();
+                    System.out.println(output);
+                    System.out.println("");
+                }
                 break;
 
             case 'N':

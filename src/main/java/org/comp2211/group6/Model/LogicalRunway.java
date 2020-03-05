@@ -10,7 +10,7 @@ public class LogicalRunway {.
     private double displacedThreshold;
 
     private RunwayParameters originalParameters;
-    private RunwayParameters recalculatedParameters;
+    private RunwayParameters recalculatedParameters;  
 
     /**
      * Constructor for logical runway class

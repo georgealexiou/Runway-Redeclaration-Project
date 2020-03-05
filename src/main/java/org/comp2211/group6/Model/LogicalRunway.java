@@ -1,6 +1,6 @@
 package org.comp2211.group6.Model;
 
-public class LogicalRunway {. 
+public class LogicalRunway { 
 
     /**
      * Private Properties

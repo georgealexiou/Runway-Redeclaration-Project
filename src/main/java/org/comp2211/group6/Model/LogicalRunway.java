@@ -7,7 +7,7 @@ public class LogicalRunway {
      */
     private final int heading;
     private final char position;
-    private double displacedThreshold;
+    private double displacedThreshold; 
 
     private RunwayParameters originalParameters;
     private RunwayParameters recalculatedParameters;

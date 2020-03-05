@@ -5,7 +5,7 @@ public class LogicalRunway {.
     /**
      * Private Properties
      */
-    private final int heading;
+    private final int heading;  
     private final char position;
     private double displacedThreshold;
 

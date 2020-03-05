@@ -48,9 +48,6 @@ public class CLI {
             System.out.println(e.getMessage());
         }
     }
-    
-    public void temp(){
-    }
 
 
     /**

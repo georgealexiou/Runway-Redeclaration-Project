@@ -7,7 +7,6 @@ import java.util.*;
 
 public class CLI {
 
-
     private ArrayList<Airport> airports = new ArrayList<Airport>();
     private Scanner sc = new Scanner(System.in);
 
@@ -48,6 +47,9 @@ public class CLI {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+    }
+    
+    public void temp(){
     }
 
 

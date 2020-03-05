@@ -10,6 +10,6 @@ after_failure:
 notifications:
   email:
     recipients:
-    - travisbot@protonmail.com
+    - george@alexiou.xyz
     on_success: never # default: change
     on_failure: always # default: always

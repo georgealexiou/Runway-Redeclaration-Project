@@ -7,3 +7,9 @@ after_failure:
   - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
   - chmod +x send.sh
   - ./send.sh failure $WEBHOOK_URL
+notifications:
+  email:
+    recipients:
+    - travisbot@protonmail.com
+    on_success: never # default: change
+    on_failure: always # default: always

@@ -1,16 +1,16 @@
 package org.comp2211.group6.Model;
 
-public class LogicalRunway { 
+public class LogicalRunway {
 
     /**
      * Private Properties
      */
-    private final int heading;  
+    private final int heading;
     private final char position;
     private double displacedThreshold;
 
     private RunwayParameters originalParameters;
-    private RunwayParameters recalculatedParameters;  
+    private RunwayParameters recalculatedParameters;
 
     /**
      * Constructor for logical runway class

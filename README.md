@@ -21,3 +21,19 @@ target/runwayredeclaration/bin/launcher
 mvn clean javafx:run
 ```
 
+## Building the Jar
+```bash
+mvn clean compile package
+```
+
+## Formatting with Maven
+```bash
+mvn formatter format
+```
+
+## Documentation
+
+- [General Documentation](./general/README.md) 
+  - [Log File](./general/LOG.md)
+  - [Scenarios for GUI](./general/scenarios.md)
+

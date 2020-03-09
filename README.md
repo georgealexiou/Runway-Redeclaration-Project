@@ -33,7 +33,7 @@ mvn formatter format
 
 ## Documentation
 
-- [General Documentation](./general/README.md) 
-  - [Log File](./general/LOG.md)
-  - [Scenarios for GUI](./general/scenarios.md)
+- [General Documentation](./documentation/general/README.md) 
+  - [Log File](./documentation/general/LOG.md)
+  - [Scenarios for GUI](./documentation/general/scenarios.md)
 

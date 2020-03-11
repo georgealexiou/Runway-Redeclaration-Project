@@ -4,19 +4,46 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import org.comp2211.group6.Model.Airport;
 import org.comp2211.group6.Model.LogicalRunway;
+import org.comp2211.group6.Model.Obstacle;
 import org.comp2211.group6.Model.Runway;
 import org.comp2211.group6.Model.RunwayParameters;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 
 public class MainView extends GridPane implements Initializable {
 
+    /*
+     * FXML Components
+     */
+
     @FXML
     private TopDownView topDownView;
+
+    @FXML
+    private VBox airportBox;
+    @FXML
+    private Label currentAirportName;
+
+    @FXML
+    private ComboBox<Runway> runwayPicker;
+
+    @FXML
+    private ComboBox<Obstacle> obstaclePicker;
+
+    /*
+     * Properties
+     */
+    private Airport currentAirport;
+    private Runway currentRunway;
 
     public MainView() {
         super();
@@ -29,24 +56,62 @@ public class MainView extends GridPane implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        // TODO: Initially only show the splash screen
+        // TODO: Initially only show the button bar
+        this.airportBox.setVisible(false);
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        Runway runway = new Runway("Heathrow");
+
+    }
+
+    /*
+     * Set the airport currently displayed
+     */
+    private void setAirport(Airport airport) {
+        this.currentAirport = airport;
+        this.currentAirportName.setText(airport.getName());
+        this.topDownView.setRunway((Runway) airport.getRunways().toArray()[0]);
+        this.updateFields();
+    }
+
+    /*
+     * Updates the fields in the side panel
+     */
+    private void updateFields() {
+        this.airportBox.setVisible(true);
+    }
+
+    @FXML
+    private void loadAirport(ActionEvent e) {
+        // TODO: Implement actual function
+        Airport airport;
+        if (this.currentAirportName.getText().equals("")) {
+            airport = new Airport("Heathrow");
+        } else {
+            airport = new Airport("Gatwick");
+        }
+        Runway runway = new Runway("09L27R");
         LogicalRunway runway1 = new LogicalRunway(9, 306, 'L',
                         new RunwayParameters(3902, 3902, 3902, 3595));
         LogicalRunway runway2 =
                         new LogicalRunway(27, 0, 'R', new RunwayParameters(3884, 3962, 3884, 3884));
+        Runway runway3 = new Runway("09R27L");
+        LogicalRunway runway4 = new LogicalRunway(9, 307, 'R',
+                        new RunwayParameters(3902, 3902, 3902, 3595));
+        LogicalRunway runway5 =
+                        new LogicalRunway(27, 0, 'L', new RunwayParameters(3884, 3962, 3884, 3884));
         try {
             runway.addRunway(runway1);
             runway.addRunway(runway2);
-            this.topDownView.setRunway(runway);
-        } catch (Exception e) {
-            e.printStackTrace();
+            runway3.addRunway(runway4);
+            runway3.addRunway(runway5);
+            airport.addRunway(runway);
+            airport.addRunway(runway3);
+            this.setAirport(airport);
+        } catch (Exception exception) {
+            exception.printStackTrace();
         }
     }
-
-
-
 }

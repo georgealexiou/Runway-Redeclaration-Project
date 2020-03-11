@@ -8,7 +8,6 @@ import org.comp2211.group6.Model.Obstacle;
 import org.comp2211.group6.Model.Runway;
 
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -46,16 +45,26 @@ public abstract class RunwayView extends GridPane implements Initializable {
         setupRunwayPicker(FXCollections.observableArrayList());
     }
 
+    /*
+     * Sets up the runway logical runway combo box with new values
+     * @param data The list of logical runways to have in the combo picker
+     */
     private void setupRunwayPicker(ObservableList<LogicalRunway> data) {
+        // Update the values
+        currentLogicalRunway = null;
         logicalRunwayPicker.setItems(data);
         logicalRunwayPicker.getSelectionModel().selectFirst();
+        // Re-create the event listener and string coverter
         logicalRunwayPicker.valueProperty().addListener((obs, oldVal, newVal) -> {
             this.currentLogicalRunway = newVal;
-            this.redrawRunway();
+            if (newVal != null)
+                this.redrawRunway();
         });
         logicalRunwayPicker.setConverter(new StringConverter<LogicalRunway>() {
             @Override
             public String toString(LogicalRunway object) {
+                if (object == null)
+                    return null;
                 return object.getIdentifier();
             }
 
@@ -66,16 +75,19 @@ public abstract class RunwayView extends GridPane implements Initializable {
                                 .orElse(null);
             }
         });
+        // Update the current logical runway
         currentLogicalRunway = logicalRunwayPicker.getValue();
     }
 
+    /*
+     * Returns the runway currently in use
+     */
     public Runway getRunway() {
         return this.runway;
     }
 
     /*
      * Sets the runway to display
-     * 
      * @param runway the runway to set
      */
     public void setRunway(Runway runway) {
@@ -87,10 +99,16 @@ public abstract class RunwayView extends GridPane implements Initializable {
         redrawRunway();
     }
 
+    /*
+     * Returns the logical runway currently focused on
+     */
     public LogicalRunway getCurrentLogicalRunway() {
         return this.currentLogicalRunway;
     }
 
+    /*
+     * Returns the currently displayed obstacle
+     */
     public Obstacle getCurrentObstacle() {
         return this.currentObstacle;
     }
@@ -106,7 +124,7 @@ public abstract class RunwayView extends GridPane implements Initializable {
         } else {
             this.runwayDirectionArrow.setRotate(180);
         }
-    };
+    }
 
     protected static void loadFxml(URL fxmlFile, Object rootController) {
         FXMLLoader loader = new FXMLLoader(fxmlFile);

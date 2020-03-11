@@ -1,0 +1,31 @@
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.canvas.Canvas?>
+
+
+<fx:root type="javafx.scene.layout.GridPane"
+          xmlns:fx="http://javafx.com/fxml" alignment="center"
+          hgap="10" vgap="10">
+          <padding><Insets top="40" right="40" bottom="40" left="40"/></padding>
+          <columnConstraints>
+              <ColumnConstraints minWidth="100" prefWidth="100"
+                                maxWidth="Infinity" halignment="RIGHT">
+              </ColumnConstraints>
+              <ColumnConstraints minWidth="200" prefWidth="200"
+                                maxWidth="Infinity" halignment="RIGHT">
+              </ColumnConstraints>
+              <ColumnConstraints minWidth="500" prefWidth="500"
+                                maxWidth="Infinity" hgrow="ALWAYS">
+              </ColumnConstraints>
+              <ColumnConstraints minWidth="100" prefWidth="100"
+                                maxWidth="Infinity" halignment="LEFT">
+              </ColumnConstraints>
+          </columnConstraints>
+          
+          <Label text="Threshold: "></Label>
+          <ComboBox fx:id="logicalRunwayPicker"></ComboBox>
+</fx:root>

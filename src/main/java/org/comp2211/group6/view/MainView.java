@@ -2,6 +2,8 @@ package org.comp2211.group6.view;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import org.comp2211.group6.Model.Airport;
@@ -10,6 +12,7 @@ import org.comp2211.group6.Model.Obstacle;
 import org.comp2211.group6.Model.Runway;
 import org.comp2211.group6.Model.RunwayParameters;
 
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,6 +21,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.util.StringConverter;
 
 public class MainView extends GridPane implements Initializable {
 
@@ -44,6 +48,8 @@ public class MainView extends GridPane implements Initializable {
      */
     private Airport currentAirport;
     private Runway currentRunway;
+    private List<Obstacle> obstacles = new ArrayList<Obstacle>();
+    private Obstacle currentObstacle;
 
     public MainView() {
         super();
@@ -57,7 +63,6 @@ public class MainView extends GridPane implements Initializable {
             e.printStackTrace();
         }
         // TODO: Initially only show the splash screen
-        // TODO: Initially only show the button bar
         this.airportBox.setVisible(false);
     }
 
@@ -71,16 +76,85 @@ public class MainView extends GridPane implements Initializable {
      */
     private void setAirport(Airport airport) {
         this.currentAirport = airport;
-        this.currentAirportName.setText(airport.getName());
         this.topDownView.setRunway((Runway) airport.getRunways().toArray()[0]);
-        this.updateFields();
+        this.updateAirportFields();
     }
 
     /*
      * Updates the fields in the side panel
      */
-    private void updateFields() {
-        this.airportBox.setVisible(true);
+    private void updateAirportFields() {
+        this.airportBox.setVisible(false);
+        if (this.currentAirport != null) {
+            this.currentAirportName.setText(this.currentAirport.getName());
+            this.updateRunwayPicker();
+            this.airportBox.setVisible(true);
+        }
+        this.updateObstaclePicker();
+    }
+
+    private void updateRunwayPicker() {
+        this.runwayPicker.setItems(
+                        FXCollections.observableArrayList(this.currentAirport.getRunways()));
+        this.runwayPicker.getSelectionModel().selectFirst();
+        this.runwayPicker.valueProperty().addListener((e, oldVal, newVal) -> {
+            this.currentRunway = newVal;
+            // Clear current obstacle
+            this.currentObstacle = null;
+            this.obstaclePicker.getSelectionModel().clearSelection();
+            // Update child views
+            this.updateChildViews();
+        });
+        this.runwayPicker.setConverter(new StringConverter<Runway>() {
+            @Override
+            public String toString(Runway object) {
+                if (object == null)
+                    return null;
+                return object.getName();
+            }
+
+            @Override
+            public Runway fromString(String string) {
+                return runwayPicker.getItems().stream().filter(x -> x.getName().equals(string))
+                                .findFirst().orElse(null);
+            }
+        });
+    }
+
+    private void updateObstaclePicker() {
+        this.obstaclePicker.setItems(FXCollections.observableArrayList(obstacles));
+        this.obstaclePicker.getSelectionModel().selectFirst();
+        this.obstaclePicker.valueProperty().addListener((e, oldVal, newVal) -> {
+            this.currentObstacle = newVal;
+            this.updateChildViews();
+        });
+        this.obstaclePicker.setConverter(new StringConverter<Obstacle>() {
+
+            @Override
+            public String toString(Obstacle object) {
+                if (object == null)
+                    return null;
+                return object.getName();
+            }
+
+            @Override
+            public Obstacle fromString(String string) {
+                return obstaclePicker.getItems().stream().filter(x -> x.getName().equals(string))
+                                .findFirst().orElse(null);
+            }
+        });
+    }
+
+    private void updateChildViews() {
+        // TODO: Update Side on View
+        // TODO: Update Top Down View
+        if (this.currentRunway != null) {
+            this.topDownView.setRunway(this.currentRunway);
+        }
+
+        if (this.currentObstacle != null) {
+            this.topDownView.setObstacle(this.currentObstacle);
+        }
     }
 
     @FXML
@@ -131,6 +205,12 @@ public class MainView extends GridPane implements Initializable {
     private void loadObstacle(ActionEvent e) {
         // TODO: Load the obstacle loading dialog
         // TODO: Set the obstacle
+
+        Obstacle ob1 = new Obstacle("Plane Crash", "", 20, 10, 12, 0, 1000, 1800);
+        Obstacle ob2 = new Obstacle("Debris", "", 20, 10, 12, 0, 1000, 1800);
+        this.obstacles.add(ob1);
+        this.obstacles.add(ob2);
+        this.updateAirportFields();
     }
 
     @FXML

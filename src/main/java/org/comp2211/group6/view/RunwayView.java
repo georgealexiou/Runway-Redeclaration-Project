@@ -108,11 +108,17 @@ public abstract class RunwayView extends GridPane implements Initializable {
         return this.currentLogicalRunway;
     }
 
+
     /*
      * Returns the currently displayed obstacle
      */
     public Obstacle getCurrentObstacle() {
         return this.currentObstacle;
+    }
+
+    public void setObstacle(Obstacle obstacle) {
+        this.currentObstacle = obstacle;
+        redrawRunway();
     }
 
     /*

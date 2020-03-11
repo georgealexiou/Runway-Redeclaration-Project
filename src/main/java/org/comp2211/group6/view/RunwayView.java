@@ -14,6 +14,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.shape.SVGPath;
 import javafx.util.StringConverter;
@@ -36,6 +37,8 @@ public abstract class RunwayView extends GridPane implements Initializable {
     protected SVGPath runwayDirectionArrow;
     @FXML
     protected Canvas runwayCanvas;
+    @FXML
+    protected Label viewTitle;
 
     /*
      * Construct a new RunwayView
@@ -106,6 +109,10 @@ public abstract class RunwayView extends GridPane implements Initializable {
      */
     public LogicalRunway getCurrentLogicalRunway() {
         return this.currentLogicalRunway;
+    }
+
+    public void setCurrentLogicalRunway(LogicalRunway runway) {
+        this.logicalRunwayPicker.getSelectionModel().select(runway);
     }
 
 

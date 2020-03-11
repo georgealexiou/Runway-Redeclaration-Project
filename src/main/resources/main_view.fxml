@@ -2,6 +2,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.text.Font?>
 <?import org.comp2211.group6.view.TopDownView?>
+<?import org.comp2211.group6.view.SideOnView?>
 <?import javafx.scene.layout.ColumnConstraints?>
 
 <?import javafx.geometry.Insets?>
@@ -22,6 +23,7 @@
               </ColumnConstraints>
   </columnConstraints>
   <TopDownView fx:id="topDownView" GridPane.rowIndex="0" GridPane.columnIndex="0" visible="false"></TopDownView> 
+  <SideOnView fx:id="sideOnView" GridPane.rowIndex="0" GridPane.columnIndex="0" visible="false"></SideOnView> 
   <VBox fx:id="splashScreen" GridPane.rowIndex="0" GridPane.columnIndex="0" visible="true" alignment="CENTER">
     <Label text="Welcome to the Runway Redeclaration Tool">
           <font>

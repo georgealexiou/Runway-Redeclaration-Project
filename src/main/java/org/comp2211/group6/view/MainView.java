@@ -17,6 +17,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
@@ -28,9 +29,12 @@ public class MainView extends GridPane implements Initializable {
     /*
      * FXML Components
      */
+    private Node currentView;
 
     @FXML
     private TopDownView topDownView;
+    @FXML
+    private SideOnView sideOnView;
 
     @FXML
     private VBox splashScreen;
@@ -65,6 +69,7 @@ public class MainView extends GridPane implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        this.currentView = splashScreen;
     }
 
     @Override
@@ -76,8 +81,9 @@ public class MainView extends GridPane implements Initializable {
      * Set the airport currently displayed
      */
     private void setAirport(Airport airport) {
-        this.topDownView.setVisible(true);
-        this.splashScreen.setVisible(false);
+        this.currentView.setVisible(false);
+        this.currentView = this.topDownView;
+        this.currentView.setVisible(true);
         this.currentAirport = airport;
         this.topDownView.setRunway((Runway) airport.getRunways().toArray()[0]);
         this.updateAirportFields();
@@ -233,8 +239,24 @@ public class MainView extends GridPane implements Initializable {
 
     @FXML
     private void toggleView(ActionEvent e) {
+        // If the view is not a visualisation then do nothing - shouldn't be able to reach here as
+        // the button will be unavailable
+        if (this.currentView != topDownView && this.currentView != sideOnView) {
+            return;
+        }
         // TODO: Update all data in currently hidden view
-        // TODO: Hide displayed view
-        // TODO: Load currently hidden view
+        RunwayView changeToView;
+        if (this.currentView == topDownView) {
+            changeToView = sideOnView;
+        } else {
+            changeToView = topDownView;
+        }
+        changeToView.setRunway(((RunwayView) this.currentView).getRunway());
+        changeToView.setObstacle(((RunwayView) this.currentView).getCurrentObstacle());
+        changeToView.setCurrentLogicalRunway(
+                        ((RunwayView) this.currentView).getCurrentLogicalRunway());
+        this.currentView.setVisible(false);
+        this.currentView = changeToView;
+        this.currentView.setVisible(true);
     }
 }

@@ -5,16 +5,18 @@ import java.util.ResourceBundle;
 
 public class SideOnView extends RunwayView {
 
+    public SideOnView() {
+        super();
+        loadFxml(getClass().getResource("/runway_view.fxml"), this);
+        this.viewTitle.setText("Side on View");
+    }
+
     @Override
     protected void redrawRunway() {
-        // TODO Auto-generated method stub
-
+        super.redrawRunway();
     }
 
     @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        // TODO Auto-generated method stub
-
-    }
+    public void initialize(URL location, ResourceBundle resources) {}
 
 }

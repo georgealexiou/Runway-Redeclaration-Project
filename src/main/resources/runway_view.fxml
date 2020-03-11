@@ -16,27 +16,30 @@
           hgap="10" vgap="10">
           <padding><Insets top="40" right="40" bottom="40" left="40"/></padding>
           <columnConstraints>
-              <ColumnConstraints minWidth="100" prefWidth="100"
-                                maxWidth="Infinity" halignment="RIGHT">
+              <ColumnConstraints minWidth="200" prefWidth="200"
+                                 maxWidth="Infinity" halignment="LEFT">
               </ColumnConstraints>
-              <ColumnConstraints minWidth="200"
-                                maxWidth="Infinity" hgrow="ALWAYS">
+              <ColumnConstraints minWidth="400"
+                                 maxWidth="Infinity" hgrow="ALWAYS"
+                                 prefWidth="400"
+                                 halignment="CENTER">
               </ColumnConstraints>
-              <ColumnConstraints minWidth="100" prefWidth="100"
-                                maxWidth="Infinity" halignment="LEFT">
+              <ColumnConstraints minWidth="200" prefWidth="200"
+                                 maxWidth="Infinity" halignment="RIGHT">
               </ColumnConstraints>
           </columnConstraints>
           <rowConstraints>
-              <RowConstraints vgrow="NEVER" maxHeight="100" />
-              <RowConstraints vgrow="ALWAYS" />
+              <RowConstraints vgrow="NEVER" maxHeight="50" prefHeight="50" />
+              <RowConstraints vgrow="ALWAYS" prefHeight="450" />
           </rowConstraints>
           
-          <Label text="Threshold: "
-                 GridPane.columnIndex="0"
-                 GridPane.rowIndex="0"></Label>
-          <ComboBox fx:id="logicalRunwayPicker"
-                    GridPane.columnIndex="1"
-                    GridPane.rowIndex="0"></ComboBox>
+          <VBox GridPane.columnIndex="0"
+                GridPane.rowIndex="0" minWidth="-Infinity" minHeight="-Infinity"
+                maxWidth="-Infinity" maxHeight="-Infinity" prefWidth="200"
+                alignment="CENTER">
+          <Label text="Threshold: "></Label>
+          <ComboBox fx:id="logicalRunwayPicker"></ComboBox>
+          </VBox>
 
           <Label text="" fx:id="viewTitle" GridPane.columnIndex="1"
                  GridPane.rowIndex="0">
@@ -45,17 +48,18 @@
             </font>
           </Label>
 
-          <VBox    GridPane.columnIndex="2"
-                   GridPane.rowIndex="0"
-                   alignment="CENTER">
+          <VBox GridPane.columnIndex="2"
+                GridPane.rowIndex="0" minWidth="-Infinity" minHeight="-Infinity"
+                maxWidth="-Infinity" maxHeight="-Infinity" prefWidth="200"
+                alignment="CENTER">
           <SVGPath content="M199.33 285.42L246.53 267.06L199.33 248.69L199.33 260.33L149.28 260.33L149.28 273.81L199.33 273.81L199.33 285.42Z"
                    fx:id="runwayDirectionArrow">
           </SVGPath>
           <Label text="Landing/Takeoff Direction"></Label>
           </VBox>
 
-          <Canvas GridPane.columnIndex="0"
-                  GridPane.columnSpan="4"
-                  GridPane.rowIndex="1"
-                  fx:id="runwayCanvas"></Canvas>
+          <Canvas fx:id="runwayCanvas"
+                  GridPane.columnIndex="0"
+                  GridPane.columnSpan="3"
+                  GridPane.rowIndex="1"></Canvas>
 </fx:root>

@@ -11,10 +11,7 @@ public class SideOnView extends RunwayView {
         this.viewTitle.setText("Side on View");
     }
 
-    @Override
-    protected void redrawRunway() {
-        super.redrawRunway();
-    }
+    protected void redraw() {}
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {}

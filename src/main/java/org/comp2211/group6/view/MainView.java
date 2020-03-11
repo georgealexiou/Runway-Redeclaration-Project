@@ -33,6 +33,9 @@ public class MainView extends GridPane implements Initializable {
     private TopDownView topDownView;
 
     @FXML
+    private VBox splashScreen;
+
+    @FXML
     private VBox airportBox;
     @FXML
     private Label currentAirportName;
@@ -62,8 +65,6 @@ public class MainView extends GridPane implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        // TODO: Initially only show the splash screen
-        this.airportBox.setVisible(false);
     }
 
     @Override
@@ -75,6 +76,8 @@ public class MainView extends GridPane implements Initializable {
      * Set the airport currently displayed
      */
     private void setAirport(Airport airport) {
+        this.topDownView.setVisible(true);
+        this.splashScreen.setVisible(false);
         this.currentAirport = airport;
         this.topDownView.setRunway((Runway) airport.getRunways().toArray()[0]);
         this.updateAirportFields();
@@ -147,11 +150,9 @@ public class MainView extends GridPane implements Initializable {
 
     private void updateChildViews() {
         // TODO: Update Side on View
-        // TODO: Update Top Down View
         if (this.currentRunway != null) {
             this.topDownView.setRunway(this.currentRunway);
         }
-
         if (this.currentObstacle != null) {
             this.topDownView.setObstacle(this.currentObstacle);
         }

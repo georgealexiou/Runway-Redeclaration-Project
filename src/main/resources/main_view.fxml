@@ -21,7 +21,14 @@
                                  maxWidth="200" halignment="CENTER">
               </ColumnConstraints>
   </columnConstraints>
-  <TopDownView fx:id="topDownView" GridPane.rowIndex="0" GridPane.columnIndex="0"></TopDownView> 
+  <TopDownView fx:id="topDownView" GridPane.rowIndex="0" GridPane.columnIndex="0" visible="false"></TopDownView> 
+  <VBox fx:id="splashScreen" GridPane.rowIndex="0" GridPane.columnIndex="0" visible="true" alignment="CENTER">
+    <Label text="Welcome to the Runway Redeclaration Tool">
+          <font>
+              <Font name="System Bold" size="32"></Font>
+          </font>
+    </Label>
+  </VBox>
   <VBox fx:id="sidePanel" alignment="CENTER" GridPane.rowIndex="0" GridPane.columnIndex="1">
     <VBox alignment="CENTER">
       <Button text="Load Airport" maxWidth="Infinity" onAction="#loadAirport"></Button>
@@ -29,7 +36,7 @@
       <Button text="Load Obstacle" maxWidth="Infinity" onAction="#loadObstacle"></Button>
       <Button text="Create Obstacle" maxWidth="Infinity" onAction="#createObstacle"></Button>
     </VBox>
-    <VBox fx:id="airportBox" alignment="CENTER">
+    <VBox fx:id="airportBox" alignment="CENTER" visible="false">
       <Label text="" fx:id="currentAirportName">
           <font>
               <Font name="System Bold" size="16"></Font>

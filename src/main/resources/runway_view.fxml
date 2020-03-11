@@ -11,17 +11,14 @@
 
 
 <fx:root type="javafx.scene.layout.GridPane"
-          xmlns:fx="http://javafx.com/fxml" alignment="center"
+         xmlns:fx="http://javafx.com/fxml" alignment="center"
           hgap="10" vgap="10">
           <padding><Insets top="40" right="40" bottom="40" left="40"/></padding>
           <columnConstraints>
               <ColumnConstraints minWidth="100" prefWidth="100"
                                 maxWidth="Infinity" halignment="RIGHT">
               </ColumnConstraints>
-              <ColumnConstraints minWidth="200" prefWidth="200"
-                                maxWidth="Infinity" halignment="RIGHT">
-              </ColumnConstraints>
-              <ColumnConstraints minWidth="500" prefWidth="500"
+              <ColumnConstraints minWidth="200"
                                 maxWidth="Infinity" hgrow="ALWAYS">
               </ColumnConstraints>
               <ColumnConstraints minWidth="100" prefWidth="100"
@@ -40,7 +37,7 @@
                     GridPane.columnIndex="1"
                     GridPane.rowIndex="0"></ComboBox>
 
-          <VBox    GridPane.columnIndex="4"
+          <VBox    GridPane.columnIndex="3"
                    GridPane.rowIndex="0"
                    alignment="CENTER">
           <SVGPath content="M199.33 285.42L246.53 267.06L199.33 248.69L199.33 260.33L149.28 260.33L149.28 273.81L199.33 273.81L199.33 285.42Z"

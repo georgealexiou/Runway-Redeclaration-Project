@@ -11,9 +11,9 @@ import org.comp2211.group6.Model.RunwayParameters;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 
-public class MainView extends BorderPane implements Initializable {
+public class MainView extends GridPane implements Initializable {
 
     @FXML
     private TopDownView topDownView;

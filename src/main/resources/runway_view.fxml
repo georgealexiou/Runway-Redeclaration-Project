@@ -2,9 +2,12 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.shape.SVGPath?>
 
 
 <fx:root type="javafx.scene.layout.GridPane"
@@ -25,7 +28,29 @@
                                 maxWidth="Infinity" halignment="LEFT">
               </ColumnConstraints>
           </columnConstraints>
+          <rowConstraints>
+              <RowConstraints vgrow="NEVER" maxHeight="100" />
+              <RowConstraints vgrow="ALWAYS" />
+          </rowConstraints>
           
-          <Label text="Threshold: "></Label>
-          <ComboBox fx:id="logicalRunwayPicker"></ComboBox>
+          <Label text="Threshold: "
+                 GridPane.columnIndex="0"
+                 GridPane.rowIndex="0"></Label>
+          <ComboBox fx:id="logicalRunwayPicker"
+                    GridPane.columnIndex="1"
+                    GridPane.rowIndex="0"></ComboBox>
+
+          <VBox    GridPane.columnIndex="4"
+                   GridPane.rowIndex="0"
+                   alignment="CENTER">
+          <SVGPath content="M199.33 285.42L246.53 267.06L199.33 248.69L199.33 260.33L149.28 260.33L149.28 273.81L199.33 273.81L199.33 285.42Z"
+                   fx:id="runwayDirectionArrow">
+          </SVGPath>
+          <Label text="Landing/Takeoff Direction"></Label>
+          </VBox>
+
+          <Canvas GridPane.columnIndex="0"
+                  GridPane.columnSpan="4"
+                  GridPane.rowIndex="1"
+                  fx:id="runwayCanvas"></Canvas>
 </fx:root>

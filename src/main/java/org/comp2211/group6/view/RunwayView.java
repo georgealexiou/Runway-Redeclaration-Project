@@ -8,11 +8,16 @@ import org.comp2211.group6.Model.Obstacle;
 import org.comp2211.group6.Model.Runway;
 
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableArray;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.GridPane;
+import javafx.scene.shape.SVGPath;
+import javafx.util.StringConverter;
 
 public abstract class RunwayView extends GridPane implements Initializable {
 
@@ -28,21 +33,38 @@ public abstract class RunwayView extends GridPane implements Initializable {
      */
     @FXML
     protected ComboBox<LogicalRunway> logicalRunwayPicker;
+    @FXML
+    protected SVGPath runwayDirectionArrow;
+    @FXML
+    protected Canvas runwayCanvas;
 
     /*
      * Construct a new RunwayView
      */
     public RunwayView() {
-        setupRunwayPicker();
+        logicalRunwayPicker = new ComboBox<LogicalRunway>();
+        setupRunwayPicker(FXCollections.observableArrayList());
     }
 
-    private void setupRunwayPicker() {
-        logicalRunwayPicker = new ComboBox<LogicalRunway>();
-        logicalRunwayPicker.setItems(FXCollections.observableArrayList());
+    private void setupRunwayPicker(ObservableList<LogicalRunway> data) {
+        logicalRunwayPicker.setItems(data);
         logicalRunwayPicker.getSelectionModel().selectFirst();
         logicalRunwayPicker.valueProperty().addListener((obs, oldVal, newVal) -> {
             this.currentLogicalRunway = newVal;
             this.redrawRunway();
+        });
+        logicalRunwayPicker.setConverter(new StringConverter<LogicalRunway>() {
+            @Override
+            public String toString(LogicalRunway object) {
+                return object.getIdentifier();
+            }
+
+            @Override
+            public LogicalRunway fromString(String string) {
+                return logicalRunwayPicker.getItems().stream()
+                                .filter(ap -> ap.getIdentifier().equals(string)).findFirst()
+                                .orElse(null);
+            }
         });
     }
 
@@ -59,8 +81,7 @@ public abstract class RunwayView extends GridPane implements Initializable {
         // Store the runway
         this.runway = runway;
         // Update the combo box
-        logicalRunwayPicker.setItems(
-                        FXCollections.observableArrayList(this.runway.getLogicalRunways()));
+        setupRunwayPicker(FXCollections.observableArrayList(this.runway.getLogicalRunways()));
     }
 
     public LogicalRunway getCurrentLogicalRunway() {

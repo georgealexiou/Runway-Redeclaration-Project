@@ -7,7 +7,7 @@ public class TopDownView extends RunwayView {
 
     public TopDownView() {
         super();
-        loadFxml(getClass().getResource("/top_down_view.fxml"), this);
+        loadFxml(getClass().getResource("/runway_view.fxml"), this);
     }
 
     @Override

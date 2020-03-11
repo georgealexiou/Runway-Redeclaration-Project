@@ -114,4 +114,46 @@ public class MainView extends GridPane implements Initializable {
             exception.printStackTrace();
         }
     }
+
+    @FXML
+    private void createAirport(ActionEvent e) {
+        // TODO: Load the create airport dialog
+        // TODO: Set the newly created airport
+    }
+
+    @FXML
+    private void editAirport(ActionEvent e) {
+        // TODO: Load the edit airport dialog
+        // TODO: Set the newly edited airport
+    }
+
+    @FXML
+    private void loadObstacle(ActionEvent e) {
+        // TODO: Load the obstacle loading dialog
+        // TODO: Set the obstacle
+    }
+
+    @FXML
+    private void createObstacle(ActionEvent e) {
+        // TODO: Load the obstacle creation dialog
+        // TODO: Set the obstacle
+    }
+
+    @FXML
+    private void editObstacle(ActionEvent e) {
+        // TODO: Load the edit obstacle screen
+        // TODO: Set the obstacle
+    }
+
+    @FXML
+    private void viewCalculations(ActionEvent e) {
+        // TODO: Load the Breakdown View
+    }
+
+    @FXML
+    private void toggleView(ActionEvent e) {
+        // TODO: Update all data in currently hidden view
+        // TODO: Hide displayed view
+        // TODO: Load currently hidden view
+    }
 }

@@ -25,9 +25,9 @@
   <VBox fx:id="sidePanel" alignment="CENTER" GridPane.rowIndex="0" GridPane.columnIndex="1">
     <VBox alignment="CENTER">
       <Button text="Load Airport" maxWidth="Infinity" onAction="#loadAirport"></Button>
-      <Button text="Create new Airport" maxWidth="Infinity"></Button>
-      <Button text="Load Obstacle" maxWidth="Infinity"></Button>
-      <Button text="Create Obstacle" maxWidth="Infinity"></Button>
+      <Button text="Create new Airport" maxWidth="Infinity" onAction="#createAirport"></Button>
+      <Button text="Load Obstacle" maxWidth="Infinity" onAction="#loadObstacle"></Button>
+      <Button text="Create Obstacle" maxWidth="Infinity" onAction="#createObstacle"></Button>
     </VBox>
     <VBox fx:id="airportBox" alignment="CENTER">
       <Label text="" fx:id="currentAirportName">
@@ -35,7 +35,7 @@
               <Font name="System Bold" size="16"></Font>
           </font>
       </Label>
-      <Button text="Edit Airport" maxWidth="Infinity"></Button>
+      <Button text="Edit Airport" maxWidth="Infinity" onAction="#editAirport"></Button>
       <VBox alignment="CENTER">
         <Label text="Runway">
         </Label>
@@ -43,10 +43,10 @@
       </VBox>
       <VBox alignment="CENTER">
         <Label text="Obstacle"></Label>
-        <Button text="Edit Obstacle" maxWidth="Infinity"></Button>
+        <Button text="Edit Obstacle" maxWidth="Infinity" onAction="#editObstacle"></Button>
         <ComboBox fx:id="obstaclePicker" maxWidth="Infinity"></ComboBox>
-        <Button text="View Calculations" maxWidth="Infinity"></Button>
-        <Button text="Toggle View" maxWidth="Infinity"></Button>
+        <Button text="View Calculations" maxWidth="Infinity" onAction="#viewCalculations"></Button>
+        <Button text="Toggle View" maxWidth="Infinity" onAction="#toggleView"></Button>
       </VBox>
     </VBox>
   </VBox>

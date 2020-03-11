@@ -47,6 +47,7 @@ public abstract class RunwayView extends GridPane implements Initializable {
 
     /*
      * Sets up the runway logical runway combo box with new values
+     * 
      * @param data The list of logical runways to have in the combo picker
      */
     private void setupRunwayPicker(ObservableList<LogicalRunway> data) {
@@ -88,6 +89,7 @@ public abstract class RunwayView extends GridPane implements Initializable {
 
     /*
      * Sets the runway to display
+     * 
      * @param runway the runway to set
      */
     public void setRunway(Runway runway) {

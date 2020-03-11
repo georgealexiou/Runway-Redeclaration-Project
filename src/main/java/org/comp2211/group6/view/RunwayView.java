@@ -66,6 +66,7 @@ public abstract class RunwayView extends GridPane implements Initializable {
                                 .orElse(null);
             }
         });
+        currentLogicalRunway = logicalRunwayPicker.getValue();
     }
 
     public Runway getRunway() {
@@ -82,6 +83,8 @@ public abstract class RunwayView extends GridPane implements Initializable {
         this.runway = runway;
         // Update the combo box
         setupRunwayPicker(FXCollections.observableArrayList(this.runway.getLogicalRunways()));
+        // Re draw the runway
+        redrawRunway();
     }
 
     public LogicalRunway getCurrentLogicalRunway() {
@@ -94,9 +97,16 @@ public abstract class RunwayView extends GridPane implements Initializable {
 
     /*
      * This method is called when the runway or logical runway is changed, or if the obstacle is
-     * updated
+     * updated Override this to add more functionality
      */
-    protected abstract void redrawRunway();
+    protected void redrawRunway() {
+        // Handle takeoff landing direction arrow
+        if (currentLogicalRunway.getHeading() <= 18) {
+            this.runwayDirectionArrow.setRotate(0);
+        } else {
+            this.runwayDirectionArrow.setRotate(180);
+        }
+    };
 
     protected static void loadFxml(URL fxmlFile, Object rootController) {
         FXMLLoader loader = new FXMLLoader(fxmlFile);

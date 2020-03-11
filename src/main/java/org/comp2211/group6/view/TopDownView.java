@@ -11,7 +11,9 @@ public class TopDownView extends RunwayView {
     }
 
     @Override
-    protected void redrawRunway() {}
+    protected void redrawRunway() {
+        super.redrawRunway();
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {}

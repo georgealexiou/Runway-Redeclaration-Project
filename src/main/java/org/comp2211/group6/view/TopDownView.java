@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import org.comp2211.group6.Controller.Calculator;
 import org.comp2211.group6.Model.LogicalRunway;
 import org.comp2211.group6.Model.RunwayParameters;
 
@@ -30,12 +31,13 @@ public class TopDownView extends RunwayView {
             drawRunwayStrip(gc);
             drawThresholdMarkers(gc);
             drawDisplacedThreshold(gc);
-            drawRunwayValues(gc, true);
+            newDrawRunwayParams(gc, true);
             if (currentObstacle != null) {
                 drawObstacle(gc);
             }
             if (currentLogicalRunway.getRecalculatedParameters().getTORA() != 0) {
-                drawRunwayValues(gc, false);
+                System.out.println("REACHED C");
+                newDrawRunwayParams(gc, false);
             }
         }
     }
@@ -138,12 +140,60 @@ public class TopDownView extends RunwayView {
     }
 
     // TODO: Draw Reclaculated Values
-    private void drawRunwayValues(GraphicsContext gc, Boolean original) {
-        RunwayParameters params;
+    // private void drawRunwayValues(GraphicsContext gc, Boolean original) {
+    // RunwayParameters params;
+    // double startX;
+    // double displacedThresholdScaled = scale(currentLogicalRunway.getDisplacedThreshold(),
+    // runwayCanvas.getWidth());
+    // double mult;
+
+    // if (original) {
+    // params = currentLogicalRunway.getParameters();
+    // } else {
+    // params = currentLogicalRunway.getRecalculatedParameters();
+    // }
+
+    // int i = 2;
+
+    // // Draw LDA - Smallest
+    // double endX = startX + (mult * (scale(params.getLDA(), runwayCanvas.getWidth())
+    // + displacedThresholdScaled));
+    // drawDistanceArrow(gc, startX + (mult * displacedThresholdScaled), endX,
+    // (runwayWidth / 4) * i++, original, Color.BLACK,
+    // "LDA: " + params.getLDA() + "m");
+
+    // // Draw TORA
+    // endX = startX + (mult * scale(params.getTORA(), runwayCanvas.getWidth()));
+    // drawDistanceArrow(gc, startX, endX, (runwayWidth / 4) * i++, original, Color.BLACK,
+    // "TORA: " + params.getTORA() + "m");
+
+    // if (params.getASDA() > params.getTODA()) {
+    // // Draw TODA
+    // endX = startX + (mult * scale(params.getTODA(), runwayCanvas.getWidth()));
+    // drawDistanceArrow(gc, startX, endX, (runwayWidth / 4) * i++, original, Color.BLACK,
+    // "TODA: " + params.getTODA() + "m");
+    // }
+
+    // // Draw ASDA
+    // endX = startX + (mult * scale(params.getASDA(), runwayCanvas.getWidth()));
+    // drawDistanceArrow(gc, startX, endX, (runwayWidth / 4) * i++, original, Color.BLACK,
+    // "ASDA: " + params.getASDA() + "m");
+
+    // if (params.getTODA() >= params.getASDA()) {
+    // // Draw TODA
+    // endX = startX + (mult * scale(params.getTODA(), runwayCanvas.getWidth()));
+    // drawDistanceArrow(gc, startX, endX, (runwayWidth / 4) * i++, original, Color.BLACK,
+    // "TODA: " + params.getTODA() + "m");
+    // }
+
+    // }
+
+    private void newDrawRunwayParams(GraphicsContext gc, boolean original) {
+        RunwayParameters params = original ? currentLogicalRunway.getParameters()
+                        : currentLogicalRunway.getRecalculatedParameters();
+        double toraOffset, todaOffset, ldaOffset, asdaOffset;
         double startX;
-        double displacedThresholdScaled = scale(currentLogicalRunway.getDisplacedThreshold(),
-                        runwayCanvas.getWidth());
-        double mult;
+        int mult;
         if (currentLogicalRunway.getHeading() <= 18) {
             startX = scale(leftOffset, runwayCanvas.getWidth());
             mult = 1;
@@ -151,46 +201,63 @@ public class TopDownView extends RunwayView {
             startX = scale(leftOffset + runwayLength, runwayCanvas.getWidth());
             mult = -1;
         }
+        if (!original && currentObstacle != null) {
+            if (currentObstacle.distanceFromLeftThreshold < currentObstacle.distanceFromRightThreshold) { //
+                if (currentLogicalRunway.getHeading() <= 18) { // Take off Away, Landing Over
+                } else { // Take off towards, landing towards
+                    System.out.println("Reached A");
+                    drawTORA(gc, params.getTORA(), true, original, mult, 2, startX);
+                }
+            } else {
+                if (currentLogicalRunway.getHeading() <= 18) { // Take off Towards, Landing Towards
 
-        if (original) {
-            params = currentLogicalRunway.getParameters();
+                    System.out.println("Reached B");
+                    drawTORA(gc, params.getTORA(), true, original, mult, 2, startX);
+                } else { // Take off Away, Landing Over
+
+                }
+            }
         } else {
-            params = currentLogicalRunway.getRecalculatedParameters();
+            drawTORA(gc, params.getTORA(), false, original, mult, 2, startX);
         }
+    }
 
-        int i = 2;
-
-        // Draw LDA - Smallest
-        double endX = startX + (mult * (scale(params.getLDA(), runwayCanvas.getWidth())
-                        + displacedThresholdScaled));
-        drawDistanceArrow(gc, startX + (mult * displacedThresholdScaled), endX,
-                        (runwayWidth / 4) * i++, original, Color.BLACK,
-                        "LDA: " + params.getLDA() + "m");
-
-        // Draw TORA
-        endX = startX + (mult * scale(params.getTORA(), runwayCanvas.getWidth()));
-        drawDistanceArrow(gc, startX, endX, (runwayWidth / 4) * i++, original, Color.BLACK,
-                        "TORA: " + params.getTORA() + "m");
-
-        if (params.getASDA() > params.getTODA()) {
-            // Draw TODA
-            endX = startX + (mult * scale(params.getTODA(), runwayCanvas.getWidth()));
-            drawDistanceArrow(gc, startX, endX, (runwayWidth / 4) * i++, original, Color.BLACK,
-                            "TODA: " + params.getTODA() + "m");
+    /*
+     * Draws the TORA
+     * 
+     * @param gc The graphics context
+     * 
+     * @param value The TORA value
+     * 
+     * @param towards Is landing towards or over
+     * 
+     * @param original Is this an original or recalculated
+     * 
+     * @param mult Multiplier for swapping direction
+     * 
+     * @param pos Position of line in (runwayWidth / 4)'s from edge of runway
+     * 
+     * @param startX The start of the threshold
+     */
+    private void drawTORA(GraphicsContext gc, double value, boolean towards, boolean original,
+                    int mult, int pos, double startX) {
+        String label = "TORA: " + value + "m";
+        if (original) {
+            double endX = startX + (mult * scale(value, runwayCanvas.getWidth()));
+            drawDistanceArrow(gc, startX, endX, (runwayWidth / 4) * pos, original, Color.BLACK,
+                            label);
+        } else {
+            if (towards) {
+                double endX = startX + (mult * scale(value, runwayCanvas.getWidth()));
+                drawDistanceArrow(gc, startX, endX, (runwayWidth / 4) * pos, original, Color.BLACK,
+                                label);
+                // TODO: Use real values
+                drawDistanceArrow(gc, endX,
+                                (endX + (mult * scale((currentObstacle.getHeight() * 50),
+                                                runwayCanvas.getWidth()))),
+                                (runwayWidth / 4) * pos, original, Color.BLACK, "Slope");
+            }
         }
-
-        // Draw ASDA
-        endX = startX + (mult * scale(params.getASDA(), runwayCanvas.getWidth()));
-        drawDistanceArrow(gc, startX, endX, (runwayWidth / 4) * i++, original, Color.BLACK,
-                        "ASDA: " + params.getASDA() + "m");
-
-        if (params.getTODA() >= params.getASDA()) {
-            // Draw TODA
-            endX = startX + (mult * scale(params.getTODA(), runwayCanvas.getWidth()));
-            drawDistanceArrow(gc, startX, endX, (runwayWidth / 4) * i++, original, Color.BLACK,
-                            "TODA: " + params.getTODA() + "m");
-        }
-
     }
 
     private void drawObstacle(GraphicsContext gc) {

@@ -150,6 +150,9 @@ public abstract class RunwayView extends GridPane implements Initializable {
 
     public void setObstacle(Obstacle obstacle) {
         this.currentObstacle = obstacle;
+        if (this.runway != null) {
+            this.runway.setObstacle(obstacle);
+        }
         redrawRunway();
     }
 

@@ -234,11 +234,12 @@ public abstract class RunwayView extends GridPane implements Initializable {
                 this.runwayLength = lr.getParameters().getTORA();
             }
         }
-        this.leftOffset = Math.max(stripEnd, Math.max(this.leftClearway, this.leftStopway));
-        this.rightOffset = Math.max(stripEnd, Math.max(this.rightClearway, this.rightStopway));
+        this.leftOffset =
+                        padding + Math.max(stripEnd, Math.max(this.leftClearway, this.leftStopway));
+        this.rightOffset = padding
+                        + Math.max(stripEnd, Math.max(this.rightClearway, this.rightStopway));
         this.obstacleLeft = this.leftOffset + addToObstaceLeft;
-        this.totalLength = this.padding + this.leftOffset + this.runwayLength + this.rightOffset
-                        + this.padding;
+        this.totalLength = this.leftOffset + this.runwayLength + this.rightOffset;
 
     }
 

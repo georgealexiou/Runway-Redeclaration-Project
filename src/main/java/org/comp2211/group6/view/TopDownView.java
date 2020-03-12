@@ -28,17 +28,18 @@ public class TopDownView extends RunwayView {
         if (this.runway != null) {
             GraphicsContext gc = runwayCanvas.getGraphicsContext2D();
             gc.clearRect(0, 0, runwayCanvas.getWidth(), runwayCanvas.getHeight());
+            drawClearedAndGraded(gc);
             drawRunwayStrip(gc);
             drawThresholdMarkers(gc);
             drawDisplacedThreshold(gc);
-            newDrawRunwayParams(gc, true);
+            drawRunwayParams(gc, true);
             if (currentObstacle != null) {
                 System.out.println("Obstacle: " + currentObstacle.getName());
                 drawObstacle(gc);
             }
             if (currentLogicalRunway.getRecalculatedParameters().getTORA() != 0) {
                 System.out.println("REACHED C");
-                newDrawRunwayParams(gc, false);
+                drawRunwayParams(gc, false);
             }
         }
     }
@@ -140,56 +141,7 @@ public class TopDownView extends RunwayView {
 
     }
 
-    // TODO: Draw Reclaculated Values
-    // private void drawRunwayValues(GraphicsContext gc, Boolean original) {
-    // RunwayParameters params;
-    // double startX;
-    // double displacedThresholdScaled = scale(currentLogicalRunway.getDisplacedThreshold(),
-    // runwayCanvas.getWidth());
-    // double mult;
-
-    // if (original) {
-    // params = currentLogicalRunway.getParameters();
-    // } else {
-    // params = currentLogicalRunway.getRecalculatedParameters();
-    // }
-
-    // int i = 2;
-
-    // // Draw LDA - Smallest
-    // double endX = startX + (mult * (scale(params.getLDA(), runwayCanvas.getWidth())
-    // + displacedThresholdScaled));
-    // drawDistanceArrow(gc, startX + (mult * displacedThresholdScaled), endX,
-    // (runwayWidth / 4) * i++, original, Color.BLACK,
-    // "LDA: " + params.getLDA() + "m");
-
-    // // Draw TORA
-    // endX = startX + (mult * scale(params.getTORA(), runwayCanvas.getWidth()));
-    // drawDistanceArrow(gc, startX, endX, (runwayWidth / 4) * i++, original, Color.BLACK,
-    // "TORA: " + params.getTORA() + "m");
-
-    // if (params.getASDA() > params.getTODA()) {
-    // // Draw TODA
-    // endX = startX + (mult * scale(params.getTODA(), runwayCanvas.getWidth()));
-    // drawDistanceArrow(gc, startX, endX, (runwayWidth / 4) * i++, original, Color.BLACK,
-    // "TODA: " + params.getTODA() + "m");
-    // }
-
-    // // Draw ASDA
-    // endX = startX + (mult * scale(params.getASDA(), runwayCanvas.getWidth()));
-    // drawDistanceArrow(gc, startX, endX, (runwayWidth / 4) * i++, original, Color.BLACK,
-    // "ASDA: " + params.getASDA() + "m");
-
-    // if (params.getTODA() >= params.getASDA()) {
-    // // Draw TODA
-    // endX = startX + (mult * scale(params.getTODA(), runwayCanvas.getWidth()));
-    // drawDistanceArrow(gc, startX, endX, (runwayWidth / 4) * i++, original, Color.BLACK,
-    // "TODA: " + params.getTODA() + "m");
-    // }
-
-    // }
-
-    private void newDrawRunwayParams(GraphicsContext gc, boolean original) {
+    private void drawRunwayParams(GraphicsContext gc, boolean original) {
         RunwayParameters params = original ? currentLogicalRunway.getParameters()
                         : currentLogicalRunway.getRecalculatedParameters();
         double startX;
@@ -307,6 +259,26 @@ public class TopDownView extends RunwayView {
         gc.setTextAlign(TextAlignment.CENTER);
         gc.fillText(currentObstacle.getName(), startX,
                         runwayCanvas.getHeight() / 2 + (runwayWidth / 4) * 8 + 10);
+    }
+
+    private void drawClearedAndGraded(GraphicsContext gc) {
+        gc.setFill(Color.LIGHTGRAY);
+        double size = runwayCanvas.getWidth();
+        // Points clockwise round image
+        double xpoints[] = {scale(padding, size), scale(padding + 60 + 150, size),
+                        scale(padding + 60 + 300, size),
+                        scale(leftOffset + runwayLength - 300, size),
+                        scale(leftOffset + runwayLength - 150, size), size - scale(padding, size),
+                        size - scale(padding, size), scale(leftOffset + runwayLength - 150, size),
+                        scale(leftOffset + runwayLength - 300, size),
+                        scale(padding + 60 + 300, size), scale(padding + 60 + 150, size),
+                        scale(padding, size)};
+
+        double centre = runwayCanvas.getHeight() / 2;
+        double ypoints[] = {centre - 75, centre - 75, centre - 105, centre - 105, centre - 75,
+                        centre - 75, centre + 75, centre + 75, centre + 105, centre + 105,
+                        centre + 75, centre + 75};
+        gc.fillPolygon(xpoints, ypoints, 12);
     }
 
 }

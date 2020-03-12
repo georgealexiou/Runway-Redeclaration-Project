@@ -11,6 +11,7 @@ import org.comp2211.group6.Model.LogicalRunway;
 import org.comp2211.group6.Model.Obstacle;
 import org.comp2211.group6.Model.Runway;
 import org.comp2211.group6.Model.RunwayParameters;
+import org.comp2211.group6.Controller.Calculator;
 
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -57,6 +58,7 @@ public class MainView extends GridPane implements Initializable {
     private Runway currentRunway;
     private List<Obstacle> obstacles = new ArrayList<Obstacle>();
     private Obstacle currentObstacle;
+    private Calculator calculator;
 
     public MainView() {
         super();
@@ -112,7 +114,7 @@ public class MainView extends GridPane implements Initializable {
             this.currentObstacle = null;
             this.obstaclePicker.getSelectionModel().clearSelection();
             // Update child views
-            this.updateChildViews();
+            this.updateChildRunways();
         });
         this.runwayPicker.setConverter(new StringConverter<Runway>() {
             @Override
@@ -135,7 +137,7 @@ public class MainView extends GridPane implements Initializable {
         this.obstaclePicker.getSelectionModel().selectFirst();
         this.obstaclePicker.valueProperty().addListener((e, oldVal, newVal) -> {
             this.currentObstacle = newVal;
-            this.updateChildViews();
+            this.updateChildObstacles();
         });
         this.obstaclePicker.setConverter(new StringConverter<Obstacle>() {
 
@@ -154,13 +156,21 @@ public class MainView extends GridPane implements Initializable {
         });
     }
 
-    private void updateChildViews() {
-        // TODO: Update Side on View
+    private void updateChildRunways() {
         if (this.currentRunway != null) {
             this.topDownView.setRunway(this.currentRunway);
+            this.sideOnView.setRunway(this.currentRunway);
         }
+    }
+
+    private void updateChildObstacles() {
         if (this.currentObstacle != null) {
             this.topDownView.setObstacle(this.currentObstacle);
+            this.sideOnView.setObstacle(this.currentObstacle);
+            if (this.currentRunway != null) {
+                this.calculator = new Calculator(this.currentRunway);
+                this.calculator.recalculateRunwayParameters();
+            }
         }
     }
 
@@ -213,10 +223,8 @@ public class MainView extends GridPane implements Initializable {
         // TODO: Load the obstacle loading dialog
         // TODO: Set the obstacle
 
-        Obstacle ob1 = new Obstacle("Plane Crash", "", 20, 10, 12, 0, 1000, 1800);
-        Obstacle ob2 = new Obstacle("Debris", "", 20, 10, 12, 0, 1000, 1800);
+        Obstacle ob1 = new Obstacle("Plane Crash", "", 20, 10, 12, 0, -50, 3646);
         this.obstacles.add(ob1);
-        this.obstacles.add(ob2);
         this.updateAirportFields();
     }
 

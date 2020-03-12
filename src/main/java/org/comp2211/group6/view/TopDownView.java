@@ -8,15 +8,16 @@ import org.comp2211.group6.Model.LogicalRunway;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.text.TextAlignment;
+import javafx.scene.transform.Affine;
+import javafx.scene.transform.Transform;
 
 public class TopDownView extends RunwayView {
 
     /*
      * Data
      */
-    private double runwayWidth = 100;
-
     public TopDownView() {
         super();
         loadFxml(getClass().getResource("/runway_view.fxml"), this);
@@ -113,25 +114,23 @@ public class TopDownView extends RunwayView {
         if (threshold == 0)
             return;
         gc.setStroke(Color.LIGHTGREEN);
-        double x, y;
+        double endX, startX;
         if (currentLogicalRunway.getHeading() <= 18) {
-            x = scale(leftOffset + threshold, runwayCanvas.getWidth());
+            endX = scale(leftOffset + threshold, runwayCanvas.getWidth());
+            startX = scale(leftOffset, runwayCanvas.getWidth());
         } else {
-            x = scale(leftOffset + runwayLength - threshold, runwayCanvas.getWidth());
+            endX = scale(leftOffset + runwayLength - threshold, runwayCanvas.getWidth());
+            startX = scale(leftOffset + runwayLength, runwayCanvas.getWidth());
         }
-        char pos = currentLogicalRunway.getIdentifier().toCharArray()[2];
-        if (pos == 'L') {
-            y = canvasMiddleY - (runwayWidth / 2);
-        } else if (pos == 'C') {
-            y = canvasMiddleY - (runwayWidth / 4);
-        } else {
-            y = canvasMiddleY;
-        }
-        gc.strokeLine(x, y, x, y + (runwayWidth / 2));
-    }
+        gc.setStroke(Color.LIGHTGREEN);
+        gc.setLineDashes();
+        gc.strokeLine(endX, canvasMiddleY + (runwayWidth / 2), endX,
+                        canvasMiddleY - (runwayWidth / 2));
+        drawDistanceArrow(gc, startX, endX, (runwayWidth / 4), canvasMiddleY - (runwayWidth / 2),
+                        Color.BLACK, "DT: " + currentLogicalRunway.getDisplacedThreshold() + "m");
 
+    }
 
     // TODO: Draw Original Values
     // TODO: Draw Reclaculated Values
-
 }

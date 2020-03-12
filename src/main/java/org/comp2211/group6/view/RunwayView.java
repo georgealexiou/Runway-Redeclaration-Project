@@ -14,11 +14,16 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.SVGPath;
+import javafx.scene.text.TextAlignment;
+import javafx.scene.transform.Affine;
+import javafx.scene.transform.Transform;
 import javafx.util.StringConverter;
 
 public abstract class RunwayView extends GridPane implements Initializable {
@@ -29,6 +34,8 @@ public abstract class RunwayView extends GridPane implements Initializable {
     protected Runway runway;
     protected Obstacle currentObstacle;
     protected LogicalRunway currentLogicalRunway;
+
+    protected double runwayWidth = 100;
 
     /*
      * Distances needs for drawing top down view - 20 px Padding Left - n px Strip End - n px
@@ -234,8 +241,68 @@ public abstract class RunwayView extends GridPane implements Initializable {
      */
     protected double scale(double val, double canvas) {
         return (val / this.totalLength) * canvas;
+
     }
 
+    protected void drawDistanceArrow(GraphicsContext gc, double startX, double endX,
+                    double distanceFromRunway, double yPosition, Paint color, String label) {
+        // calculate position
+        double runwayCentreLine = runwayCanvas.getHeight() / 2;
+        double runwayTop = runwayCentreLine - (runwayWidth / 2);
+        double runwayBottom = runwayCentreLine + (runwayWidth / 2);
+        double y;
+        if (yPosition < runwayCentreLine) { // Above
+            y = runwayTop - distanceFromRunway;
+        } else {
+            y = runwayBottom + distanceFromRunway;
+        }
+        // Draw arrow
+        gc.setStroke(color);
+        gc.setFill(color);
+        gc.setLineDashes();
+        drawArrow(gc, startX, y, endX, y, color);
+        // Draw lines to meet arrow
+        gc.setStroke(color);
+        gc.strokeLine(startX, y, startX, yPosition);
+        gc.strokeLine(endX, y, endX, yPosition);
+        // Draw label
+        gc.setTextAlign(TextAlignment.CENTER);
+        gc.fillText(label, (startX + endX) / 2, y - 5);
+    }
 
+    /*
+     * Draws and arrow on the canvas
+     * 
+     * @param gc the canvas graphics context
+     * 
+     * @param x1 the starting x
+     * 
+     * @param y1 the starting y
+     * 
+     * @param x2 the ending x
+     * 
+     * @param y2 the ending y
+     * 
+     * @param color the color to draw the arrow
+     */
+    private void drawArrow(GraphicsContext gc, double x1, double y1, double x2, double y2,
+                    Paint color) {
+        double arrowSize = 4;
+        gc.setStroke(color);
+        gc.setFill(color);
+        double dx = x2 - x1, dy = y2 - y1;
+        double angle = Math.atan2(dy, dx);
+        double len = Math.sqrt(dx * dx + dy * dy);
+
+        Transform transform = Transform.translate(x1, y1);
+        transform = transform.createConcatenation(Transform.rotate(Math.toDegrees(angle), 0, 0));
+        gc.setTransform(new Affine(transform));
+
+        gc.strokeLine(0, 0, len, 0);
+        gc.fillPolygon(new double[] {len, len - arrowSize, len - arrowSize, len},
+                        new double[] {0, -arrowSize, arrowSize, 0}, 4);
+        transform = Transform.translate(0, 0);
+        gc.setTransform(new Affine(transform));
+    }
 
 }

@@ -87,8 +87,10 @@ public class MainView extends GridPane implements Initializable {
         this.currentView = this.topDownView;
         this.currentView.setVisible(true);
         this.currentAirport = airport;
-        this.topDownView.setRunway((Runway) airport.getRunways().toArray()[0]);
+        this.currentRunway = (Runway) airport.getRunways().toArray()[0];
         this.updateAirportFields();
+        this.updateChildObstacles();
+        this.updateChildRunways();
     }
 
     /*
@@ -157,20 +159,16 @@ public class MainView extends GridPane implements Initializable {
     }
 
     private void updateChildRunways() {
-        if (this.currentRunway != null) {
-            this.topDownView.setRunway(this.currentRunway);
-            this.sideOnView.setRunway(this.currentRunway);
-        }
+        this.topDownView.setRunway(this.currentRunway);
+        this.sideOnView.setRunway(this.currentRunway);
     }
 
     private void updateChildObstacles() {
-        if (this.currentObstacle != null) {
-            this.topDownView.setObstacle(this.currentObstacle);
-            this.sideOnView.setObstacle(this.currentObstacle);
-            if (this.currentRunway != null) {
-                this.calculator = new Calculator(this.currentRunway);
-                this.calculator.recalculateRunwayParameters();
-            }
+        this.topDownView.setObstacle(this.currentObstacle);
+        this.sideOnView.setObstacle(this.currentObstacle);
+        if (this.currentObstacle != null && this.currentRunway != null) {
+            this.calculator = new Calculator(this.currentRunway);
+            this.calculator.recalculateRunwayParameters();
         }
     }
 
@@ -191,8 +189,8 @@ public class MainView extends GridPane implements Initializable {
         Runway runway3 = new Runway("09R27L");
         LogicalRunway runway4 = new LogicalRunway(9, 307, 'R',
                         new RunwayParameters(3902, 3902, 3902, 3595));
-        LogicalRunway runway5 = new LogicalRunway(27, 250, 'L',
-                        new RunwayParameters(3884, 3962, 3884, 3884));
+        LogicalRunway runway5 =
+                        new LogicalRunway(27, 0, 'L', new RunwayParameters(3884, 3962, 3884, 3884));
         try {
             runway.addRunway(runway1);
             runway.addRunway(runway2);

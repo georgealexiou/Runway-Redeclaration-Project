@@ -124,8 +124,10 @@ public abstract class RunwayView extends GridPane implements Initializable {
     public void setRunway(Runway runway) {
         // Store the runway
         this.runway = runway;
-        // Update the combo box
-        setupRunwayPicker(FXCollections.observableArrayList(this.runway.getLogicalRunways()));
+        if (runway != null) {
+            // Update the combo box
+            setupRunwayPicker(FXCollections.observableArrayList(this.runway.getLogicalRunways()));
+        }
         // Re draw the runway
         redrawRunway();
     }
@@ -152,8 +154,8 @@ public abstract class RunwayView extends GridPane implements Initializable {
         this.currentObstacle = obstacle;
         if (this.runway != null) {
             this.runway.setObstacle(obstacle);
+            redrawRunway();
         }
-        redrawRunway();
     }
 
     /*
@@ -162,12 +164,12 @@ public abstract class RunwayView extends GridPane implements Initializable {
      */
     private void redrawRunway() {
         // Handle takeoff landing direction arrow
-        if (currentLogicalRunway.getHeading() <= 18) {
-            this.runwayDirectionArrow.setRotate(0);
-        } else {
-            this.runwayDirectionArrow.setRotate(180);
-        }
         if (currentLogicalRunway != null) {
+            if (currentLogicalRunway.getHeading() <= 18) {
+                this.runwayDirectionArrow.setRotate(0);
+            } else {
+                this.runwayDirectionArrow.setRotate(180);
+            }
             recalculateDataValues();
             redraw();
         }
@@ -204,6 +206,8 @@ public abstract class RunwayView extends GridPane implements Initializable {
      * Reclaulcates the data values for the current runway
      */
     protected void recalculateDataValues() {
+        if (this.runway == null)
+            return;
         // Clear all values
         this.rightClearway = 0;
         this.leftClearway = 0;
@@ -295,7 +299,7 @@ public abstract class RunwayView extends GridPane implements Initializable {
      * 
      * @param color the color to draw the arrow
      */
-    private void drawArrow(GraphicsContext gc, double x1, double y1, double x2, double y2,
+    protected void drawArrow(GraphicsContext gc, double x1, double y1, double x2, double y2,
                     Paint color) {
         double arrowSize = 4;
         gc.setStroke(color);

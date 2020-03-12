@@ -18,7 +18,6 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.SVGPath;
 import javafx.scene.text.TextAlignment;
@@ -52,6 +51,7 @@ public abstract class RunwayView extends GridPane implements Initializable {
     protected double rightOffset;
     protected double runwayLength; // Maximum TORA
 
+    protected double obstacleLeft;
     protected double totalLength;
 
     /*
@@ -208,6 +208,8 @@ public abstract class RunwayView extends GridPane implements Initializable {
         this.leftStopway = 0;
         this.runwayLength = 0;
         this.totalLength = 0;
+        this.obstacleLeft = 0;
+        double addToObstaceLeft = 0;
         Iterator<LogicalRunway> lrs = this.runway.getLogicalRunways().iterator();
         while (lrs.hasNext()) {
             LogicalRunway lr = lrs.next();
@@ -216,6 +218,7 @@ public abstract class RunwayView extends GridPane implements Initializable {
             if (lr.getHeading() <= 18) { // On left so set right stopway and clearway
                 this.rightClearway = clearway > this.rightClearway ? clearway : this.rightClearway;
                 this.rightStopway = stopway > this.rightStopway ? stopway : this.rightStopway;
+                addToObstaceLeft = lr.getDisplacedThreshold();
             } else {
                 this.leftClearway = clearway > this.leftStopway ? clearway : this.leftClearway;
                 this.leftStopway = stopway > this.leftStopway ? stopway : this.leftStopway;
@@ -226,8 +229,10 @@ public abstract class RunwayView extends GridPane implements Initializable {
         }
         this.leftOffset = Math.max(stripEnd, Math.max(this.leftClearway, this.leftStopway));
         this.rightOffset = Math.max(stripEnd, Math.max(this.rightClearway, this.rightStopway));
+        this.obstacleLeft = this.leftOffset + addToObstaceLeft;
         this.totalLength = this.padding + this.leftOffset + this.runwayLength + this.rightOffset
                         + this.padding;
+
     }
 
     /*
@@ -245,16 +250,18 @@ public abstract class RunwayView extends GridPane implements Initializable {
     }
 
     protected void drawDistanceArrow(GraphicsContext gc, double startX, double endX,
-                    double distanceFromRunway, double yPosition, Paint color, String label) {
+                    double distanceFromRunway, Boolean above, Paint color, String label) {
         // calculate position
         double runwayCentreLine = runwayCanvas.getHeight() / 2;
         double runwayTop = runwayCentreLine - (runwayWidth / 2);
         double runwayBottom = runwayCentreLine + (runwayWidth / 2);
-        double y;
-        if (yPosition < runwayCentreLine) { // Above
+        double y, runwayEdge;
+        if (above) { // Above
             y = runwayTop - distanceFromRunway;
+            runwayEdge = runwayTop;
         } else {
             y = runwayBottom + distanceFromRunway;
+            runwayEdge = runwayBottom;
         }
         // Draw arrow
         gc.setStroke(color);
@@ -263,8 +270,8 @@ public abstract class RunwayView extends GridPane implements Initializable {
         drawArrow(gc, startX, y, endX, y, color);
         // Draw lines to meet arrow
         gc.setStroke(color);
-        gc.strokeLine(startX, y, startX, yPosition);
-        gc.strokeLine(endX, y, endX, yPosition);
+        gc.strokeLine(startX, y, startX, runwayEdge);
+        gc.strokeLine(endX, y, endX, runwayEdge);
         // Draw label
         gc.setTextAlign(TextAlignment.CENTER);
         gc.fillText(label, (startX + endX) / 2, y - 5);

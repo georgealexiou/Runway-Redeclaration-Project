@@ -2,16 +2,15 @@ package org.comp2211.group6.view;
 
 import java.net.URL;
 import java.util.Iterator;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import org.comp2211.group6.Model.LogicalRunway;
+import org.comp2211.group6.Model.RunwayParameters;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.text.TextAlignment;
-import javafx.scene.transform.Affine;
-import javafx.scene.transform.Transform;
 
 public class TopDownView extends RunwayView {
 
@@ -31,6 +30,13 @@ public class TopDownView extends RunwayView {
             drawRunwayStrip(gc);
             drawThresholdMarkers(gc);
             drawDisplacedThreshold(gc);
+            drawRunwayValues(gc, true);
+            if (currentObstacle != null) {
+                drawObstacle(gc);
+            }
+            if (currentLogicalRunway.getRecalculatedParameters().getTORA() != 0) {
+                drawRunwayValues(gc, false);
+            }
         }
     }
 
@@ -126,11 +132,77 @@ public class TopDownView extends RunwayView {
         gc.setLineDashes();
         gc.strokeLine(endX, canvasMiddleY + (runwayWidth / 2), endX,
                         canvasMiddleY - (runwayWidth / 2));
-        drawDistanceArrow(gc, startX, endX, (runwayWidth / 4), canvasMiddleY - (runwayWidth / 2),
-                        Color.BLACK, "DT: " + currentLogicalRunway.getDisplacedThreshold() + "m");
+        drawDistanceArrow(gc, startX, endX, (runwayWidth / 4), true, Color.BLACK,
+                        "DT: " + currentLogicalRunway.getDisplacedThreshold() + "m");
 
     }
 
-    // TODO: Draw Original Values
     // TODO: Draw Reclaculated Values
+    private void drawRunwayValues(GraphicsContext gc, Boolean original) {
+        RunwayParameters params;
+        double startX;
+        double displacedThresholdScaled = scale(currentLogicalRunway.getDisplacedThreshold(),
+                        runwayCanvas.getWidth());
+        double mult;
+        if (currentLogicalRunway.getHeading() <= 18) {
+            startX = scale(leftOffset, runwayCanvas.getWidth());
+            mult = 1;
+        } else {
+            startX = scale(leftOffset + runwayLength, runwayCanvas.getWidth());
+            mult = -1;
+        }
+
+        if (original) {
+            params = currentLogicalRunway.getParameters();
+        } else {
+            params = currentLogicalRunway.getRecalculatedParameters();
+        }
+
+        int i = 2;
+
+        // Draw LDA - Smallest
+        double endX = startX + (mult * (scale(params.getLDA(), runwayCanvas.getWidth())
+                        + displacedThresholdScaled));
+        drawDistanceArrow(gc, startX + (mult * displacedThresholdScaled), endX,
+                        (runwayWidth / 4) * i++, original, Color.BLACK,
+                        "LDA: " + params.getLDA() + "m");
+
+        // Draw TORA
+        endX = startX + (mult * scale(params.getTORA(), runwayCanvas.getWidth()));
+        drawDistanceArrow(gc, startX, endX, (runwayWidth / 4) * i++, original, Color.BLACK,
+                        "TORA: " + params.getTORA() + "m");
+
+        if (params.getASDA() > params.getTODA()) {
+            // Draw TODA
+            endX = startX + (mult * scale(params.getTODA(), runwayCanvas.getWidth()));
+            drawDistanceArrow(gc, startX, endX, (runwayWidth / 4) * i++, original, Color.BLACK,
+                            "TODA: " + params.getTODA() + "m");
+        }
+
+        // Draw ASDA
+        endX = startX + (mult * scale(params.getASDA(), runwayCanvas.getWidth()));
+        drawDistanceArrow(gc, startX, endX, (runwayWidth / 4) * i++, original, Color.BLACK,
+                        "ASDA: " + params.getASDA() + "m");
+
+        if (params.getTODA() >= params.getASDA()) {
+            // Draw TODA
+            endX = startX + (mult * scale(params.getTODA(), runwayCanvas.getWidth()));
+            drawDistanceArrow(gc, startX, endX, (runwayWidth / 4) * i++, original, Color.BLACK,
+                            "TODA: " + params.getTODA() + "m");
+        }
+
+    }
+
+    private void drawObstacle(GraphicsContext gc) {
+        gc.setFill(Color.RED);
+        gc.fillRect(scale(obstacleLeft + currentObstacle.distanceFromLeftThreshold,
+                        runwayCanvas.getWidth()),
+                        runwayCanvas.getHeight() / 2 - currentObstacle.distanceToCentreLine
+                                        - currentObstacle.getWidth() / 2,
+                        scale(runwayLength - (currentObstacle.distanceFromLeftThreshold
+                                        + currentObstacle.distanceFromRightThreshold),
+                                        runwayCanvas.getWidth()),
+                        currentObstacle.getWidth());
+    }
+
 }

@@ -188,9 +188,9 @@ public class MainView extends GridPane implements Initializable {
                         new LogicalRunway(27, 0, 'R', new RunwayParameters(3884, 3962, 3884, 3884));
         Runway runway3 = new Runway("09R27L");
         LogicalRunway runway4 = new LogicalRunway(9, 307, 'R',
-                        new RunwayParameters(3902, 3902, 3902, 3595));
+                        new RunwayParameters(3660, 3660, 3660, 3353));
         LogicalRunway runway5 =
-                        new LogicalRunway(27, 0, 'L', new RunwayParameters(3884, 3962, 3884, 3884));
+                        new LogicalRunway(27, 0, 'L', new RunwayParameters(3660, 3660, 3660, 3660));
         try {
             runway.addRunway(runway1);
             runway.addRunway(runway2);

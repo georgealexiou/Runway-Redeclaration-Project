@@ -192,7 +192,6 @@ public class TopDownView extends RunwayView {
     private void newDrawRunwayParams(GraphicsContext gc, boolean original) {
         RunwayParameters params = original ? currentLogicalRunway.getParameters()
                         : currentLogicalRunway.getRecalculatedParameters();
-        double toraOffset, todaOffset, ldaOffset, asdaOffset;
         double startX;
         int mult;
         if (currentLogicalRunway.getHeading() <= 18) {
@@ -202,63 +201,96 @@ public class TopDownView extends RunwayView {
             startX = scale(leftOffset + runwayLength, runwayCanvas.getWidth());
             mult = -1;
         }
+        boolean towardstowards = true;
+        // TODO: Replace this with the value from a breakdown calss
         if (!original && currentObstacle != null) {
             if (currentObstacle.distanceFromLeftThreshold < currentObstacle.distanceFromRightThreshold) { //
-                if (currentLogicalRunway.getHeading() <= 18) { // Take off Away, Landing Over
-                    drawTORA(gc, params.getTORA(), false, original, mult, 2, startX);
-                } else { // Take off towards, landing towards
-                    drawTORA(gc, params.getTORA(), true, original, mult, 2, startX);
+                if (currentLogicalRunway.getHeading() <= 18) {
+                    towardstowards = false;
                 }
             } else {
-                if (currentLogicalRunway.getHeading() <= 18) { // Take off Towards, Landing Towards
-                    drawTORA(gc, params.getTORA(), true, original, mult, 2, startX);
-                } else { // Take off Away, Landing Over
-                    drawTORA(gc, params.getTORA(), false, original, mult, 2, startX);
+                if (currentLogicalRunway.getHeading() > 18) {
+                    towardstowards = false;
                 }
             }
-        } else {
-            drawTORA(gc, params.getTORA(), false, original, mult, 2, startX);
         }
+        drawRunwayParameters(gc, params, towardstowards, original, mult, 2, startX);
     }
 
     /*
-     * Draws the TORA
-     * 
-     * @param gc The graphics context
-     * 
-     * @param value The TORA value
-     * 
-     * @param towards Is landing towards or over
-     * 
-     * @param original Is this an original or recalculated
-     * 
-     * @param mult Multiplier for swapping direction
-     * 
-     * @param pos Position of line in (runwayWidth / 4)'s from edge of runway
-     * 
-     * @param startX The start of the threshold
+     * Draws the TORA, TODA and ASDA
      */
-    private void drawTORA(GraphicsContext gc, double value, boolean towards, boolean original,
-                    int mult, int pos, double startX) {
-        String label = "TORA: " + value + "m";
+    private void drawRunwayParameters(GraphicsContext gc, RunwayParameters params, boolean towards,
+                    boolean original, int mult, int pos, double startX) {
+        String toraLabel = "TORA: " + params.getTORA() + "m";
+        double tora = params.getTORA();
+        String todaLabel = "TODA: " + params.getTODA() + "m";
+        double toda = params.getTODA();
+        String asdaLabel = "ASDA: " + params.getASDA() + "m";
+        double asda = params.getASDA();
+        String ldaLabel = "LDA: " + params.getLDA() + "m";
+        double lda = params.getLDA();
         if (original) {
-            double endX = startX + (mult * scale(value, runwayCanvas.getWidth()));
-            drawDistanceArrow(gc, startX, endX, (runwayWidth / 4) * pos, original, Color.BLACK,
-                            label);
+            double endX = startX + (mult * scale(tora, runwayCanvas.getWidth()));
+            drawDistanceArrow(gc, startX, endX, (runwayWidth / 4) * pos++, original, Color.BLACK,
+                            toraLabel);
+            endX = startX + (mult * scale(toda, runwayCanvas.getWidth()));
+            drawDistanceArrow(gc, startX, endX, (runwayWidth / 4) * pos++, original, Color.BLACK,
+                            todaLabel);
+            endX = startX + (mult * scale(asda, runwayCanvas.getWidth()));
+            drawDistanceArrow(gc, startX, endX, (runwayWidth / 4) * pos++, original, Color.BLACK,
+                            asdaLabel);
+            startX += (mult * scale(currentLogicalRunway.getDisplacedThreshold(),
+                            runwayCanvas.getWidth()));
+            endX = startX + (mult * scale(lda, runwayCanvas.getWidth()));
+            drawDistanceArrow(gc, startX, endX, (runwayWidth / 4) * pos++, original, Color.BLACK,
+                            ldaLabel);
         } else {
-            label = "(R)" + label;
+            toraLabel = "(R)" + toraLabel;
+            todaLabel = "(R)" + todaLabel;
+            asdaLabel = "(R)" + asdaLabel;
+            ldaLabel = "(R)" + ldaLabel;
             if (towards) {
-                double endX = startX + (mult * scale(value, runwayCanvas.getWidth()));
-                drawDistanceArrow(gc, startX, endX, (runwayWidth / 4) * pos, original, Color.BLACK,
-                                label);
+                double endX = startX + (mult * scale(tora, runwayCanvas.getWidth()));
+                drawDistanceArrow(gc, startX, endX, (runwayWidth / 4) * pos++, original,
+                                Color.BLACK, toraLabel);
+                endX = startX + (mult * scale(toda, runwayCanvas.getWidth()));
+                drawDistanceArrow(gc, startX, endX, (runwayWidth / 4) * pos++, original,
+                                Color.BLACK, todaLabel);
+                endX = startX + (mult * scale(asda, runwayCanvas.getWidth()));
+                drawDistanceArrow(gc, startX, endX, (runwayWidth / 4) * pos++, original,
+                                Color.BLACK, asdaLabel);
                 // TODO: Add in slope calculation and strip end
                 // TODO: Add in RESA
+                startX += scale(currentLogicalRunway.getDisplacedThreshold() * mult,
+                                runwayCanvas.getWidth());
+                endX = startX + (mult * scale(lda, runwayCanvas.getWidth()));
+                drawDistanceArrow(gc, startX, endX, (runwayWidth / 4) * pos++, original,
+                                Color.BLACK, ldaLabel);
             } else {
-                double endX = startX + scale((mult * runwayLength), runwayCanvas.getWidth());
-                startX = endX - scale(mult * value, runwayCanvas.getWidth());
-                drawDistanceArrow(gc, startX, endX, (runwayWidth / 4) * pos, original, Color.BLACK,
-                                label);
+                double originalStartx = startX;
+                double endX = originalStartx
+                                + scale((mult * runwayLength), runwayCanvas.getWidth());
+                startX = endX - scale(mult * tora, runwayCanvas.getWidth());
+                drawDistanceArrow(gc, startX, endX, (runwayWidth / 4) * pos++, original,
+                                Color.BLACK, toraLabel);
+                endX = originalStartx + scale(
+                                (mult * runwayLength + calculateClearway(currentLogicalRunway)),
+                                runwayCanvas.getWidth());
+                startX = endX - scale(mult * toda, runwayCanvas.getWidth());
+                drawDistanceArrow(gc, startX, endX, (runwayWidth / 4) * pos++, original,
+                                Color.BLACK, todaLabel);
+                endX = originalStartx + scale(
+                                (mult * runwayLength + calculateStopway(currentLogicalRunway)),
+                                runwayCanvas.getWidth());
+                startX = endX - scale(mult * asda, runwayCanvas.getWidth());
+                drawDistanceArrow(gc, startX, endX, (runwayWidth / 4) * pos++, original,
+                                Color.BLACK, asdaLabel);
                 // TODO: Add in Blast Protection
+                // TODO: Add in strip end, slope calculation
+                startX = endX - scale(mult * lda, runwayCanvas.getWidth());
+                drawDistanceArrow(gc, startX, endX, (runwayWidth / 4) * pos++, original,
+                                Color.BLACK, ldaLabel);
             }
         }
     }

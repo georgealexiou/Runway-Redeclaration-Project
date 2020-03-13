@@ -250,7 +250,6 @@ public class MainView extends GridPane implements Initializable {
         if (this.currentView != topDownView && this.currentView != sideOnView) {
             return;
         }
-        // TODO: Update all data in currently hidden view
         RunwayView changeToView;
         if (this.currentView == topDownView) {
             changeToView = sideOnView;

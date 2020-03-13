@@ -24,32 +24,23 @@ public class TopDownView extends RunwayView {
         this.viewTitle.setText("Top Down View");
     }
 
+    @Override
     protected void redraw() {
+        super.redraw();
         if (this.runway != null) {
             GraphicsContext gc = runwayCanvas.getGraphicsContext2D();
-            gc.clearRect(0, 0, runwayCanvas.getWidth(), runwayCanvas.getHeight());
             drawClearedAndGraded(gc);
             drawRunwayStrip(gc);
             drawThresholdMarkers(gc);
             drawDisplacedThreshold(gc);
             drawRunwayParams(gc, true);
             if (currentObstacle != null) {
-                System.out.println("Obstacle: " + currentObstacle.getName());
                 drawObstacle(gc);
             }
             if (currentLogicalRunway.getRecalculatedParameters().getTORA() != 0) {
-                System.out.println("REACHED C");
                 drawRunwayParams(gc, false);
             }
         }
-    }
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        runwayCanvas.widthProperty().bind(this.widthProperty().subtract(100));
-        runwayCanvas.heightProperty().bind(this.heightProperty().subtract(150));
-        runwayCanvas.widthProperty().addListener(observable -> redraw());
-        runwayCanvas.heightProperty().addListener(observable -> redraw());
     }
 
     private void drawRunwayStrip(GraphicsContext gc) {
@@ -117,135 +108,28 @@ public class TopDownView extends RunwayView {
         }
     }
 
-    // TODO: Draw Displaced Threshold
-    private void drawDisplacedThreshold(GraphicsContext gc) {
-        double threshold = currentLogicalRunway.getDisplacedThreshold();
-        double canvasMiddleY = runwayCanvas.getHeight() / 2;
-        if (threshold == 0)
-            return;
-        gc.setStroke(Color.LIGHTGREEN);
-        double endX, startX;
-        if (currentLogicalRunway.getHeading() <= 18) {
-            endX = scale(leftOffset + threshold, runwayCanvas.getWidth());
-            startX = scale(leftOffset, runwayCanvas.getWidth());
-        } else {
-            endX = scale(leftOffset + runwayLength - threshold, runwayCanvas.getWidth());
-            startX = scale(leftOffset + runwayLength, runwayCanvas.getWidth());
-        }
-        gc.setStroke(Color.LIGHTGREEN);
-        gc.setLineDashes();
-        gc.strokeLine(endX, canvasMiddleY + (runwayWidth / 2), endX,
-                        canvasMiddleY - (runwayWidth / 2));
-        drawDistanceArrow(gc, startX, endX, (runwayWidth / 4), true, Color.BLACK,
-                        "DT: " + currentLogicalRunway.getDisplacedThreshold() + "m");
+    // private void drawDisplacedThreshold(GraphicsContext gc) {
+    // double threshold = currentLogicalRunway.getDisplacedThreshold();
+    // double canvasMiddleY = runwayCanvas.getHeight() / 2;
+    // if (threshold == 0)
+    // return;
+    // gc.setStroke(Color.LIGHTGREEN);
+    // double endX, startX;
+    // if (currentLogicalRunway.getHeading() <= 18) {
+    // endX = scale(leftOffset + threshold, runwayCanvas.getWidth());
+    // startX = scale(leftOffset, runwayCanvas.getWidth());
+    // } else {
+    // endX = scale(leftOffset + runwayLength - threshold, runwayCanvas.getWidth());
+    // startX = scale(leftOffset + runwayLength, runwayCanvas.getWidth());
+    // }
+    // gc.setStroke(Color.LIGHTGREEN);
+    // gc.setLineDashes();
+    // gc.strokeLine(endX, canvasMiddleY + (runwayWidth / 2), endX,
+    // canvasMiddleY - (runwayWidth / 2));
+    // drawDistanceArrow(gc, startX, endX, (runwayWidth / 4), true, Color.BLACK,
+    // "DT: " + currentLogicalRunway.getDisplacedThreshold() + "m");
 
-    }
-
-    private void drawRunwayParams(GraphicsContext gc, boolean original) {
-        RunwayParameters params = original ? currentLogicalRunway.getParameters()
-                        : currentLogicalRunway.getRecalculatedParameters();
-        double startX;
-        int mult;
-        if (currentLogicalRunway.getHeading() <= 18) {
-            startX = scale(leftOffset, runwayCanvas.getWidth());
-            mult = 1;
-        } else {
-            startX = scale(leftOffset + runwayLength, runwayCanvas.getWidth());
-            mult = -1;
-        }
-        boolean towardstowards = true;
-        // TODO: Replace this with the value from a breakdown calss
-        if (!original && currentObstacle != null) {
-            if (currentObstacle.distanceFromLeftThreshold < currentObstacle.distanceFromRightThreshold) { //
-                if (currentLogicalRunway.getHeading() <= 18) {
-                    towardstowards = false;
-                }
-            } else {
-                if (currentLogicalRunway.getHeading() > 18) {
-                    towardstowards = false;
-                }
-            }
-        }
-        drawRunwayParameters(gc, params, towardstowards, original, mult, 2, startX);
-    }
-
-    /*
-     * Draws the TORA, TODA and ASDA
-     */
-    private void drawRunwayParameters(GraphicsContext gc, RunwayParameters params, boolean towards,
-                    boolean original, int mult, int pos, double startX) {
-        String toraLabel = "TORA: " + params.getTORA() + "m";
-        double tora = params.getTORA();
-        String todaLabel = "TODA: " + params.getTODA() + "m";
-        double toda = params.getTODA();
-        String asdaLabel = "ASDA: " + params.getASDA() + "m";
-        double asda = params.getASDA();
-        String ldaLabel = "LDA: " + params.getLDA() + "m";
-        double lda = params.getLDA();
-        if (original) {
-            double endX = startX + (mult * scale(tora, runwayCanvas.getWidth()));
-            drawDistanceArrow(gc, startX, endX, (runwayWidth / 4) * pos++, original, Color.BLACK,
-                            toraLabel);
-            endX = startX + (mult * scale(toda, runwayCanvas.getWidth()));
-            drawDistanceArrow(gc, startX, endX, (runwayWidth / 4) * pos++, original, Color.BLACK,
-                            todaLabel);
-            endX = startX + (mult * scale(asda, runwayCanvas.getWidth()));
-            drawDistanceArrow(gc, startX, endX, (runwayWidth / 4) * pos++, original, Color.BLACK,
-                            asdaLabel);
-            startX += (mult * scale(currentLogicalRunway.getDisplacedThreshold(),
-                            runwayCanvas.getWidth()));
-            endX = startX + (mult * scale(lda, runwayCanvas.getWidth()));
-            drawDistanceArrow(gc, startX, endX, (runwayWidth / 4) * pos++, original, Color.BLACK,
-                            ldaLabel);
-        } else {
-            toraLabel = "(R)" + toraLabel;
-            todaLabel = "(R)" + todaLabel;
-            asdaLabel = "(R)" + asdaLabel;
-            ldaLabel = "(R)" + ldaLabel;
-            if (towards) {
-                double endX = startX + (mult * scale(tora, runwayCanvas.getWidth()));
-                drawDistanceArrow(gc, startX, endX, (runwayWidth / 4) * pos++, original,
-                                Color.BLACK, toraLabel);
-                endX = startX + (mult * scale(toda, runwayCanvas.getWidth()));
-                drawDistanceArrow(gc, startX, endX, (runwayWidth / 4) * pos++, original,
-                                Color.BLACK, todaLabel);
-                endX = startX + (mult * scale(asda, runwayCanvas.getWidth()));
-                drawDistanceArrow(gc, startX, endX, (runwayWidth / 4) * pos++, original,
-                                Color.BLACK, asdaLabel);
-                // TODO: Add in slope calculation and strip end
-                // TODO: Add in RESA
-                startX += scale(currentLogicalRunway.getDisplacedThreshold() * mult,
-                                runwayCanvas.getWidth());
-                endX = startX + (mult * scale(lda, runwayCanvas.getWidth()));
-                drawDistanceArrow(gc, startX, endX, (runwayWidth / 4) * pos++, original,
-                                Color.BLACK, ldaLabel);
-            } else {
-                double originalStartx = startX;
-                double endX = originalStartx
-                                + scale((mult * runwayLength), runwayCanvas.getWidth());
-                startX = endX - scale(mult * tora, runwayCanvas.getWidth());
-                drawDistanceArrow(gc, startX, endX, (runwayWidth / 4) * pos++, original,
-                                Color.BLACK, toraLabel);
-                endX = originalStartx + scale(
-                                (mult * runwayLength + calculateClearway(currentLogicalRunway)),
-                                runwayCanvas.getWidth());
-                startX = endX - scale(mult * toda, runwayCanvas.getWidth());
-                drawDistanceArrow(gc, startX, endX, (runwayWidth / 4) * pos++, original,
-                                Color.BLACK, todaLabel);
-                endX = originalStartx + scale(
-                                (mult * runwayLength + calculateStopway(currentLogicalRunway)),
-                                runwayCanvas.getWidth());
-                startX = endX - scale(mult * asda, runwayCanvas.getWidth());
-                drawDistanceArrow(gc, startX, endX, (runwayWidth / 4) * pos++, original,
-                                Color.BLACK, asdaLabel);
-                // TODO: Add in Blast Protection
-                // TODO: Add in strip end, slope calculation
-                startX = endX - scale(mult * lda, runwayCanvas.getWidth());
-                drawDistanceArrow(gc, startX, endX, (runwayWidth / 4) * pos++, original,
-                                Color.BLACK, ldaLabel);
-            }
-        }
-    }
+    // }
 
     private void drawObstacle(GraphicsContext gc) {
         gc.setFill(Color.RED);
@@ -254,11 +138,11 @@ public class TopDownView extends RunwayView {
         double y = runwayCanvas.getHeight() / 2 - currentObstacle.distanceToCentreLine
                         - currentObstacle.getWidth() / 2;
         gc.fillRect(startX - 5, y, 10, currentObstacle.getWidth());
-        drawArrow(gc, startX, runwayCanvas.getHeight() / 2 + (runwayWidth / 4) * 8, startX, y + 5,
-                        Color.RED);
+        drawArrow(gc, startX, runwayCanvas.getHeight() / 2 + (runwayArrowPadding) * 8, startX,
+                        y + 5, Color.RED);
         gc.setTextAlign(TextAlignment.CENTER);
         gc.fillText(currentObstacle.getName(), startX,
-                        runwayCanvas.getHeight() / 2 + (runwayWidth / 4) * 8 + 10);
+                        runwayCanvas.getHeight() / 2 + (runwayArrowPadding) * 8 + 10);
     }
 
     private void drawClearedAndGraded(GraphicsContext gc) {

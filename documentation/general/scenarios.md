@@ -88,7 +88,7 @@ The obstacle is now loaded on to the runway if one is present or saved until a r
 ### Load Obstacle - Loading
 
 Chris wants to load a predefined obstacle to help in his understanding of the program's function. He clicks the 'Load Obstacle' button from the side panel. 
-The 'Load an Obstacle' screen (variation of Create and Obstacle) is shown with the name, description and height preloaded.
+The 'Load an Obstacle' screen (variation of Create an Obstacle) is shown with the name, description and height preloaded.
 He is asked to provide the distances from the centre line, left and right before continuing.
 Upon completing the fields he can press 'Save' and the obstacle will be available in the current session.
 

@@ -53,8 +53,4 @@ public class SideOnView extends RunwayView {
                         runwayCanvas.getHeight() / 2 + (runwayArrowPadding) * 8 + 10);
     }
 
-    private void drawSlope(GraphicsContext gc) {
-
-    }
-
 }

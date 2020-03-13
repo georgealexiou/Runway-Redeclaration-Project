@@ -212,8 +212,8 @@ public class CLI {
 
         switch (selection.charAt(0)) {
             case 'Y':
-                ArrayList<String> breakdowns = calculator.getLogicalRunwayBreakDown();
-                Iterator iter1 = breakdowns.iterator();
+                ArrayList<String> breakdowns = calculator.getAllBreakdowns();
+                Iterator<String> iter1 = breakdowns.iterator();
 
                 while (iter1.hasNext()) {
                     String output = (String) iter1.next();

@@ -39,6 +39,11 @@
     </dependency>
     <dependency>
         <groupId>org.openjfx</groupId>
+        <artifactId>javafx-fxml</artifactId>
+        <version>13</version>
+    </dependency>
+    <dependency>
+        <groupId>org.openjfx</groupId>
         <artifactId>javafx-graphics</artifactId>
         <version>13</version>
         <classifier>win</classifier>

@@ -7,8 +7,9 @@ public class LoadAnObstacleView extends ObstacleView {
         loadFxml(getClass().getResource("/obstacle_view.fxml"), this);
         this.obstacleViewTitle.setText("Load an Obstacle");
     }
-    
-    public void loadPredefinedObstacle(String name, String description, double length, double width, double height) {
+
+    public void loadPredefinedObstacle(String name, String description, double length, double width,
+                    double height) {
         this.obstacleName.setText(name);
         this.obstacleDescription.setText(description);
         this.obstacleLength.setText(String.valueOf(length));

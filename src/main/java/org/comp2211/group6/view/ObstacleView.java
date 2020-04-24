@@ -19,10 +19,10 @@ public abstract class ObstacleView extends GridPane implements Initializable {
     /*
      * DATA
      */
-    
+
     protected Obstacle newObstacle;
     BooleanBinding disableBindings;
-    
+
     /*
      * View Components
      */
@@ -37,13 +37,13 @@ public abstract class ObstacleView extends GridPane implements Initializable {
 
     @FXML
     private GridPane entryGridPane;
-    
+
     @FXML
     protected TextField obstacleName;
 
     @FXML
     protected TextField obstacleDescription;
-    
+
     @FXML
     protected TextField obstacleLength;
 
@@ -61,11 +61,11 @@ public abstract class ObstacleView extends GridPane implements Initializable {
 
     @FXML
     protected TextField obstacleDistanceFromRight;
-    
+
     /*
      * Actions/Listeners for Save button and Export button
      */
-    
+
     /**
      * Needed to be implemented
      */
@@ -76,33 +76,33 @@ public abstract class ObstacleView extends GridPane implements Initializable {
 
     @FXML
     void saveAction(ActionEvent event) {
-        newObstacle = new Obstacle(
-                obstacleName.getText(), 
-                obstacleDescription.getText(), 
-                Double.parseDouble(obstacleLength.getText()), 
-                Double.parseDouble(obstacleWidth.getText()), 
-                Double.parseDouble(obstacleHeight.getText()), 
-                Double.parseDouble(obstacleDistanceFromCentreLine.getText()), 
-                Double.parseDouble(obstacleDistanceFromLeft.getText()), 
-                Double.parseDouble(obstacleDistanceFromRight.getText()));
-    }
-    
-    public ObstacleView() {
+        newObstacle = new Obstacle(obstacleName.getText(), obstacleDescription.getText(),
+                        Double.parseDouble(obstacleLength.getText()),
+                        Double.parseDouble(obstacleWidth.getText()),
+                        Double.parseDouble(obstacleHeight.getText()),
+                        Double.parseDouble(obstacleDistanceFromCentreLine.getText()),
+                        Double.parseDouble(obstacleDistanceFromLeft.getText()),
+                        Double.parseDouble(obstacleDistanceFromRight.getText()));
     }
 
+    public ObstacleView() {}
+
     /*
-     * Listener to enable save button and export button when all TextFields(except description) have been filled. 
+     * Listener to enable save button and export button when all TextFields(except description) have
+     * been filled.
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        disableBindings = 
-                obstacleName.textProperty().isEmpty().or(
-                        obstacleLength.textProperty().isEmpty().or(
-                                obstacleWidth.textProperty().isEmpty().or(
-                                        obstacleHeight.textProperty().isEmpty().or(
-                                                obstacleDistanceFromCentreLine.textProperty().isEmpty().or(
-                                                        obstacleDistanceFromLeft.textProperty().isEmpty().or(
-                                                                obstacleDistanceFromRight.textProperty().isEmpty()))))));
+        disableBindings = obstacleName.textProperty().isEmpty().or(obstacleLength.textProperty()
+                        .isEmpty()
+                        .or(obstacleWidth.textProperty().isEmpty().or(obstacleHeight.textProperty()
+                                        .isEmpty()
+                                        .or(obstacleDistanceFromCentreLine.textProperty().isEmpty()
+                                                        .or(obstacleDistanceFromLeft.textProperty()
+                                                                        .isEmpty()
+                                                                        .or(obstacleDistanceFromRight
+                                                                                        .textProperty()
+                                                                                        .isEmpty()))))));
         obstacleSaveButton.disableProperty().bind(disableBindings);
         obstacleExportButton.disableProperty().bind(disableBindings);
     }
@@ -120,7 +120,7 @@ public abstract class ObstacleView extends GridPane implements Initializable {
             e.printStackTrace();
         }
     }
-    
+
     protected Obstacle getNewObstacle() {
         return newObstacle;
     }

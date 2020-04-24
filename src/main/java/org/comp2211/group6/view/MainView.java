@@ -36,6 +36,12 @@ public class MainView extends GridPane implements Initializable {
     private TopDownView topDownView;
     @FXML
     private SideOnView sideOnView;
+    @FXML
+    private EditAnObstacleView editAnObstacleView;
+    @FXML 
+    private CreateAnObstacleView createAnObstacleView;
+    @FXML 
+    private LoadAnObstacleView loadAnObstacleView;
 
     @FXML
     private VBox splashScreen;
@@ -107,8 +113,8 @@ public class MainView extends GridPane implements Initializable {
     }
 
     private void updateRunwayPicker() {
-        this.runwayPicker.setItems(
-                        FXCollections.observableArrayList(this.currentAirport.getRunways()));
+        this.runwayPicker
+                .setItems(FXCollections.observableArrayList(this.currentAirport.getRunways()));
         this.runwayPicker.getSelectionModel().selectFirst();
         this.runwayPicker.valueProperty().addListener((e, oldVal, newVal) -> {
             this.currentRunway = newVal;
@@ -129,7 +135,7 @@ public class MainView extends GridPane implements Initializable {
             @Override
             public Runway fromString(String string) {
                 return runwayPicker.getItems().stream().filter(x -> x.getName().equals(string))
-                                .findFirst().orElse(null);
+                        .findFirst().orElse(null);
             }
         });
     }
@@ -153,7 +159,7 @@ public class MainView extends GridPane implements Initializable {
             @Override
             public Obstacle fromString(String string) {
                 return obstaclePicker.getItems().stream().filter(x -> x.getName().equals(string))
-                                .findFirst().orElse(null);
+                        .findFirst().orElse(null);
             }
         });
     }
@@ -182,15 +188,15 @@ public class MainView extends GridPane implements Initializable {
             airport = new Airport("Gatwick");
         }
         Runway runway = new Runway("09L27R");
-        LogicalRunway runway1 = new LogicalRunway(9, 306, 'L',
-                        new RunwayParameters(3902, 3902, 3902, 3595));
+        LogicalRunway runway1 =
+                new LogicalRunway(9, 306, 'L', new RunwayParameters(3902, 3902, 3902, 3595));
         LogicalRunway runway2 =
-                        new LogicalRunway(27, 0, 'R', new RunwayParameters(3884, 3962, 3884, 3884));
+                new LogicalRunway(27, 0, 'R', new RunwayParameters(3884, 3962, 3884, 3884));
         Runway runway3 = new Runway("09R27L");
-        LogicalRunway runway4 = new LogicalRunway(9, 307, 'R',
-                        new RunwayParameters(3660, 3660, 3660, 3353));
+        LogicalRunway runway4 =
+                new LogicalRunway(9, 307, 'R', new RunwayParameters(3660, 3660, 3660, 3353));
         LogicalRunway runway5 =
-                        new LogicalRunway(27, 0, 'L', new RunwayParameters(3660, 3660, 3660, 3660));
+                new LogicalRunway(27, 0, 'L', new RunwayParameters(3660, 3660, 3660, 3660));
         try {
             runway.addRunway(runway1);
             runway.addRunway(runway2);
@@ -218,9 +224,11 @@ public class MainView extends GridPane implements Initializable {
 
     @FXML
     private void loadObstacle(ActionEvent e) {
-        // TODO: Load the obstacle loading dialog
-        // TODO: Set the obstacle
-
+        this.currentView.setVisible(false);
+        this.loadAnObstacleView.loadPredefinedObstacle("Obstacle On The Ground", "predefined obstacle for testing", 53.5, 70.3, 200);
+        this.currentView = this.loadAnObstacleView;
+        this.currentView.setVisible(true);
+        
         Obstacle ob1 = new Obstacle("Plane Crash", "", 20, 10, 12, 0, -50, 3646);
         this.obstacles.add(ob1);
         this.updateAirportFields();
@@ -228,14 +236,21 @@ public class MainView extends GridPane implements Initializable {
 
     @FXML
     private void createObstacle(ActionEvent e) {
-        // TODO: Load the obstacle creation dialog
-        // TODO: Set the obstacle
+        this.currentView.setVisible(false);
+        this.currentView = this.createAnObstacleView;
+        this.currentView.setVisible(true);
     }
 
     @FXML
     private void editObstacle(ActionEvent e) {
-        // TODO: Load the edit obstacle screen
-        // TODO: Set the obstacle
+        if(currentObstacle == null) {
+            throw new NullPointerException("No obstacle can be edited.");
+        }else {
+            this.currentView.setVisible(false);
+            editAnObstacleView.loadCurrentObstacle(currentObstacle);
+            this.currentView = this.editAnObstacleView;
+            this.currentView.setVisible(true);
+        }
     }
 
     @FXML
@@ -258,8 +273,8 @@ public class MainView extends GridPane implements Initializable {
         }
         changeToView.setRunway(((RunwayView) this.currentView).getRunway());
         changeToView.setObstacle(((RunwayView) this.currentView).getCurrentObstacle());
-        changeToView.setCurrentLogicalRunway(
-                        ((RunwayView) this.currentView).getCurrentLogicalRunway());
+        changeToView
+                .setCurrentLogicalRunway(((RunwayView) this.currentView).getCurrentLogicalRunway());
         this.currentView.setVisible(false);
         this.currentView = changeToView;
         this.currentView.setVisible(true);

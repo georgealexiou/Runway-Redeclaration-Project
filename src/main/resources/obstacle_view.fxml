@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<fx:root alignment="CENTER" hgap="10.0" minHeight="330.0" minWidth="500.0" prefHeight="589.0" prefWidth="807.0" type="javafx.scene.layout.GridPane" vgap="30.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+	<columnConstraints>
+		<ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+	</columnConstraints>
+	<rowConstraints>
+		<RowConstraints minHeight="40.0" percentHeight="30" vgrow="ALWAYS" />
+		<RowConstraints maxHeight="386.3333282470703" minHeight="20.0" percentHeight="80" vgrow="ALWAYS" />
+	</rowConstraints>
+	<padding>
+		<Insets bottom="50.0" left="40.0" right="40.0" />
+	</padding>
+	<children>
+		<GridPane>
+			<columnConstraints>
+				<ColumnConstraints halignment="LEFT" hgrow="ALWAYS" minWidth="50.0" prefWidth="100.0" />
+				<ColumnConstraints halignment="CENTER" minWidth="30.0" prefWidth="100.0" />
+				<ColumnConstraints halignment="CENTER" minWidth="30.0" prefWidth="100.0" />
+			</columnConstraints>
+			<rowConstraints>
+				<RowConstraints minHeight="10.0" prefHeight="30.0" valignment="TOP" vgrow="ALWAYS" />
+			</rowConstraints>
+			<children>
+				<Label fx:id="obstacleViewTitle" minHeight="35.0" minWidth="200.0" text="Title">
+					<font>
+						<Font name="System Bold" size="24.0" />
+					</font>
+					<GridPane.margin>
+						<Insets />
+					</GridPane.margin>
+				</Label>
+				<Button fx:id="obstacleSaveButton" disable="true" mnemonicParsing="false" onAction="#saveAction" text="Save" textAlignment="CENTER" GridPane.columnIndex="1">
+					<font>
+						<Font name="System Bold" size="14.0" />
+					</font>
+				</Button>
+				<Button fx:id="obstacleExportButton" disable="true" mnemonicParsing="false" onAction="#exportAction" text="Export" textAlignment="CENTER" GridPane.columnIndex="2">
+					<font>
+						<Font name="System Bold" size="14.0" />
+					</font>
+				</Button>
+			</children>
+		</GridPane>
+		<GridPane hgap="50.0" prefHeight="100.0" prefWidth="100.0" vgap="10.0" GridPane.rowIndex="1">
+			<columnConstraints>
+				<ColumnConstraints hgrow="ALWAYS" maxWidth="265.3333435058594" minWidth="164.0" percentWidth="35" />
+				<ColumnConstraints hgrow="ALWAYS" maxWidth="449.0" minWidth="20.0" percentWidth="65" />
+			</columnConstraints>
+			<rowConstraints>
+            	<RowConstraints maxHeight="179.66665649414062" minHeight="71.0" percentHeight="19" vgrow="ALWAYS" />
+            <RowConstraints maxHeight="171.83334350585938" minHeight="10.0" percentHeight="13.5" prefHeight="30.0" vgrow="ALWAYS" />
+            <RowConstraints maxHeight="171.83334350585938" minHeight="10.0" percentHeight="13.5" prefHeight="30.0" vgrow="ALWAYS" />
+				<RowConstraints maxHeight="171.83334350585938" minHeight="10.0" percentHeight="13.5" vgrow="ALWAYS" />
+				<RowConstraints maxHeight="120.0" minHeight="10.0" percentHeight="13.5" vgrow="ALWAYS" />
+				<RowConstraints maxHeight="81.33331298828125" minHeight="10.0" percentHeight="13.5" vgrow="ALWAYS" />
+				<RowConstraints maxHeight="58.333343505859375" minHeight="10.0" percentHeight="13.5" vgrow="ALWAYS" />
+			</rowConstraints>
+			<padding>
+				<Insets right="10.0" />
+			</padding>
+			<children>
+				<VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0">
+					<children>
+						<Label minHeight="20.0" minWidth="95.0" text="Obstacle Name">
+							<font>
+								<Font size="14.0" />
+							</font>
+						</Label>
+						<TextField fx:id="obstacleName" minWidth="10.0" />
+					</children>
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+				</VBox>
+				<VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0" GridPane.columnIndex="1">
+					<children>
+						<Label minHeight="20.0" minWidth="130.0" text="Obstacle Description">
+							<font>
+								<Font size="14.0" />
+							</font>
+						</Label>
+						<TextField fx:id="obstacleDescription" />
+					</children>
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+				</VBox>
+				<Label text="Obstacle Height" GridPane.rowIndex="3">
+					<font>
+						<Font size="14.0" />
+					</font>
+				</Label>
+				<TextField fx:id="obstacleHeight" minWidth="10.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+				<Label text="Distance from Centre Line" GridPane.rowIndex="4">
+					<font>
+						<Font size="14.0" />
+					</font>
+				</Label>
+				<TextField fx:id="obstacleDistanceFromCentreLine" minWidth="10.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+				<Label text="Distance from Left" GridPane.rowIndex="5">
+					<font>
+						<Font size="14.0" />
+					</font>
+				</Label>
+				<TextField fx:id="obstacleDistanceFromLeft" minWidth="10.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+				<Label text="Distance from Right" GridPane.rowIndex="6">
+					<font>
+						<Font size="14.0" />
+					</font>
+				</Label>
+				<TextField fx:id="obstacleDistanceFromRight" minWidth="10.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+            <Label text="Obstacle Length" GridPane.rowIndex="1">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <TextField fx:id="obstacleLength" minWidth="10.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="obstacleWidth" minWidth="10.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Label text="Obstacle Width" GridPane.rowIndex="2">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+			</children>
+		</GridPane>
+	</children>
+</fx:root>

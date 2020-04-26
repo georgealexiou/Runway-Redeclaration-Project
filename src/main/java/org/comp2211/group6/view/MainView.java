@@ -19,6 +19,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
@@ -37,11 +38,16 @@ public class MainView extends GridPane implements Initializable {
     @FXML
     private SideOnView sideOnView;
     @FXML
+    private BreakdownView breakdownView;
+    @FXML
     private EditAnObstacleView editAnObstacleView;
     @FXML
     private CreateAnObstacleView createAnObstacleView;
     @FXML
     private LoadAnObstacleView loadAnObstacleView;
+
+    @FXML
+    private Button returnToRunwayViewButton;
 
     @FXML
     private VBox splashScreen;
@@ -237,6 +243,7 @@ public class MainView extends GridPane implements Initializable {
 
     @FXML
     private void createObstacle(ActionEvent e) {
+        this.returnToRunwayViewButton.setVisible(true);
         this.currentView.setVisible(false);
         this.currentView = this.createAnObstacleView;
         this.currentView.setVisible(true);
@@ -244,9 +251,11 @@ public class MainView extends GridPane implements Initializable {
 
     @FXML
     private void editObstacle(ActionEvent e) {
+
         if (currentObstacle == null) {
             throw new NullPointerException("No obstacle can be edited.");
         } else {
+            this.returnToRunwayViewButton.setVisible(true);
             this.currentView.setVisible(false);
             editAnObstacleView.loadCurrentObstacle(currentObstacle);
             this.currentView = this.editAnObstacleView;
@@ -256,7 +265,15 @@ public class MainView extends GridPane implements Initializable {
 
     @FXML
     private void viewCalculations(ActionEvent e) {
-        // TODO: Load the Breakdown View
+        this.returnToRunwayViewButton.setVisible(true);
+        if (this.calculator.getAllBreakdowns().size() > 0) {
+            this.currentView.setVisible(false);
+            this.currentView = this.breakdownView;
+            this.breakdownView.setAvailableBreakdowns(this.calculator.getAllBreakdowns());
+            this.currentView.setVisible(true);
+        } else {
+            return;
+        }
     }
 
     @FXML
@@ -278,6 +295,14 @@ public class MainView extends GridPane implements Initializable {
                         ((RunwayView) this.currentView).getCurrentLogicalRunway());
         this.currentView.setVisible(false);
         this.currentView = changeToView;
+        this.currentView.setVisible(true);
+    }
+
+    @FXML
+    private void returnToRunwayView(ActionEvent e) {
+        this.returnToRunwayViewButton.setVisible(false);
+        this.currentView.setVisible(false);
+        this.currentView = topDownView;
         this.currentView.setVisible(true);
     }
 }

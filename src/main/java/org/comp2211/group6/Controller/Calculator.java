@@ -190,10 +190,10 @@ public class Calculator {
         logicalRunway.breakdown.setStripEnd(StripEnd);
     }
 
-    public ArrayList<String> getAllBreakdowns() {
-        ArrayList<String> breakdowns = new ArrayList<String>();
+    public Map<LogicalRunway, String> getAllBreakdowns() {
+        HashMap<LogicalRunway, String> breakdowns = new HashMap<LogicalRunway, String>();
         for (LogicalRunway lr : this.runway.getLogicalRunways()) {
-            breakdowns.add(lr.breakdown.getBreakdownString(lr));
+            breakdowns.put(lr, lr.breakdown.getBreakdownString(lr));
         }
         return breakdowns;
     }

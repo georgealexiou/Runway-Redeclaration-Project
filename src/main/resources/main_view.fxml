@@ -3,6 +3,7 @@
 <?import javafx.scene.text.Font?>
 <?import org.comp2211.group6.view.TopDownView?>
 <?import org.comp2211.group6.view.SideOnView?>
+<?import org.comp2211.group6.view.BreakdownView?>
 <?import org.comp2211.group6.view.EditAnObstacleView?>
 <?import org.comp2211.group6.view.CreateAnObstacleView?>
 <?import org.comp2211.group6.view.LoadAnObstacleView?>
@@ -33,6 +34,7 @@
   <CreateAnObstacleView fx:id="createAnObstacleView" GridPane.rowIndex="0" GridPane.columnIndex="0" visible="false"></CreateAnObstacleView> 
   <LoadAnObstacleView fx:id="loadAnObstacleView" GridPane.rowIndex="0" GridPane.columnIndex="0" visible="false"></LoadAnObstacleView> 
   <EditAnObstacleView fx:id="editAnObstacleView" GridPane.rowIndex="0" GridPane.columnIndex="0" visible="false"></EditAnObstacleView> 
+  <BreakdownView fx:id="breakdownView" GridPane.rowIndex="0" GridPane.columnIndex="0" visible="false"></BreakdownView>
   <TopDownView fx:id="topDownView" GridPane.rowIndex="0" GridPane.columnIndex="0" visible="false"></TopDownView> 
   <SideOnView fx:id="sideOnView" GridPane.rowIndex="0" GridPane.columnIndex="0" visible="false"></SideOnView> 
   <VBox fx:id="splashScreen" GridPane.rowIndex="0" GridPane.columnIndex="0" visible="true" alignment="CENTER">
@@ -44,6 +46,7 @@
   </VBox>
   <VBox fx:id="sidePanel" alignment="CENTER" GridPane.rowIndex="0" GridPane.columnIndex="1">
     <VBox alignment="CENTER">
+      <Button text="Return to Runway View" maxWidth="Infinity" onAction="#returnToRunwayView" fx:id="returnToRunwayViewButton"></Button>
       <Button text="Load Airport" maxWidth="Infinity" onAction="#loadAirport"></Button>
       <Button text="Create new Airport" maxWidth="Infinity" onAction="#createAirport"></Button>
       <Button text="Load Obstacle" maxWidth="Infinity" onAction="#loadObstacle"></Button>

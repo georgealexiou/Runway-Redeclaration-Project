@@ -1,8 +1,10 @@
 module runwayredeclaration {
   requires javafx.graphics;
-  requires javafx.controls;
-  requires java.xml;
+  requires transitive javafx.controls;
+  requires javafx.fxml;
+  opens org.comp2211.group6.view to javafx.fxml;
   exports org.comp2211.group6;
   exports org.comp2211.group6.Model;
   exports org.comp2211.group6.Controller;
+  exports org.comp2211.group6.view;
 }

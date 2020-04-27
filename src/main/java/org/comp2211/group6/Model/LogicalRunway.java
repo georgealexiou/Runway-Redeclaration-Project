@@ -12,6 +12,8 @@ public class LogicalRunway {
     private RunwayParameters originalParameters;
     private RunwayParameters recalculatedParameters;
 
+    public final Breakdown breakdown;
+
     /**
      * Constructor for logical runway class
      * 
@@ -34,6 +36,7 @@ public class LogicalRunway {
         this.position = position;
         this.originalParameters = params;
         this.recalculatedParameters = new RunwayParameters();
+        this.breakdown = new Breakdown();
     }
 
     /** Public Methods */

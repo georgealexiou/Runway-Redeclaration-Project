@@ -12,7 +12,7 @@ Develop: [![Develop Build Status](https://travis-ci.com/georgealexiou/Software-E
 
 ```bash
 mvn clean javafx:jlink
-target/runwayredeclaration/bin/launcher
+target/runwayredeclaration/bin/launcher 
 ```
 
 ## Running the Application
@@ -20,4 +20,20 @@ target/runwayredeclaration/bin/launcher
 ```bash
 mvn clean javafx:run
 ```
+
+## Building the Jar
+```bash
+mvn clean compile package
+```
+
+## Formatting with Maven
+```bash
+mvn formatter format
+```
+
+## Documentation
+
+- [General Documentation](./documentation/general/README.md) 
+  - [Log File](./documentation/general/LOG.md)
+  - [Scenarios for GUI](./documentation/general/scenarios.md)
 

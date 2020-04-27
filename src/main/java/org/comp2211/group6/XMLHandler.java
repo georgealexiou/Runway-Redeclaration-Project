@@ -1,5 +1,4 @@
 package org.comp2211.group6;
-
 import javax.xml.parsers.*;
 import javax.xml.transform.*;
 import javax.xml.transform.dom.*;
@@ -36,7 +35,7 @@ public class XMLHandler {
 
             Set<Runway> runways = airport.getRunways();
 
-            for (Runway runway : runways) {
+            for (Runway runway : runways){
                 Element runwayElem = dom.createElement("runway");
                 rootEle.appendChild(runwayElem);
 
@@ -44,45 +43,38 @@ public class XMLHandler {
                 nameElem.appendChild(dom.createTextNode(runway.getName()));
                 runwayElem.appendChild(nameElem);
 
-                for (LogicalRunway logicalRunway : runway.getLogicalRunways()) {
+                for (LogicalRunway logicalRunway : runway.getLogicalRunways()){
                     Element logicalRunElem = dom.createElement("logicalRunway");
                     runwayElem.appendChild(logicalRunElem);
 
                     RunwayParameters params = logicalRunway.getParameters();
 
                     Element logicalTORAElem = dom.createElement("tora");
-                    logicalTORAElem.appendChild(
-                                    dom.createTextNode(Double.toString(params.getTORA())));
+                    logicalTORAElem.appendChild(dom.createTextNode(Double.toString(params.getTORA())));
                     runwayElem.appendChild(logicalTORAElem);
 
                     Element logicalTODAElem = dom.createElement("toda");
-                    logicalTODAElem.appendChild(
-                                    dom.createTextNode(Double.toString(params.getTODA())));
+                    logicalTODAElem.appendChild(dom.createTextNode(Double.toString(params.getTODA())));
                     runwayElem.appendChild(logicalTODAElem);
 
                     Element logicalASDAElem = dom.createElement("asda");
-                    logicalASDAElem.appendChild(
-                                    dom.createTextNode(Double.toString(params.getASDA())));
+                    logicalASDAElem.appendChild(dom.createTextNode(Double.toString(params.getASDA())));
                     runwayElem.appendChild(logicalASDAElem);
 
                     Element logicalLDAElem = dom.createElement("lda");
-                    logicalLDAElem.appendChild(
-                                    dom.createTextNode(Double.toString(params.getLDA())));
+                    logicalLDAElem.appendChild(dom.createTextNode(Double.toString(params.getLDA())));
                     runwayElem.appendChild(logicalLDAElem);
 
                     Element logicalHeadingElem = dom.createElement("heading");
-                    logicalHeadingElem.appendChild(dom
-                                    .createTextNode(Double.toString(logicalRunway.getHeading())));
+                    logicalHeadingElem.appendChild(dom.createTextNode(Double.toString(logicalRunway.getHeading())));
                     runwayElem.appendChild(logicalHeadingElem);
 
                     Element logicalDispThresElem = dom.createElement("displacedThreshold");
-                    logicalDispThresElem.appendChild(dom.createTextNode(
-                                    Double.toString(logicalRunway.getDisplacedThreshold())));
+                    logicalDispThresElem.appendChild(dom.createTextNode(Double.toString(logicalRunway.getDisplacedThreshold())));
                     runwayElem.appendChild(logicalDispThresElem);
 
                     Element logicalPosElem = dom.createElement("position");
-                    logicalPosElem.appendChild(dom.createTextNode(
-                                    Character.toString(logicalRunway.getPosition())));
+                    logicalPosElem.appendChild(dom.createTextNode(Character.toString(logicalRunway.getPosition())));
                     runwayElem.appendChild(logicalPosElem);
                 }
             }
@@ -98,14 +90,16 @@ public class XMLHandler {
                 tr.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
 
                 // send DOM to file
-                tr.transform(new DOMSource(dom), new StreamResult(new FileOutputStream(xml)));
+                tr.transform(new DOMSource(dom),
+                        new StreamResult(new FileOutputStream(xml)));
 
             } catch (TransformerException te) {
                 System.out.println(te.getMessage());
             } catch (IOException ioe) {
                 System.out.println(ioe.getMessage());
             }
-        } catch (ParserConfigurationException pce) {
+        }
+        catch (ParserConfigurationException pce) {
             System.out.println("Error trying to instantiate DocumentBuilder " + pce);
         }
     }
@@ -137,33 +131,27 @@ public class XMLHandler {
                 obstacleElem.appendChild(obstacleDescElem);
 
                 Element obstacleLenghtElem = dom.createElement("length");
-                obstacleLenghtElem.appendChild(
-                                dom.createTextNode(Double.toString(obstacle.getLength())));
+                obstacleLenghtElem.appendChild(dom.createTextNode(Double.toString(obstacle.getLength())));
                 obstacleElem.appendChild(obstacleLenghtElem);
 
                 Element obstacleWidthElem = dom.createElement("width");
-                obstacleWidthElem.appendChild(
-                                dom.createTextNode(Double.toString(obstacle.getWidth())));
+                obstacleWidthElem.appendChild(dom.createTextNode(Double.toString(obstacle.getWidth())));
                 obstacleElem.appendChild(obstacleWidthElem);
 
                 Element obstacleHeightElem = dom.createElement("height");
-                obstacleHeightElem.appendChild(
-                                dom.createTextNode(Double.toString(obstacle.getHeight())));
+                obstacleHeightElem.appendChild(dom.createTextNode(Double.toString(obstacle.getHeight())));
                 obstacleElem.appendChild(obstacleHeightElem);
 
                 Element obstacleCDistElem = dom.createElement("distanceToCentreLine");
-                obstacleCDistElem.appendChild(dom.createTextNode(
-                                Double.toString(obstacle.getDistanceToCentreLine())));
+                obstacleCDistElem.appendChild(dom.createTextNode(Double.toString(obstacle.getDistanceToCentreLine())));
                 obstacleElem.appendChild(obstacleCDistElem);
 
                 Element obstacleLThresElem = dom.createElement("distanceFromLeftThreshold");
-                obstacleLThresElem.appendChild(dom
-                                .createTextNode(Double.toString(obstacle.getDistanceFromLeft())));
+                obstacleLThresElem.appendChild(dom.createTextNode(Double.toString(obstacle.getDistanceFromLeft())));
                 obstacleElem.appendChild(obstacleLThresElem);
 
                 Element obstacleRThresElem = dom.createElement("distanceFromRightThreshold");
-                obstacleRThresElem.appendChild(dom
-                                .createTextNode(Double.toString(obstacle.getDistanceFromRight())));
+                obstacleRThresElem.appendChild(dom.createTextNode(Double.toString(obstacle.getDistanceFromRight())));
                 obstacleElem.appendChild(obstacleRThresElem);
 
             }
@@ -179,14 +167,16 @@ public class XMLHandler {
                 tr.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
 
                 // send DOM to file
-                tr.transform(new DOMSource(dom), new StreamResult(new FileOutputStream(xml)));
+                tr.transform(new DOMSource(dom),
+                        new StreamResult(new FileOutputStream(xml)));
 
             } catch (TransformerException te) {
                 System.out.println(te.getMessage());
             } catch (IOException ioe) {
                 System.out.println(ioe.getMessage());
             }
-        } catch (ParserConfigurationException pce) {
+        }
+        catch (ParserConfigurationException pce) {
             System.out.println("Error trying to instantiate DocumentBuilder " + pce);
         }
     }
@@ -197,7 +187,7 @@ public class XMLHandler {
         // Declaring the airport.
         Airport airport = null;
 
-        // Make an instance of the DocumentBuilderFactory.
+        // Make an  instance of the DocumentBuilderFactory.
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 
         try {
@@ -219,7 +209,6 @@ public class XMLHandler {
                     airport = new Airport(airportName);
             }
 
-<<<<<<< HEAD
             //Get all runways.
             NodeList runwayList = dom.getElementsByTagName("runway");
 
@@ -264,22 +253,6 @@ public class XMLHandler {
                     }
 
                 }
-=======
-            role2 = getTextValue(role2, doc, "role2");
-            if (role2 != null) {
-                if (!role2.isEmpty())
-                    rolev.add(role2);
-            }
-            role3 = getTextValue(role3, doc, "role3");
-            if (role3 != null) {
-                if (!role3.isEmpty())
-                    rolev.add(role3);
-            }
-            role4 = getTextValue(role4, doc, "role4");
-            if (role4 != null) {
-                if (!role4.isEmpty())
-                    rolev.add(role4);
->>>>>>> 65eba4bedc4019bebcb76531b079d04232b311b2
             }
 
             return airport;

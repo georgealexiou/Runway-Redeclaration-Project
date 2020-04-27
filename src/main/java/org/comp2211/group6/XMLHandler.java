@@ -208,23 +208,54 @@ public class XMLHandler {
                 if (!airportName.isEmpty())
                     airport = new Airport(airportName);
             }
-            
-            role2 = getTextValue(role2, doc, "role2");
-            if (role2 != null) {
-                if (!role2.isEmpty())
-                    rolev.add(role2);
+
+            //Get all runways.
+            NodeList runwayList = dom.getElementsByTagName("runway");
+
+            for (int tempNode1 = 0; tempNode1 < runwayList.getLength(); tempNode1++) {
+                Node runwayNode = runwayList.item(tempNode1);
+
+                if (runwayNode.getNodeType() == Node.ELEMENT_NODE) {
+
+                    Element runwayElement = (Element) runwayNode;
+
+                    String runwayName = runwayElement.getElementsByTagName("name").item(0).getTextContent();
+
+                    Runway runway = new Runway(runwayName);
+
+                    airport.addRunway(runway);
+
+                    //Get all logical runways for the runway (maximum is 3).
+                    NodeList logicalRunwayList = runwayElement.getElementsByTagName("logicalRunway");
+
+                    for (int tempNode2 = 0; tempNode2 < logicalRunwayList.getLength(); tempNode2++) {
+                        Node logicalRunwayNode = logicalRunwayList.item(tempNode2);
+
+                        if (logicalRunwayNode.getNodeType() == Node.ELEMENT_NODE) {
+
+                            Element logicalRunwayElement = (Element) logicalRunwayNode;
+
+                            Double tora = Double.parseDouble(logicalRunwayElement.getElementsByTagName("tora").item(0).getTextContent());
+                            Double toda = Double.parseDouble(logicalRunwayElement.getElementsByTagName("toda").item(0).getTextContent());
+                            Double asda = Double.parseDouble(logicalRunwayElement.getElementsByTagName("asda").item(0).getTextContent());
+                            Double lda = Double.parseDouble(logicalRunwayElement.getElementsByTagName("lda").item(0).getTextContent());
+
+                            RunwayParameters runwayParameters = new RunwayParameters(tora, toda, asda, lda);
+
+                            int heading = Integer.parseInt(logicalRunwayElement.getElementsByTagName("heading").item(0).getTextContent());
+                            Double displacedThreshold = Double.parseDouble(logicalRunwayElement.getElementsByTagName("displacedThreshold").item(0).getTextContent());
+                            char position = logicalRunwayElement.getElementsByTagName("position").item(0).getTextContent().charAt(0);
+
+                            LogicalRunway logicalRunway = new LogicalRunway(heading, displacedThreshold, position, runwayParameters);
+
+                            runway.addRunway(logicalRunway);
+                        }
+                    }
+
+                }
             }
-            role3 = getTextValue(role3, doc, "role3");
-            if (role3 != null) {
-                if (!role3.isEmpty())
-                    rolev.add(role3);
-            }
-            role4 = getTextValue(role4, doc, "role4");
-            if ( role4 != null) {
-                if (!role4.isEmpty())
-                    rolev.add(role4);
-            }
-            return true;
+
+            return airport;
 
         } catch (ParserConfigurationException pce) {
             System.out.println(pce.getMessage());
@@ -232,14 +263,17 @@ public class XMLHandler {
             System.out.println(se.getMessage());
         } catch (IOException ioe) {
             System.err.println(ioe.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        return false;
+        return airport;
     }
 
     // Similar to readAirportXML.
     public Set<Obstacle> readObstaclesXML(String xml) {
-
+        Set<Obstacle> obstacleSet = null;
+        return obstacleSet;
     }
 
     private String getTextValue(String def, Element doc, String tag) {

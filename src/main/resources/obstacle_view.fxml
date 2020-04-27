@@ -40,7 +40,7 @@
 						<Insets />
 					</GridPane.margin>
 				</Label>
-				<Button fx:id="obstacleSaveButton" disable="true" mnemonicParsing="false" onAction="#saveAction" text="Save" textAlignment="CENTER" GridPane.columnIndex="1">
+				<Button fx:id="obstacleSaveButton" disable="true" mnemonicParsing="false" text="Save" textAlignment="CENTER" GridPane.columnIndex="1">
 					<font>
 						<Font name="System Bold" size="14.0" />
 					</font>

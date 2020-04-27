@@ -74,17 +74,6 @@ public abstract class ObstacleView extends GridPane implements Initializable {
 
     }
 
-    @FXML
-    void saveAction(ActionEvent event) {
-        newObstacle = new Obstacle(obstacleName.getText(), obstacleDescription.getText(),
-                        Double.parseDouble(obstacleLength.getText()),
-                        Double.parseDouble(obstacleWidth.getText()),
-                        Double.parseDouble(obstacleHeight.getText()),
-                        Double.parseDouble(obstacleDistanceFromCentreLine.getText()),
-                        Double.parseDouble(obstacleDistanceFromLeft.getText()),
-                        Double.parseDouble(obstacleDistanceFromRight.getText()));
-    }
-
     public ObstacleView() {}
 
     /*
@@ -121,7 +110,16 @@ public abstract class ObstacleView extends GridPane implements Initializable {
         }
     }
 
+    /*
+     * get the new obstacle forming by entered values in the textfields
+     */
     protected Obstacle getNewObstacle() {
-        return newObstacle;
+        return new Obstacle(obstacleName.getText(), obstacleDescription.getText(),
+                Double.parseDouble(obstacleLength.getText()),
+                Double.parseDouble(obstacleWidth.getText()),
+                Double.parseDouble(obstacleHeight.getText()),
+                Double.parseDouble(obstacleDistanceFromCentreLine.getText()),
+                Double.parseDouble(obstacleDistanceFromLeft.getText()),
+                Double.parseDouble(obstacleDistanceFromRight.getText()));
     }
 }

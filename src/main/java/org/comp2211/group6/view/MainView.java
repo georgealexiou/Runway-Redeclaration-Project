@@ -228,10 +228,10 @@ public class MainView extends GridPane implements Initializable {
         // TODO: Load the edit airport dialog
         // TODO: Set the newly edited airport
     }
-    
+
     /*
-     * listener for Save button in obstacle views. 
-     * cater for different obstacle views(create, edit, load)
+     * listener for Save button in obstacle views. cater for different obstacle views(create, edit,
+     * load)
      * 
      */
     private EventHandler<ActionEvent> obstacleSaveButtonAction(ObstacleView obstacleView) {
@@ -240,26 +240,28 @@ public class MainView extends GridPane implements Initializable {
             public void handle(ActionEvent event) {
                 currentView.setVisible(false);
                 obstacles.add(obstacleView.getNewObstacle());
-                //If the current obstacle view is NOT the Create view, remove the original obstacle from the list. 
-                if(!(obstacleView instanceof CreateAnObstacleView)) {
+                // If the current obstacle view is NOT the Create view, remove the original obstacle
+                // from the list.
+                if (!(obstacleView instanceof CreateAnObstacleView)) {
                     obstacles.remove(currentObstacle);
                 }
                 updateAirportFields();
                 currentView = topDownView;
-                currentView.setVisible(true);   
+                currentView.setVisible(true);
                 event.consume();
             }
         };
-        
+
         return saveButtonHandler;
     }
 
     @FXML
     private void loadObstacle(ActionEvent e) {
         this.currentView.setVisible(false);
-        this.loadAnObstacleView.loadPredefinedObstacle("Obstacle On The Ground",
-                        "predefined obstacle for testing", 53.5, 70.3, 200);
-        loadAnObstacleView.obstacleSaveButton.setOnAction(obstacleSaveButtonAction(loadAnObstacleView));
+        this.loadAnObstacleView.loadPredefinedObstacle("Scenario 1 Obstacle",
+                        "Obstacle from Scenario 1 of the Heathrow Example", 53.5, 70.3, 12);
+        loadAnObstacleView.obstacleSaveButton
+                        .setOnAction(obstacleSaveButtonAction(loadAnObstacleView));
         this.currentView = this.loadAnObstacleView;
         this.currentView.setVisible(true);
     }
@@ -268,7 +270,8 @@ public class MainView extends GridPane implements Initializable {
     private void createObstacle(ActionEvent e) {
         this.returnToRunwayViewButton.setVisible(true);
         this.currentView.setVisible(false);
-        createAnObstacleView.obstacleSaveButton.setOnAction(obstacleSaveButtonAction(createAnObstacleView));
+        createAnObstacleView.obstacleSaveButton
+                        .setOnAction(obstacleSaveButtonAction(createAnObstacleView));
         this.currentView = this.createAnObstacleView;
         this.currentView.setVisible(true);
     }
@@ -281,7 +284,8 @@ public class MainView extends GridPane implements Initializable {
             this.returnToRunwayViewButton.setVisible(true);
             this.currentView.setVisible(false);
             editAnObstacleView.loadCurrentObstacle(currentObstacle);
-            editAnObstacleView.obstacleSaveButton.setOnAction(obstacleSaveButtonAction(editAnObstacleView));
+            editAnObstacleView.obstacleSaveButton
+                            .setOnAction(obstacleSaveButtonAction(editAnObstacleView));
             this.currentView = this.editAnObstacleView;
             this.currentView.setVisible(true);
         }

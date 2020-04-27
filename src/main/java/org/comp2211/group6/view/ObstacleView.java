@@ -115,11 +115,11 @@ public abstract class ObstacleView extends GridPane implements Initializable {
      */
     protected Obstacle getNewObstacle() {
         return new Obstacle(obstacleName.getText(), obstacleDescription.getText(),
-                Double.parseDouble(obstacleLength.getText()),
-                Double.parseDouble(obstacleWidth.getText()),
-                Double.parseDouble(obstacleHeight.getText()),
-                Double.parseDouble(obstacleDistanceFromCentreLine.getText()),
-                Double.parseDouble(obstacleDistanceFromLeft.getText()),
-                Double.parseDouble(obstacleDistanceFromRight.getText()));
+                        Double.parseDouble(obstacleLength.getText()),
+                        Double.parseDouble(obstacleWidth.getText()),
+                        Double.parseDouble(obstacleHeight.getText()),
+                        Double.parseDouble(obstacleDistanceFromCentreLine.getText()),
+                        Double.parseDouble(obstacleDistanceFromLeft.getText()),
+                        Double.parseDouble(obstacleDistanceFromRight.getText()));
     }
 }

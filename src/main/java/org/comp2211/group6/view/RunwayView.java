@@ -58,6 +58,12 @@ public abstract class RunwayView extends GridPane implements Initializable {
     protected double obstacleLeft;
     protected double totalLength;
 
+    protected final Color paramColor = Color.BLACK;
+    protected final Color resaColor = Color.CADETBLUE;
+    protected final Color seColor = Color.DODGERBLUE;
+    protected final Color blastColor = Color.ORANGE;
+    protected final Color slopeColor = Color.CRIMSON;
+
     /*
      * View Components
      */
@@ -218,7 +224,7 @@ public abstract class RunwayView extends GridPane implements Initializable {
     }
 
     /*
-     * Reclaulcates the data values for the current runway
+     * Recalculates the data values for the current runway
      */
     protected void recalculateDataValues() {
         if (this.runway == null)
@@ -303,7 +309,7 @@ public abstract class RunwayView extends GridPane implements Initializable {
         gc.setLineDashes();
         gc.strokeLine(endX, canvasMiddleY + (runwayWidth / 2), endX,
                         canvasMiddleY - (runwayWidth / 2));
-        drawDistanceArrow(gc, startX, endX, (runwayArrowPadding), true, Color.BLACK,
+        drawDistanceArrow(gc, startX, endX, (runwayArrowPadding), true, paramColor,
                         "DT: " + currentLogicalRunway.getDisplacedThreshold() + "m");
 
     }
@@ -355,19 +361,7 @@ public abstract class RunwayView extends GridPane implements Initializable {
             startX = scale(leftOffset + runwayLength, runwayCanvas.getWidth());
             mult = -1;
         }
-        boolean towardstowards = true;
-        // TODO: Replace this with the value from a breakdown calss
-        if (!original && currentObstacle != null) {
-            if (currentObstacle.distanceFromLeftThreshold < currentObstacle.distanceFromRightThreshold) { //
-                if (currentLogicalRunway.getHeading() <= 18) {
-                    towardstowards = false;
-                }
-            } else {
-                if (currentLogicalRunway.getHeading() > 18) {
-                    towardstowards = false;
-                }
-            }
-        }
+        boolean towardstowards = this.currentLogicalRunway.breakdown.getDirection();
         paramsHelper(gc, params, towardstowards, original, mult, 2, startX);
     }
 
@@ -386,18 +380,18 @@ public abstract class RunwayView extends GridPane implements Initializable {
         double lda = params.getLDA();
         if (original) {
             double endX = startX + (mult * scale(tora, runwayCanvas.getWidth()));
-            drawDistanceArrow(gc, startX, endX, (runwayArrowPadding) * pos++, original, Color.BLACK,
+            drawDistanceArrow(gc, startX, endX, (runwayArrowPadding) * pos++, original, paramColor,
                             toraLabel);
             endX = startX + (mult * scale(toda, runwayCanvas.getWidth()));
-            drawDistanceArrow(gc, startX, endX, (runwayArrowPadding) * pos++, original, Color.BLACK,
+            drawDistanceArrow(gc, startX, endX, (runwayArrowPadding) * pos++, original, paramColor,
                             todaLabel);
             endX = startX + (mult * scale(asda, runwayCanvas.getWidth()));
-            drawDistanceArrow(gc, startX, endX, (runwayArrowPadding) * pos++, original, Color.BLACK,
+            drawDistanceArrow(gc, startX, endX, (runwayArrowPadding) * pos++, original, paramColor,
                             asdaLabel);
             startX += (mult * scale(currentLogicalRunway.getDisplacedThreshold(),
                             runwayCanvas.getWidth()));
             endX = startX + (mult * scale(lda, runwayCanvas.getWidth()));
-            drawDistanceArrow(gc, startX, endX, (runwayArrowPadding) * pos++, original, Color.BLACK,
+            drawDistanceArrow(gc, startX, endX, (runwayArrowPadding) * pos++, original, paramColor,
                             ldaLabel);
         } else {
             toraLabel = "(R)" + toraLabel;
@@ -407,44 +401,126 @@ public abstract class RunwayView extends GridPane implements Initializable {
             if (towards) {
                 double endX = startX + (mult * scale(tora, runwayCanvas.getWidth()));
                 drawDistanceArrow(gc, startX, endX, (runwayArrowPadding) * pos++, original,
-                                Color.BLACK, toraLabel);
+                                paramColor, toraLabel);
                 endX = startX + (mult * scale(toda, runwayCanvas.getWidth()));
                 drawDistanceArrow(gc, startX, endX, (runwayArrowPadding) * pos++, original,
-                                Color.BLACK, todaLabel);
+                                paramColor, todaLabel);
                 endX = startX + (mult * scale(asda, runwayCanvas.getWidth()));
                 drawDistanceArrow(gc, startX, endX, (runwayArrowPadding) * pos++, original,
-                                Color.BLACK, asdaLabel);
-                // TODO: Add in slope calculation and strip end
-                // TODO: Add in RESA
+                                paramColor, asdaLabel);
                 startX += scale(currentLogicalRunway.getDisplacedThreshold() * mult,
                                 runwayCanvas.getWidth());
                 endX = startX + (mult * scale(lda, runwayCanvas.getWidth()));
-                drawDistanceArrow(gc, startX, endX, (runwayArrowPadding) * pos++, original,
-                                Color.BLACK, ldaLabel);
+                drawDistanceArrow(gc, startX, endX, (runwayArrowPadding) * pos, original,
+                                paramColor, ldaLabel);
+                // Draw the strip end and resa for the landing component
+                double landingStartX = endX;
+                endX = landingStartX
+                                + (mult * scale(this.currentLogicalRunway.breakdown.getStripEnd(),
+                                                runwayCanvas.getWidth()));
+                drawDistanceArrow(gc, landingStartX, endX, runwayArrowPadding * pos, original,
+                                seColor, this.currentLogicalRunway.breakdown.getStripEnd() + "m",
+                                false);
+                landingStartX = endX;
+                endX = landingStartX + (mult * scale(this.currentLogicalRunway.breakdown.getResa(),
+                                runwayCanvas.getWidth()));
+                drawDistanceArrow(gc, landingStartX, endX, runwayArrowPadding * pos, original,
+                                resaColor, this.currentLogicalRunway.breakdown.getResa() + "m",
+                                false);
+
+                // When taking off we have a strip end and then the RESA or slope calculation
+                double takeoffStartX = startX + (mult * scale(asda, runwayCanvas.getWidth()));
+                endX = takeoffStartX
+                                + (mult * scale(this.currentLogicalRunway.breakdown.getStripEnd(),
+                                                runwayCanvas.getWidth()));
+                drawDistanceArrow(gc, takeoffStartX, endX, runwayArrowPadding * (pos - 2), original,
+                                seColor, this.currentLogicalRunway.breakdown.getStripEnd() + "m",
+                                false);
+
+                takeoffStartX = endX;
+                if (this.currentLogicalRunway.breakdown
+                                .getResa() > this.currentLogicalRunway.breakdown
+                                                .getSlopeCalculation()) {
+                    endX = takeoffStartX
+                                    + (mult * scale(this.currentLogicalRunway.breakdown.getResa(),
+                                                    runwayCanvas.getWidth()));
+                    drawDistanceArrow(gc, takeoffStartX, endX, runwayArrowPadding * (pos - 2),
+                                    original, resaColor,
+                                    this.currentLogicalRunway.breakdown.getResa() + "m", false);
+                } else {
+                    endX = takeoffStartX + (mult * scale(
+                                    this.currentLogicalRunway.breakdown.getSlopeCalculation(),
+                                    runwayCanvas.getWidth()));
+                    drawDistanceArrow(gc, takeoffStartX, endX, runwayArrowPadding * (pos - 2),
+                                    original, slopeColor,
+                                    this.currentLogicalRunway.breakdown.getSlopeCalculation() + "m",
+                                    false);
+                }
             } else {
                 double originalStartx = startX;
                 double endX = originalStartx
                                 + scale((mult * runwayLength), runwayCanvas.getWidth());
                 startX = endX - scale(mult * tora, runwayCanvas.getWidth());
                 drawDistanceArrow(gc, startX, endX, (runwayArrowPadding) * pos++, original,
-                                Color.BLACK, toraLabel);
+                                paramColor, toraLabel);
                 endX = originalStartx + scale(
                                 (mult * runwayLength + calculateClearway(currentLogicalRunway)),
                                 runwayCanvas.getWidth());
                 startX = endX - scale(mult * toda, runwayCanvas.getWidth());
                 drawDistanceArrow(gc, startX, endX, (runwayArrowPadding) * pos++, original,
-                                Color.BLACK, todaLabel);
+                                paramColor, todaLabel);
                 endX = originalStartx + scale(
                                 (mult * runwayLength + calculateStopway(currentLogicalRunway)),
                                 runwayCanvas.getWidth());
                 startX = endX - scale(mult * asda, runwayCanvas.getWidth());
                 drawDistanceArrow(gc, startX, endX, (runwayArrowPadding) * pos++, original,
-                                Color.BLACK, asdaLabel);
-                // TODO: Add in Blast Protection
-                // TODO: Add in strip end, slope calculation
+                                paramColor, asdaLabel);
                 startX = endX - scale(mult * lda, runwayCanvas.getWidth());
-                drawDistanceArrow(gc, startX, endX, (runwayArrowPadding) * pos++, original,
-                                Color.BLACK, ldaLabel);
+                drawDistanceArrow(gc, startX, endX, (runwayArrowPadding) * pos, original,
+                                paramColor, ldaLabel);
+
+                double takeOffEndX = originalStartx + scale(
+                                (mult * runwayLength + calculateStopway(currentLogicalRunway)),
+                                runwayCanvas.getWidth())
+                                - scale(mult * asda, runwayCanvas.getWidth());
+                startX = takeOffEndX - (mult
+                                * scale(this.currentLogicalRunway.breakdown.getBlastProtection(),
+                                                runwayCanvas.getWidth()));
+                drawDistanceArrow(gc, startX, takeOffEndX, runwayArrowPadding * (pos - 2), original,
+                                blastColor,
+                                this.currentLogicalRunway.breakdown.getBlastProtection() + "m",
+                                false);
+
+                takeOffEndX = originalStartx + scale(
+                                (mult * runwayLength + calculateStopway(currentLogicalRunway)),
+                                runwayCanvas.getWidth())
+                                - scale(mult * lda, runwayCanvas.getWidth());
+
+                startX = takeOffEndX
+                                - (mult * scale(this.currentLogicalRunway.breakdown.getStripEnd(),
+                                                runwayCanvas.getWidth()));
+                drawDistanceArrow(gc, startX, takeOffEndX, runwayArrowPadding * (pos), original,
+                                seColor, this.currentLogicalRunway.breakdown.getStripEnd() + "m",
+                                false);
+                takeOffEndX = startX;
+                if (this.currentLogicalRunway.breakdown
+                                .getResa() > this.currentLogicalRunway.breakdown
+                                                .getSlopeCalculation()) {
+                    startX = takeOffEndX
+                                    - (mult * scale(this.currentLogicalRunway.breakdown.getResa(),
+                                                    runwayCanvas.getWidth()));
+                    drawDistanceArrow(gc, startX, takeOffEndX, runwayArrowPadding * (pos), original,
+                                    resaColor, this.currentLogicalRunway.breakdown.getResa() + "m",
+                                    false);
+                } else {
+                    startX = takeOffEndX - (mult * scale(
+                                    this.currentLogicalRunway.breakdown.getSlopeCalculation(),
+                                    runwayCanvas.getWidth()));
+                    drawDistanceArrow(gc, startX, takeOffEndX, runwayArrowPadding * (pos), original,
+                                    slopeColor,
+                                    this.currentLogicalRunway.breakdown.getSlopeCalculation() + "m",
+                                    false);
+                }
             }
         }
     }
@@ -465,6 +541,12 @@ public abstract class RunwayView extends GridPane implements Initializable {
 
     protected void drawDistanceArrow(GraphicsContext gc, double startX, double endX,
                     double distanceFromRunway, Boolean above, Paint color, String label) {
+        drawDistanceArrow(gc, startX, endX, distanceFromRunway, above, color, label, true);
+    }
+
+    protected void drawDistanceArrow(GraphicsContext gc, double startX, double endX,
+                    double distanceFromRunway, Boolean above, Paint color, String label,
+                    Boolean linesToMeet) {
         // calculate position
         double runwayCentreLine = runwayCanvas.getHeight() / 2;
         double runwayTop = runwayCentreLine - (runwayWidth / 2);
@@ -482,10 +564,14 @@ public abstract class RunwayView extends GridPane implements Initializable {
         gc.setFill(color);
         gc.setLineDashes();
         drawArrow(gc, startX, y, endX, y, color);
-        // Draw lines to meet arrow
-        gc.setStroke(color);
-        gc.strokeLine(startX, y, startX, runwayEdge);
-        gc.strokeLine(endX, y, endX, runwayEdge);
+        if (linesToMeet) {
+            // Draw lines to meet arrow
+            gc.setStroke(color);
+            gc.strokeLine(endX, y, endX, runwayEdge);
+            gc.strokeLine(startX, y, startX, runwayEdge);
+        } else {
+            drawArrow(gc, endX, y, startX, y, color);
+        }
         // Draw label
         gc.setTextAlign(TextAlignment.CENTER);
         gc.fillText(label, (startX + endX) / 2, y - 5);

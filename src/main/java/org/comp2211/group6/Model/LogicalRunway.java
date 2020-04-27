@@ -42,7 +42,7 @@ public class LogicalRunway {
     /** Public Methods */
 
     /** Returns the position **/
-    public char getPosition(){
+    public char getPosition() {
         return this.position;
     }
 

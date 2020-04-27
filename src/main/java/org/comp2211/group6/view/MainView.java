@@ -15,6 +15,7 @@ import org.comp2211.group6.Controller.Calculator;
 
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -228,36 +229,63 @@ public class MainView extends GridPane implements Initializable {
         // TODO: Set the newly edited airport
     }
 
+    /*
+     * listener for Save button in obstacle views. cater for different obstacle views(create, edit,
+     * load)
+     * 
+     */
+    private EventHandler<ActionEvent> obstacleSaveButtonAction(ObstacleView obstacleView) {
+        EventHandler<ActionEvent> saveButtonHandler = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                currentView.setVisible(false);
+                obstacles.add(obstacleView.getNewObstacle());
+                // If the current obstacle view is NOT the Create view, remove the original obstacle
+                // from the list.
+                if (!(obstacleView instanceof CreateAnObstacleView)) {
+                    obstacles.remove(currentObstacle);
+                }
+                updateAirportFields();
+                currentView = topDownView;
+                currentView.setVisible(true);
+                event.consume();
+            }
+        };
+
+        return saveButtonHandler;
+    }
+
     @FXML
     private void loadObstacle(ActionEvent e) {
         this.currentView.setVisible(false);
-        this.loadAnObstacleView.loadPredefinedObstacle("Obstacle On The Ground",
-                        "predefined obstacle for testing", 53.5, 70.3, 200);
+        this.loadAnObstacleView.loadPredefinedObstacle("Scenario 1 Obstacle",
+                        "Obstacle from Scenario 1 of the Heathrow Example", 53.5, 70.3, 12);
+        loadAnObstacleView.obstacleSaveButton
+                        .setOnAction(obstacleSaveButtonAction(loadAnObstacleView));
         this.currentView = this.loadAnObstacleView;
         this.currentView.setVisible(true);
-
-        Obstacle ob1 = new Obstacle("Plane Crash", "", 20, 10, 12, 0, -50, 3646);
-        this.obstacles.add(ob1);
-        this.updateAirportFields();
     }
 
     @FXML
     private void createObstacle(ActionEvent e) {
         this.returnToRunwayViewButton.setVisible(true);
         this.currentView.setVisible(false);
+        createAnObstacleView.obstacleSaveButton
+                        .setOnAction(obstacleSaveButtonAction(createAnObstacleView));
         this.currentView = this.createAnObstacleView;
         this.currentView.setVisible(true);
     }
 
     @FXML
     private void editObstacle(ActionEvent e) {
-
         if (currentObstacle == null) {
             throw new NullPointerException("No obstacle can be edited.");
         } else {
             this.returnToRunwayViewButton.setVisible(true);
             this.currentView.setVisible(false);
             editAnObstacleView.loadCurrentObstacle(currentObstacle);
+            editAnObstacleView.obstacleSaveButton
+                            .setOnAction(obstacleSaveButtonAction(editAnObstacleView));
             this.currentView = this.editAnObstacleView;
             this.currentView.setVisible(true);
         }

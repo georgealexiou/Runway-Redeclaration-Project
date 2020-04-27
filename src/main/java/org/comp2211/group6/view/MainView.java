@@ -232,14 +232,18 @@ public class MainView extends GridPane implements Initializable {
     /*
      * listener for Save button in obstacle views. 
      * cater for different obstacle views(create, edit, load)
+     * 
      */
-    private EventHandler<ActionEvent> saveButtonAction(ObstacleView obstacleView) {
+    private EventHandler<ActionEvent> obstacleSaveButtonAction(ObstacleView obstacleView) {
         EventHandler<ActionEvent> saveButtonHandler = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 currentView.setVisible(false);
                 obstacles.add(obstacleView.getNewObstacle());
-                obstacles.remove(currentObstacle);
+                //If the current obstacle view is NOT the Create view, remove the original obstacle from the list. 
+                if(!(obstacleView instanceof CreateAnObstacleView)) {
+                    obstacles.remove(currentObstacle);
+                }
                 updateAirportFields();
                 currentView = topDownView;
                 currentView.setVisible(true);   
@@ -255,7 +259,7 @@ public class MainView extends GridPane implements Initializable {
         this.currentView.setVisible(false);
         this.loadAnObstacleView.loadPredefinedObstacle("Obstacle On The Ground",
                         "predefined obstacle for testing", 53.5, 70.3, 200);
-        loadAnObstacleView.obstacleSaveButton.setOnAction(saveButtonAction(loadAnObstacleView));
+        loadAnObstacleView.obstacleSaveButton.setOnAction(obstacleSaveButtonAction(loadAnObstacleView));
         this.currentView = this.loadAnObstacleView;
         this.currentView.setVisible(true);
     }
@@ -264,7 +268,7 @@ public class MainView extends GridPane implements Initializable {
     private void createObstacle(ActionEvent e) {
         this.returnToRunwayViewButton.setVisible(true);
         this.currentView.setVisible(false);
-        createAnObstacleView.obstacleSaveButton.setOnAction(saveButtonAction(createAnObstacleView));
+        createAnObstacleView.obstacleSaveButton.setOnAction(obstacleSaveButtonAction(createAnObstacleView));
         this.currentView = this.createAnObstacleView;
         this.currentView.setVisible(true);
     }
@@ -277,7 +281,7 @@ public class MainView extends GridPane implements Initializable {
             this.returnToRunwayViewButton.setVisible(true);
             this.currentView.setVisible(false);
             editAnObstacleView.loadCurrentObstacle(currentObstacle);
-            editAnObstacleView.obstacleSaveButton.setOnAction(saveButtonAction(editAnObstacleView));
+            editAnObstacleView.obstacleSaveButton.setOnAction(obstacleSaveButtonAction(editAnObstacleView));
             this.currentView = this.editAnObstacleView;
             this.currentView.setVisible(true);
         }

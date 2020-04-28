@@ -72,7 +72,7 @@
         <Button text="Toggle View" maxWidth="Infinity" onAction="#toggleView" fx:id="toggleViewButton"></Button>
         <Label fx:id="notificationLabel" visible="true">
           <font>
-              <Font name="System Bold" size="12" color="RED"></Font>
+              <Font name="System Bold" size="12"></Font>
           </font>
         </Label>
       </VBox>

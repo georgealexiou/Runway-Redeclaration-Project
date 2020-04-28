@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import org.comp2211.group6.Controller.Calculator;
 import org.comp2211.group6.Model.LogicalRunway;
 import org.comp2211.group6.Model.Obstacle;
 import org.comp2211.group6.Model.Runway;
@@ -37,6 +38,7 @@ public class RunwayView extends GridPane implements Initializable {
     protected Runway runway;
     protected Obstacle currentObstacle;
     protected LogicalRunway currentLogicalRunway;
+    private Calculator calculator;
 
     protected double runwayWidth = 100;
     protected double runwayArrowPadding = 25;
@@ -118,6 +120,13 @@ public class RunwayView extends GridPane implements Initializable {
             this.runwayArrowPadding = 40;
         }
         this.redrawRunway();
+    }
+
+    /**
+     * @return the calculator
+     */
+    public Calculator getCalculator() {
+        return calculator;
     }
 
     @Override
@@ -228,6 +237,7 @@ public class RunwayView extends GridPane implements Initializable {
     public void setRunway(Runway runway) {
         // Store the runway
         this.runway = runway;
+
         if (runway != null) {
             // Update the combo box
             setupLogicalRunwayPicker(
@@ -276,6 +286,10 @@ public class RunwayView extends GridPane implements Initializable {
             } else {
                 this.runwayDirectionArrow.setRotate(180);
             }
+            if (this.currentObstacle != null && this.runway != null) {
+                this.calculator = new Calculator(this.runway);
+                this.calculator.recalculateRunwayParameters();
+            }
             recalculateDataValues();
             redraw();
         }
@@ -293,9 +307,9 @@ public class RunwayView extends GridPane implements Initializable {
                 drawRunwayParams(gc, true);
                 if (currentObstacle != null) {
                     drawTopDownObstacle(gc);
-                }
-                if (currentLogicalRunway.getRecalculatedParameters().getTORA() != 0) {
-                    drawRunwayParams(gc, false);
+                    if (currentLogicalRunway.getRecalculatedParameters() != null) {
+                        drawRunwayParams(gc, false);
+                    }
                 }
             }
         } else {
@@ -307,7 +321,7 @@ public class RunwayView extends GridPane implements Initializable {
                 drawRunwayParams(gc, true);
                 if (this.currentObstacle != null) {
                     drawSideOnObstacle(gc);
-                    if (this.currentLogicalRunway.getRecalculatedParameters().getTORA() > 0) {
+                    if (this.currentLogicalRunway.getRecalculatedParameters() != null) {
                         drawRunwayParams(gc, false);
                         drawSlope(gc);
                     }

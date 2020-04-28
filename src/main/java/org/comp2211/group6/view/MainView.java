@@ -78,7 +78,6 @@ public class MainView extends GridPane implements Initializable {
      */
     private Airport currentAirport;
     private List<Obstacle> obstacles = new ArrayList<Obstacle>();
-    private Calculator calculator;
 
     public MainView() {
         super();
@@ -95,9 +94,7 @@ public class MainView extends GridPane implements Initializable {
     }
 
     @Override
-    public void initialize(URL location, ResourceBundle resources) {
-
-    }
+    public void initialize(URL location, ResourceBundle resources) {}
 
     private void changeView(Node newView) {
         if (this.currentView != null) {
@@ -209,6 +206,7 @@ public class MainView extends GridPane implements Initializable {
                 // from the list.
                 if (!(obstacleView instanceof CreateAnObstacleView)) {
                     obstacles.remove(runwayView.currentObstacle);
+                    runwayView.setObstacle(obstacleView.getNewObstacle());
                 }
                 changeView(runwayView);
                 notificationLabel.setText("Obstacle successfully saved");
@@ -302,9 +300,9 @@ public class MainView extends GridPane implements Initializable {
 
     @FXML
     private void viewCalculations(ActionEvent e) {
-        this.returnToRunwayViewButton.setVisible(true);
-        if (this.calculator.getAllBreakdowns().size() > 0) {
-            this.breakdownView.setAvailableBreakdowns(this.calculator.getAllBreakdowns());
+        Calculator calc = this.runwayView.getCalculator();
+        if (calc.getAllBreakdowns().size() > 0) {
+            this.breakdownView.setAvailableBreakdowns(calc.getAllBreakdowns());
             changeView(breakdownView);
         } else {
             return;

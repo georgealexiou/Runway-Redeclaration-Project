@@ -200,14 +200,11 @@ public class MainView extends GridPane implements Initializable {
         // TODO: Implement actual function
 
         Stage stage = new Stage();
-        AtomicReference<Airport> airport = null;
 
         stage.setTitle("FileChooser");
 
         FileChooser chooser = new FileChooser();
-        chooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("XML Files", ".xml")
-        );
+        chooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("XML Files", "*.xml"));
 
         Label label = new Label("No files selected");
         Button button = new Button("Select File");
@@ -244,20 +241,22 @@ public class MainView extends GridPane implements Initializable {
                 }
             }
 
-            if (fileContents == ""){
+            if (fileContents == "") {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("Warning");
                 alert.setHeaderText("The file you are trying to load is empty");
-                alert.setContentText("Using this file may cause errors when loading the configuration");
+                alert.setContentText(
+                                "Using this file may cause errors when loading the configuration");
 
                 alert.showAndWait();
             } else {
                 XMLHandler xml = new XMLHandler();
-                airport.set(xml.readAirportXML(filePath));
+                setAirport(xml.readAirportXML(filePath));
             }
 
         };
 
+        button.setOnAction(event);
         VBox vbox = new VBox(30, label, button);
         vbox.setAlignment(Pos.CENTER);
 
@@ -265,9 +264,6 @@ public class MainView extends GridPane implements Initializable {
         stage.setScene(scene);
         stage.setResizable(false);
         stage.showAndWait();
-
-        currentAirport = airport.get();
-
     }
 
     @FXML

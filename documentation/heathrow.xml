@@ -1,0 +1,25 @@
+<airport>
+    <name>Heathrow</name>
+    <runway>
+        <name>09L27R</name>
+            <logicalRunway>
+                <tora>3902</tora>
+                <toda>3902</toda>
+                <asda>3902</asda>
+                <lda>3595</lda>
+                <heading>09</heading>
+                <displacedThreshold>306</displacedThreshold>
+                <position>L</position>
+             </logicalRunway>
+             <logicalRunway>
+                 <tora>3884</tora>
+                 <toda>3962</toda>
+                 <asda>3884</asda>
+                 <lda>3884</lda>
+                 <heading>27</heading>
+                 <displacedThreshold>0</displacedThreshold>
+                 <position>R</position>
+             </logicalRunway>
+
+    </runway>
+</airport>

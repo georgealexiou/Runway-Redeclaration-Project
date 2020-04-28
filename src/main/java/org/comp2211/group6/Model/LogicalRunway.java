@@ -41,6 +41,11 @@ public class LogicalRunway {
 
     /** Public Methods */
 
+    /** Returns the position **/
+    public char getPosition() {
+        return this.position;
+    }
+
     /** Returns an identifier e.g. 09L */
     public String getIdentifier() {
         if (heading < 10)

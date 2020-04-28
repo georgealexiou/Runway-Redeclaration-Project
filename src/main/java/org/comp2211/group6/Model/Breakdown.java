@@ -20,7 +20,7 @@ public class Breakdown {
         if (towards) {
             lda = "RLDA = Distance from Threshold - RESA - Strip End";
             lda = lda.concat("\n     = " + thresholdDistance + " - " + resa + " - " + stripEnd);
-            lda = lda.concat("\n     = " + lr.getRecalculatedParameters().getLDA());
+            lda = lda.concat("\n     = " + lr.getRecalculatedParameters().getLDA() + "\n");
 
             tora = "RTORA = Distance from Threshold + Displaced Threshold - Slope Calculation - Strip End";
             tora = tora.concat("\n      = " + thresholdDistance + " + " + lr.getDisplacedThreshold()
@@ -36,7 +36,7 @@ public class Breakdown {
             lda = "RLDA = LDA - Distance from Threshold - Strip End - Slope Calculation";
             lda = lda.concat("\n     = " + lr.getParameters().getLDA() + " - " + stripEnd + " - ("
                             + obstacleHeight + "*" + 50 + ")");
-            lda = lda.concat("\n     = " + lr.getRecalculatedParameters().getLDA());
+            lda = lda.concat("\n     = " + lr.getRecalculatedParameters().getLDA() + "\n");
 
             tora = "RTORA = TORA - Blast Protection - Distance from Threshold - Displaced Threshold";
             tora = tora.concat("\n      = " + lr.getParameters().getTORA() + " - " + blastProtection
@@ -44,12 +44,12 @@ public class Breakdown {
             tora = tora.concat("\n      = " + lr.getRecalculatedParameters().getTORA() + "\n");
 
             asda = "RASDA = RTORA + STOPWAY";
-            asda = asda.concat("      = " + lr.getRecalculatedParameters().getTORA() + " + "
+            asda = asda.concat("\n      = " + lr.getRecalculatedParameters().getTORA() + " + "
                             + stopway + "\n");
             asda = asda.concat("      = " + lr.getRecalculatedParameters().getASDA() + "\n");
 
             toda = "RTODA = RTORA + CLEARWAY";
-            toda = toda.concat("      = " + lr.getRecalculatedParameters().getTORA() + " + "
+            toda = toda.concat("\n      = " + lr.getRecalculatedParameters().getTORA() + " + "
                             + clearway);
             toda = toda.concat("      = " + lr.getRecalculatedParameters().getTODA() + "\n");
         }

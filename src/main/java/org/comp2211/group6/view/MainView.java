@@ -1,11 +1,13 @@
 package org.comp2211.group6.view;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import javafx.scene.control.Alert;
 import org.comp2211.group6.Model.Airport;
 import org.comp2211.group6.Model.LogicalRunway;
 import org.comp2211.group6.Model.Obstacle;
@@ -190,7 +192,19 @@ public class MainView extends GridPane implements Initializable {
     @FXML
     private void loadAirport(ActionEvent e) {
         // TODO: Implement actual function
-        Airport airport;
+
+        FileLoader fileLoader = new FileLoader();
+        Airport airport = fileLoader.getAirport();
+
+        if (airport == null){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("You loaded an empty configuration");
+            alert.setContentText("Please try loading your XML file again or try a new file");
+
+            alert.showAndWait();
+        }
+
         if (this.currentAirportName.getText().equals("")) {
             airport = new Airport("Heathrow");
         } else {

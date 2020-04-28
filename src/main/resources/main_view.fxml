@@ -70,6 +70,7 @@
         <ComboBox fx:id="obstaclePicker" maxWidth="Infinity"></ComboBox>
         <Button text="View Calculations" maxWidth="Infinity" onAction="#viewCalculations"></Button>
         <Button text="Toggle View" maxWidth="Infinity" onAction="#toggleView"></Button>
+        <Label fx:id="notificationLabel" visible="true"></Label>
       </VBox>
     </VBox>
   </VBox>

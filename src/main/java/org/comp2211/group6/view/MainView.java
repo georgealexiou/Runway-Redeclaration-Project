@@ -64,6 +64,8 @@ public class MainView extends GridPane implements Initializable {
     @FXML
     private ComboBox<Obstacle> obstaclePicker;
 
+    @FXML
+    private Label notificationLabel;
     /*
      * Properties
      */
@@ -235,6 +237,7 @@ public class MainView extends GridPane implements Initializable {
      * 
      */
     private EventHandler<ActionEvent> obstacleSaveButtonAction(ObstacleView obstacleView) {
+        notificationLabel.setText(" ");
         EventHandler<ActionEvent> saveButtonHandler = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -248,6 +251,7 @@ public class MainView extends GridPane implements Initializable {
                 updateAirportFields();
                 currentView = topDownView;
                 currentView.setVisible(true);
+                notificationLabel.setText("Obstacle successfully saved");
                 event.consume();
             }
         };

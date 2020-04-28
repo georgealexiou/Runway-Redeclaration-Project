@@ -11,10 +11,58 @@ import org.comp2211.group6.Model.*;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
+/**
+ * Class responsible for reading and writing XML files based on airport and obstacle data.
+ * Class responsible for updating system configurations.
+ *
+ * The XML structure being used for airports is as follows:
+ *
+ * <airport>
+ *     <name>AirportName</name>
+ *     <runway>
+ * 		<name> Name <\name>
+ * 		<logicalRunway>
+ * 			<tora> Tora <\tora>
+ * 			<toda> Toda <\toda>
+ * 			<asda> Asda <\asda>
+ * 			<lda> Lda <\lda>
+ * 			<heading> Heading <\heading>
+ * 			<displacedThreshold> Displaced Threshold <\displacedThreshold>
+ * 			<position> Position <\position>
+ * 		<\logicalRunway>
+ *     </runway>
+ * </airport>
+ *
+ * An airport can have many runways and a runway can have many (up to 3) logical runways.
+ *
+ * The XML structure being used for obstacles is as follows:
+ *
+ * <obstacles>
+ * 	<obstacle>
+ * 		<name> Name <\name>
+ * 		<description> Description <\description>
+ * 		<length> Length <\length>
+ * 		<width> Width <\width>
+ * 		<height> Height <\height>
+ * 		<distanceToCentreLine> Distance To Centre Line <\distanceToCentreLine>
+ * 		<distanceFromLeftThreshold> Distance From Left Threshold <\distanceFromLeftThreshold>
+ * 		<distanceFromRightThreshold> Distance From Right Threshold <\distanceFromRightThreshold>
+ * 	<\obstacle>
+ * <\obstacles>
+ *
+ * This structure can store multiple obstacles as if they are part of a list.
+ */
 public class XMLHandler {
 
+    /**
+     *
+     * @param xml the URI to the .xml file to create or overwrite, e.g. "Test.xml".
+     * @param airport The airport chosen to be saved.
+     */
     public void saveAirportToXML(String xml, Airport airport) {
         Document dom;
 
@@ -44,6 +92,7 @@ public class XMLHandler {
                 runwayElem.appendChild(nameElem);
 
                 for (LogicalRunway logicalRunway : runway.getLogicalRunways()){
+
                     Element logicalRunElem = dom.createElement("logicalRunway");
                     runwayElem.appendChild(logicalRunElem);
 
@@ -51,31 +100,31 @@ public class XMLHandler {
 
                     Element logicalTORAElem = dom.createElement("tora");
                     logicalTORAElem.appendChild(dom.createTextNode(Double.toString(params.getTORA())));
-                    runwayElem.appendChild(logicalTORAElem);
+                    logicalRunElem.appendChild(logicalTORAElem);
 
                     Element logicalTODAElem = dom.createElement("toda");
                     logicalTODAElem.appendChild(dom.createTextNode(Double.toString(params.getTODA())));
-                    runwayElem.appendChild(logicalTODAElem);
+                    logicalRunElem.appendChild(logicalTODAElem);
 
                     Element logicalASDAElem = dom.createElement("asda");
                     logicalASDAElem.appendChild(dom.createTextNode(Double.toString(params.getASDA())));
-                    runwayElem.appendChild(logicalASDAElem);
+                    logicalRunElem.appendChild(logicalASDAElem);
 
                     Element logicalLDAElem = dom.createElement("lda");
                     logicalLDAElem.appendChild(dom.createTextNode(Double.toString(params.getLDA())));
-                    runwayElem.appendChild(logicalLDAElem);
+                    logicalRunElem.appendChild(logicalLDAElem);
 
                     Element logicalHeadingElem = dom.createElement("heading");
-                    logicalHeadingElem.appendChild(dom.createTextNode(Double.toString(logicalRunway.getHeading())));
-                    runwayElem.appendChild(logicalHeadingElem);
+                    logicalHeadingElem.appendChild(dom.createTextNode(Integer.toString(logicalRunway.getHeading())));
+                    logicalRunElem.appendChild(logicalHeadingElem);
 
                     Element logicalDispThresElem = dom.createElement("displacedThreshold");
                     logicalDispThresElem.appendChild(dom.createTextNode(Double.toString(logicalRunway.getDisplacedThreshold())));
-                    runwayElem.appendChild(logicalDispThresElem);
+                    logicalRunElem.appendChild(logicalDispThresElem);
 
                     Element logicalPosElem = dom.createElement("position");
                     logicalPosElem.appendChild(dom.createTextNode(Character.toString(logicalRunway.getPosition())));
-                    runwayElem.appendChild(logicalPosElem);
+                    logicalRunElem.appendChild(logicalPosElem);
                 }
             }
 
@@ -86,7 +135,6 @@ public class XMLHandler {
                 tr.setOutputProperty(OutputKeys.INDENT, "yes");
                 tr.setOutputProperty(OutputKeys.METHOD, "xml");
                 tr.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
-                tr.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, "roles.dtd");
                 tr.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
 
                 // send DOM to file
@@ -104,7 +152,12 @@ public class XMLHandler {
         }
     }
 
-    public void saveObstacleToXML(String xml, Set<Obstacle> obstacles) {
+    /**
+     *
+     * @param xml the URI to the .xml file to create or overwrite, e.g. "Test.xml".
+     * @param obstacles A list of obstacles to be saved.
+     */
+    public void saveObstaclesToXML(String xml, List<Obstacle> obstacles) {
         Document dom;
 
         // Instance of a DocumentBuilderFactory.
@@ -163,7 +216,6 @@ public class XMLHandler {
                 tr.setOutputProperty(OutputKeys.INDENT, "yes");
                 tr.setOutputProperty(OutputKeys.METHOD, "xml");
                 tr.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
-                tr.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, "roles.dtd");
                 tr.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
 
                 // send DOM to file
@@ -181,7 +233,13 @@ public class XMLHandler {
         }
     }
 
+    /**
+     *
+     * @param xml the URI to the .xml file to read, e.g. "Test.xml".
+     * @return Returns an airport.
+     */
     public Airport readAirportXML(String xml) {
+
         Document dom;
 
         // Declaring the airport.
@@ -204,6 +262,7 @@ public class XMLHandler {
 
             String airportName = null;
             airportName = getTextValue(airportName, doc, "name");
+
             if (airportName != null) {
                 if (!airportName.isEmpty())
                     airport = new Airport(airportName);
@@ -270,12 +329,81 @@ public class XMLHandler {
         return airport;
     }
 
+    /**
+     *
+     * @param xml the URI to the .xml file to read, e.g. "Test.xml".
+     * @return Returns a list of obstacles.
+     */
     // Similar to readAirportXML.
-    public Set<Obstacle> readObstaclesXML(String xml) {
-        Set<Obstacle> obstacleSet = null;
-        return obstacleSet;
+    public List<Obstacle> readObstaclesXML(String xml) {
+
+        Document dom;
+
+        // Declaring the obstacle list.
+        List<Obstacle> obstaclesList = new ArrayList<Obstacle>();
+
+        // Make an  instance of the DocumentBuilderFactory.
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+
+        try {
+            DocumentBuilder db = dbf.newDocumentBuilder();
+
+            File xmlFile = new File(xml);
+
+            dom = db.parse(xmlFile);
+
+            // Normalize the XML Structure.
+            dom.getDocumentElement().normalize();
+
+            Element doc = dom.getDocumentElement();
+
+            //Get all runways.
+            NodeList obstacleElemList = dom.getElementsByTagName("obstacle");
+
+            for (int tempNode1 = 0; tempNode1 < obstacleElemList.getLength(); tempNode1++) {
+                Node obstacleNode = obstacleElemList.item(tempNode1);
+
+                if (obstacleNode.getNodeType() == Node.ELEMENT_NODE) {
+
+                    Element obstacleElement = (Element) obstacleNode;
+
+                    String name = obstacleElement.getElementsByTagName("name").item(0).getTextContent();
+                    String description = obstacleElement.getElementsByTagName("description").item(0).getTextContent();
+                    Double length = Double.parseDouble(obstacleElement.getElementsByTagName("length").item(0).getTextContent());
+                    Double width = Double.parseDouble(obstacleElement.getElementsByTagName("width").item(0).getTextContent());
+                    Double height = Double.parseDouble(obstacleElement.getElementsByTagName("height").item(0).getTextContent());
+                    Double distanceToCentreLine = Double.parseDouble(obstacleElement.getElementsByTagName("distanceToCentreLine").item(0).getTextContent());
+                    Double distanceFromLeftThreshold = Double.parseDouble(obstacleElement.getElementsByTagName("distanceFromLeftThreshold").item(0).getTextContent());
+                    Double distanceFromRightThreshold = Double.parseDouble(obstacleElement.getElementsByTagName("distanceFromRightThreshold").item(0).getTextContent());
+
+                    Obstacle obstacle = new Obstacle(name,description,length,width,height,distanceToCentreLine,distanceFromLeftThreshold,distanceFromRightThreshold);
+                    obstaclesList.add(obstacle);
+
+                }
+            }
+
+            return obstaclesList;
+
+        } catch (ParserConfigurationException pce) {
+            System.out.println(pce.getMessage());
+        } catch (SAXException se) {
+            System.out.println(se.getMessage());
+        } catch (IOException ioe) {
+            System.err.println(ioe.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return obstaclesList;
     }
 
+    /**
+     * A helpr function.
+     * @param def
+     * @param doc
+     * @param tag
+     * @return
+     */
     private String getTextValue(String def, Element doc, String tag) {
         String value = def;
         NodeList nl;

@@ -1,18 +1,23 @@
 package org.comp2211.group6.view;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.concurrent.atomic.AtomicReference;
 
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import org.comp2211.group6.Model.Airport;
-import org.comp2211.group6.Model.LogicalRunway;
 import org.comp2211.group6.Model.Obstacle;
 import org.comp2211.group6.Model.Runway;
-import org.comp2211.group6.Model.RunwayParameters;
 import org.comp2211.group6.Controller.Calculator;
 
 import javafx.collections.FXCollections;
@@ -28,6 +33,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.util.StringConverter;
+import org.comp2211.group6.XMLHandler;
 
 public class MainView extends GridPane implements Initializable {
 
@@ -193,14 +199,75 @@ public class MainView extends GridPane implements Initializable {
     private void loadAirport(ActionEvent e) {
         // TODO: Implement actual function
 
-        FileLoader fileLoader = new FileLoader();
-        Airport airport = null;
+        Stage stage = new Stage();
+        AtomicReference<Airport> airport = null;
 
-        while(airport == null){
-            airport = fileLoader.getAirport();
-        }
+        stage.setTitle("FileChooser");
 
-        currentAirport = airport;
+        FileChooser chooser = new FileChooser();
+        chooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("XML Files", ".xml")
+        );
+
+        Label label = new Label("No files selected");
+        Button button = new Button("Select File");
+
+        EventHandler<ActionEvent> event = event1 -> {
+            File file = chooser.showOpenDialog(stage);
+            String filePath = "";
+
+            if (file != null) {
+                filePath = file.getAbsolutePath();
+                label.setText("You selected " + filePath);
+
+            } else
+                label.setText("No File Selected");
+
+            String fileContents = "";
+            if (filePath != "") {
+
+                StringBuilder builder = new StringBuilder();
+                try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+                    String current = "";
+                    while ((current = br.readLine()) != null) {
+                        builder.append(current).append("\n");
+                    }
+
+                    fileContents = builder.toString();
+                } catch (IOException io) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error");
+                    alert.setHeaderText("Error when loading the xml file");
+                    alert.setContentText("Error Messsage: " + io.getMessage());
+
+                    alert.showAndWait();
+                }
+            }
+
+            if (fileContents == ""){
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Warning");
+                alert.setHeaderText("The file you are trying to load is empty");
+                alert.setContentText("Using this file may cause errors when loading the configuration");
+
+                alert.showAndWait();
+            } else {
+                XMLHandler xml = new XMLHandler();
+                airport.set(xml.readAirportXML(filePath));
+            }
+
+        };
+
+        VBox vbox = new VBox(30, label, button);
+        vbox.setAlignment(Pos.CENTER);
+
+        Scene scene = new Scene(vbox, 800, 500);
+        stage.setScene(scene);
+        stage.setResizable(false);
+        stage.showAndWait();
+
+        currentAirport = airport.get();
+
     }
 
     @FXML
@@ -321,4 +388,5 @@ public class MainView extends GridPane implements Initializable {
         this.currentView = topDownView;
         this.currentView.setVisible(true);
     }
+
 }

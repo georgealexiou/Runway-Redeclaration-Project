@@ -1,0 +1,10 @@
+<obstacle>
+    <name>Plane Crash</name>
+    <description>Heathrow Scenario 1 Incident</description>
+    <length>20</length>
+    <width>15</width>
+    <height>12</height>
+    <distanceToCentreLine>0</distanceToCentreLine>
+    <distanceFromLeftThreshold>-50</distanceFromLeftThreshold>
+    <distanceFromRightThreshold>3646</distanceFromRightThreshold>
+</obstacle>

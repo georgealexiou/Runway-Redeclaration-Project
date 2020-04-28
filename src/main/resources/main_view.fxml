@@ -1,8 +1,11 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.text.Font?>
-<?import org.comp2211.group6.view.TopDownView?>
-<?import org.comp2211.group6.view.SideOnView?>
+<?import org.comp2211.group6.view.RunwayView?>
+<?import org.comp2211.group6.view.BreakdownView?>
+<?import org.comp2211.group6.view.EditAnObstacleView?>
+<?import org.comp2211.group6.view.CreateAnObstacleView?>
+<?import org.comp2211.group6.view.LoadAnObstacleView?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.RowConstraints?>
 
@@ -14,54 +17,75 @@
          maxWidth="-Infinity" minHeight="-Infinity"
          minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0">
 
-  <padding><Insets top="40" right="40" bottom="40" left="40"/></padding>
   <columnConstraints>
               <ColumnConstraints minWidth="600" prefWidth="600"
                                  maxWidth="Infinity" halignment="CENTER" hgrow="ALWAYS">
               </ColumnConstraints>
-              <ColumnConstraints minWidth="200" prefWidth="200"
-                                 maxWidth="200" halignment="CENTER">
-              </ColumnConstraints>
   </columnConstraints>
   <rowConstraints>
+    <RowConstraints minHeight="50" maxHeight="Infinity" vgrow="NEVER">
+    </RowConstraints>
     <RowConstraints minHeight="350" maxHeight="Infinity" vgrow="ALWAYS">
     </RowConstraints>
+    <RowConstraints maxHeight="200" vgrow="NEVER">
+    </RowConstraints>
   </rowConstraints>
-  <TopDownView fx:id="topDownView" GridPane.rowIndex="0" GridPane.columnIndex="0" visible="false"></TopDownView> 
-  <SideOnView fx:id="sideOnView" GridPane.rowIndex="0" GridPane.columnIndex="0" visible="false"></SideOnView> 
-  <VBox fx:id="splashScreen" GridPane.rowIndex="0" GridPane.columnIndex="0" visible="true" alignment="CENTER">
+  <MenuBar GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.columnSpan="2" useSystemMenuBar="false">
+       <menus>
+           <Menu text="View">
+              <items>
+                <MenuItem text="Toggle View" onAction="#toggleView" fx:id="toggleViewButton"></MenuItem>
+                <MenuItem text="Return to Runway View" onAction="#returnToRunwayView" fx:id="returnToRunwayViewButton"></MenuItem>
+              </items>
+           </Menu>
+           <Menu text="Airports">
+              <items>
+                <MenuItem text="Load Airport" onAction="#loadAirport" fx:id="loadAirportButton"></MenuItem>
+                <MenuItem text="Create new Airport" onAction="#createAirport" fx:id="createAirportButton"></MenuItem>
+                <MenuItem text="Edit Airport" onAction="#editAirport" fx:id="editAirportButton"></MenuItem>
+              </items>
+           </Menu>
+           <Menu text="Obstacles">
+            <items>
+              <MenuItem text="Load Obstacle" onAction="#loadObstacle" fx:id="loadObstacleButton"></MenuItem>
+              <MenuItem text="Create Obstacle" onAction="#createObstacle" fx:id="createObstacleButton"></MenuItem>
+              <MenuItem text="Edit Obstacle" onAction="#editObstacle" fx:id="editObstacleButton"></MenuItem>
+            </items>
+           </Menu>
+           <Menu text="Calculations">
+            <items>
+              <MenuItem text="View Calculations" onAction="#viewCalculations" fx:id="viewCalculationsButton"></MenuItem>
+            </items>
+           </Menu>
+       </menus>
+  </MenuBar>
+
+  <CreateAnObstacleView fx:id="createAnObstacleView" GridPane.rowIndex="1" GridPane.columnIndex="0" visible="false"></CreateAnObstacleView> 
+  <LoadAnObstacleView fx:id="loadAnObstacleView" GridPane.rowIndex="1" GridPane.columnIndex="0" visible="false"></LoadAnObstacleView> 
+  <EditAnObstacleView fx:id="editAnObstacleView" GridPane.rowIndex="1" GridPane.columnIndex="0" visible="false"></EditAnObstacleView> 
+  <BreakdownView fx:id="breakdownView" GridPane.rowIndex="1" GridPane.columnIndex="0" visible="false"></BreakdownView>
+  <RunwayView fx:id="runwayView" GridPane.rowIndex="1" GridPane.columnIndex="0" visible="false"></RunwayView> 
+  <VBox fx:id="splashScreen" GridPane.rowIndex="1" GridPane.columnIndex="0" visible="true" alignment="CENTER">
     <Label text="Welcome to the Runway Redeclaration Tool">
           <font>
               <Font name="System Bold" size="32"></Font>
           </font>
     </Label>
-  </VBox>
-  <VBox fx:id="sidePanel" alignment="CENTER" GridPane.rowIndex="0" GridPane.columnIndex="1">
-    <VBox alignment="CENTER">
-      <Button text="Load Airport" maxWidth="Infinity" onAction="#loadAirport"></Button>
-      <Button text="Create new Airport" maxWidth="Infinity" onAction="#createAirport"></Button>
-      <Button text="Load Obstacle" maxWidth="Infinity" onAction="#loadObstacle"></Button>
-      <Button text="Create Obstacle" maxWidth="Infinity" onAction="#createObstacle"></Button>
-    </VBox>
-    <VBox fx:id="airportBox" alignment="CENTER" visible="false">
-      <Label text="" fx:id="currentAirportName">
+    <Label text="Load an Airport to begin">
           <font>
-              <Font name="System Bold" size="16"></Font>
+              <Font name="System Bold" size="18"></Font>
           </font>
-      </Label>
-      <Button text="Edit Airport" maxWidth="Infinity" onAction="#editAirport"></Button>
-      <VBox alignment="CENTER">
-        <Label text="Runway">
-        </Label>
-        <ComboBox fx:id="runwayPicker" maxWidth="Infinity"></ComboBox>
-      </VBox>
-      <VBox alignment="CENTER">
-        <Label text="Obstacle"></Label>
-        <Button text="Edit Obstacle" maxWidth="Infinity" onAction="#editObstacle"></Button>
-        <ComboBox fx:id="obstaclePicker" maxWidth="Infinity"></ComboBox>
-        <Button text="View Calculations" maxWidth="Infinity" onAction="#viewCalculations"></Button>
-        <Button text="Toggle View" maxWidth="Infinity" onAction="#toggleView"></Button>
-      </VBox>
-    </VBox>
+    </Label>
   </VBox>
+  
+  <VBox alignment="CENTER" MaxWidth="Infinity" GridPane.rowIndex="2" GridPane.columnIndex="0">
+      <padding><Insets top="40" right="40" bottom="40" left="40"/></padding>
+      <Label text="Notifications" visible="true">
+        <font>
+          <Font name="System Bold Underline" size="14"></Font>
+        </font>
+      </Label>
+      <Label fx:id="notificationLabel" visible="true">
+      </Label>
+    </VBox>
 </fx:root>

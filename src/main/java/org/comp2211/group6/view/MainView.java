@@ -253,7 +253,10 @@ public class MainView extends GridPane implements Initializable {
                 alert.showAndWait();
             } else {
                 XMLHandler xml = new XMLHandler();
-                obstacles.addAll(xml.readObstaclesXML(filePath));
+                loadAnObstacleView.loadPredefinedObstacle(xml.readObstacleXML(filePath));
+                loadAnObstacleView.obstacleSaveButton
+                                .setOnAction(obstacleSaveButtonAction(loadAnObstacleView));
+                changeView(loadAnObstacleView);
                 stage.close();
             }
 

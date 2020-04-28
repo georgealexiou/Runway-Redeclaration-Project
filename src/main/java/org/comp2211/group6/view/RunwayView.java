@@ -3,6 +3,7 @@ package org.comp2211.group6.view;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Iterator;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import org.comp2211.group6.Model.LogicalRunway;
@@ -28,7 +29,7 @@ import javafx.scene.transform.Affine;
 import javafx.scene.transform.Transform;
 import javafx.util.StringConverter;
 
-public abstract class RunwayView extends GridPane implements Initializable {
+public class RunwayView extends GridPane implements Initializable {
 
     /*
      * Data
@@ -76,18 +77,53 @@ public abstract class RunwayView extends GridPane implements Initializable {
     @FXML
     protected Label viewTitle;
 
+    @FXML
+    public Label currentAirportName;
+    @FXML
+    public ComboBox<Runway> runwayPicker;
+    @FXML
+    public ComboBox<Obstacle> obstaclePicker;
+
+    private boolean topDownViewActive = true;
+
     /*
      * Construct a new RunwayView
      */
     public RunwayView() {
-        logicalRunwayPicker = new ComboBox<LogicalRunway>();
-        setupRunwayPicker(FXCollections.observableArrayList());
+        loadFxml(getClass().getResource("/runway_view.fxml"), this);
+        if (topDownViewActive) {
+            this.viewTitle.setText("Top Down View");
+            this.runwayWidth = 100;
+            this.runwayArrowPadding = 25;
+        } else {
+            this.viewTitle.setText("Side On View");
+            this.runwayWidth = 10;
+            this.runwayArrowPadding = 40;
+        }
+        setupLogicalRunwayPicker(FXCollections.observableArrayList());
+        updateObstaclePicker(FXCollections.observableArrayList());
+        updateRunwayPicker(FXCollections.observableArrayList());
+        this.redrawRunway();
+    }
+
+    public void toggleRunwayView() {
+        topDownViewActive = !topDownViewActive;
+        if (topDownViewActive) {
+            this.viewTitle.setText("Top Down View");
+            this.runwayWidth = 100;
+            this.runwayArrowPadding = 25;
+        } else {
+            this.viewTitle.setText("Side On View");
+            this.runwayWidth = 10;
+            this.runwayArrowPadding = 40;
+        }
+        this.redrawRunway();
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        runwayCanvas.widthProperty().bind(this.widthProperty().subtract(100));
-        runwayCanvas.heightProperty().bind(this.heightProperty().subtract(150));
+        runwayCanvas.widthProperty().bind(this.widthProperty().subtract(80));
+        runwayCanvas.heightProperty().bind(this.heightProperty().subtract(250));
         runwayCanvas.widthProperty().addListener(observable -> redraw());
         runwayCanvas.heightProperty().addListener(observable -> redraw());
     }
@@ -97,7 +133,7 @@ public abstract class RunwayView extends GridPane implements Initializable {
      * 
      * @param data The list of logical runways to have in the combo picker
      */
-    private void setupRunwayPicker(ObservableList<LogicalRunway> data) {
+    private void setupLogicalRunwayPicker(ObservableList<LogicalRunway> data) {
         // Update the values
         currentLogicalRunway = null;
         logicalRunwayPicker.setItems(data);
@@ -127,6 +163,56 @@ public abstract class RunwayView extends GridPane implements Initializable {
         currentLogicalRunway = logicalRunwayPicker.getValue();
     }
 
+    public void updateRunwayPicker(List<Runway> runways) {
+        System.out.println("Updating Runway Picker with " + runways.size() + " runways");
+        runwayPicker.setItems(FXCollections.observableArrayList(runways));
+        runwayPicker.getSelectionModel().selectFirst();
+        runwayPicker.valueProperty().addListener((e, oldVal, newVal) -> {
+            setRunway(newVal);
+            // Clear current obstacle
+            obstaclePicker.getSelectionModel().clearSelection();
+            setObstacle(null);
+        });
+        runwayPicker.setConverter(new StringConverter<Runway>() {
+            @Override
+            public String toString(Runway object) {
+                if (object == null)
+                    return null;
+                return object.getName();
+            }
+
+            @Override
+            public Runway fromString(String string) {
+                return runwayPicker.getItems().stream().filter(x -> x.getName().equals(string))
+                                .findFirst().orElse(null);
+            }
+        });
+
+    }
+
+    public void updateObstaclePicker(List<Obstacle> obstacles) {
+        System.out.println("Updating Obstacle Picker");
+        obstaclePicker.setItems(FXCollections.observableArrayList(obstacles));
+        obstaclePicker.getSelectionModel().selectFirst();
+        obstaclePicker.valueProperty().addListener((e, oldVal, newVal) -> {
+            setObstacle(newVal);
+        });
+        obstaclePicker.setConverter(new StringConverter<Obstacle>() {
+            @Override
+            public String toString(Obstacle object) {
+                if (object == null)
+                    return null;
+                return object.getName();
+            }
+
+            @Override
+            public Obstacle fromString(String string) {
+                return obstaclePicker.getItems().stream().filter(x -> x.getName().equals(string))
+                                .findFirst().orElse(null);
+            }
+        });
+    }
+
     /*
      * Returns the runway currently in use
      */
@@ -144,7 +230,8 @@ public abstract class RunwayView extends GridPane implements Initializable {
         this.runway = runway;
         if (runway != null) {
             // Update the combo box
-            setupRunwayPicker(FXCollections.observableArrayList(this.runway.getLogicalRunways()));
+            setupLogicalRunwayPicker(
+                            FXCollections.observableArrayList(this.runway.getLogicalRunways()));
         }
         // Re draw the runway
         redrawRunway();
@@ -181,6 +268,7 @@ public abstract class RunwayView extends GridPane implements Initializable {
      * updated Override this to add more functionality
      */
     private void redrawRunway() {
+        System.out.println(this.getWidth() + "x" + this.getHeight());
         // Handle takeoff landing direction arrow
         if (currentLogicalRunway != null) {
             if (currentLogicalRunway.getHeading() <= 18) {
@@ -191,12 +279,42 @@ public abstract class RunwayView extends GridPane implements Initializable {
             recalculateDataValues();
             redraw();
         }
-
     }
 
     protected void redraw() {
         GraphicsContext gc = runwayCanvas.getGraphicsContext2D();
         gc.clearRect(0, 0, runwayCanvas.getWidth(), runwayCanvas.getHeight());
+        if (this.topDownViewActive) {
+            if (this.runway != null) {
+                drawClearedAndGraded(gc);
+                drawTopDownStrip(gc);
+                drawThresholdMarkers(gc);
+                drawDisplacedThreshold(gc);
+                drawRunwayParams(gc, true);
+                if (currentObstacle != null) {
+                    drawTopDownObstacle(gc);
+                }
+                if (currentLogicalRunway.getRecalculatedParameters().getTORA() != 0) {
+                    drawRunwayParams(gc, false);
+                }
+            }
+        } else {
+            gc.setLineWidth(2);
+            if (this.runway != null) {
+                drawRunwayStrip(gc);
+                drawDisplacedThreshold(gc);
+                drawThresholdMarkers(gc);
+                drawRunwayParams(gc, true);
+                if (this.currentObstacle != null) {
+                    drawSideOnObstacle(gc);
+                    if (this.currentLogicalRunway.getRecalculatedParameters().getTORA() > 0) {
+                        drawRunwayParams(gc, false);
+                        drawSlope(gc);
+                    }
+                }
+            }
+        }
+
     };
 
     protected static void loadFxml(URL fxmlFile, Object rootController) {
@@ -287,6 +405,90 @@ public abstract class RunwayView extends GridPane implements Initializable {
         gc.fillRect(scale(leftOffset + runwayLength, runwayCanvas.getWidth()),
                         canvasMiddleY - (runwayWidth / 2),
                         scale(rightStopway, runwayCanvas.getWidth()), runwayWidth);
+    }
+
+    private void drawTopDownStrip(GraphicsContext gc) {
+        drawRunwayStrip(gc);
+        double canvasMiddleY = runwayCanvas.getHeight() / 2; // Draw the centre line
+        gc.setStroke(Color.WHITE);
+        gc.setLineWidth(2);
+        gc.setLineDashes(50);
+        gc.strokeLine(scale(leftOffset, runwayCanvas.getWidth()), canvasMiddleY,
+                        scale(runwayLength, runwayCanvas.getWidth()), canvasMiddleY);
+
+    }
+
+    private void drawTopDownObstacle(GraphicsContext gc) {
+        gc.setFill(Color.RED);
+        double startX = scale(obstacleLeft + currentObstacle.distanceFromLeftThreshold,
+                        runwayCanvas.getWidth());
+        double y = runwayCanvas.getHeight() / 2 - currentObstacle.distanceToCentreLine
+                        - currentObstacle.getWidth() / 2;
+        gc.fillRect(startX - 5, y, 10, currentObstacle.getWidth());
+        drawArrow(gc, startX, runwayCanvas.getHeight() / 2 + (runwayArrowPadding) * 8, startX,
+                        y + 5, Color.RED);
+        gc.setTextAlign(TextAlignment.CENTER);
+        gc.fillText(currentObstacle.getName(), startX,
+                        runwayCanvas.getHeight() / 2 + (runwayArrowPadding) * 8 + 10);
+    }
+
+    private void drawSideOnObstacle(GraphicsContext gc) {
+        gc.setFill(Color.RED);
+        double startX = scale(obstacleLeft + currentObstacle.distanceFromLeftThreshold,
+                        runwayCanvas.getWidth());
+        double y = runwayCanvas.getHeight() / 2 - runwayWidth / 2;
+        double xs[] = {startX - 5, startX, startX + 5};
+        double ys[] = {y, y - 2 * currentObstacle.getHeight(), y};
+        gc.fillPolygon(xs, ys, 3);
+        gc.setFill(Color.RED);
+        gc.setStroke(Color.RED);
+        gc.strokeLine(startX, runwayCanvas.getHeight() / 2 + (runwayArrowPadding) * 8, startX,
+                        y - 2 * currentObstacle.getHeight() + 5);
+        gc.setTextAlign(TextAlignment.CENTER);
+        gc.fillText(currentObstacle.getName(), startX,
+                        runwayCanvas.getHeight() / 2 + (runwayArrowPadding) * 8 + 10);
+    }
+
+    /**
+     * @param over Is this a landing over or towards situation
+     */
+    private void drawSlope(GraphicsContext gc) {
+        boolean over = this.currentLogicalRunway.breakdown.getDirection();
+        double startY, endY, startX, endX;
+        if (over) {
+            startY = runwayCanvas.getHeight() / 2 - runwayWidth / 2;
+            endY = startY - 2 * currentObstacle.getHeight();
+            endX = scale(obstacleLeft + currentObstacle.distanceFromLeftThreshold,
+                            runwayCanvas.getWidth());
+            startX = endX + scale(50 * currentObstacle.getHeight(), runwayCanvas.getWidth());
+        } else {
+            endY = runwayCanvas.getHeight() / 2 - runwayWidth / 2;
+            startY = endY - 2 * currentObstacle.getHeight();
+            startX = scale(obstacleLeft + currentObstacle.distanceFromLeftThreshold,
+                            runwayCanvas.getWidth());
+            endX = startX + scale(50 * currentObstacle.getHeight(), runwayCanvas.getWidth());
+        }
+        drawArrow(gc, startX, startY, endX, endY, slopeColor);
+    }
+
+    private void drawClearedAndGraded(GraphicsContext gc) {
+        gc.setFill(Color.LIGHTGRAY);
+        double size = runwayCanvas.getWidth();
+        // Points clockwise round image
+        double xpoints[] = {scale(padding, size), scale(padding + 60 + 150, size),
+                        scale(padding + 60 + 300, size),
+                        scale(leftOffset + runwayLength - 300, size),
+                        scale(leftOffset + runwayLength - 150, size), size - scale(padding, size),
+                        size - scale(padding, size), scale(leftOffset + runwayLength - 150, size),
+                        scale(leftOffset + runwayLength - 300, size),
+                        scale(padding + 60 + 300, size), scale(padding + 60 + 150, size),
+                        scale(padding, size)};
+
+        double centre = runwayCanvas.getHeight() / 2;
+        double ypoints[] = {centre - 75, centre - 75, centre - 105, centre - 105, centre - 75,
+                        centre - 75, centre + 75, centre + 75, centre + 105, centre + 105,
+                        centre + 75, centre + 75};
+        gc.fillPolygon(xpoints, ypoints, 12);
     }
 
     protected void drawDisplacedThreshold(GraphicsContext gc) {

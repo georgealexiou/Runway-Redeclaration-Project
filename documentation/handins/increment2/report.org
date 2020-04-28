@@ -10,6 +10,7 @@
 #+latex_class: article
 #+subtitle: COMP2211 SEG - Group 6
 #+date: \today
+
 * Design Artefacts
 #+caption: A diagram representing the planned hierarchy for UI components
 #+ATTR_LATEX: :placement [H]
@@ -45,6 +46,12 @@
 #+ATTR_LATEX: :placement [H]
 #+label: fig:topdownview
 [[file:Storyboards/top-down-obstacle-annotated.png]]
+* Design Decisions
+** Side Panel to Tool Bar
+We decided that a tool bar would be a more suitable way of interacting with out system and changed the design of the application from a side panel to use a tool bar instead.
+** XML Loading and Saving
+Although there was a general feeling that the obstacles should be loaded and saved in batches, we implemented the system to load and save single obstacles as this was easier and fit with our original designs.
+However we may change this again in the next sprint.
 * Scenarios and Test Output
 ** Scenarios
 *** Top Down View
@@ -143,7 +150,11 @@ No unit testable code was added during this sprint but we continued to run the u
 [[file:test-output.png]]
 
 * Responses to Feedback
-** TODO Work out what the feedback was and mention how we improved
+** CLI Improvements
+There was no further work on the CLI in this sprint as the GUI is the primary requirement and now far exceeds the power of the CLI.
+We may choose to continue the CLI work if there is time in Sprint 3.
+** Additional Dimensions for obstacles
+We have chosen to leave the additional dimensions and provide a default dimension.
 * Overcoming Problems
 
 Towards then end of this increment the Coronavirus pandemic started to have an impact.
@@ -156,8 +167,29 @@ Some members were more affected than others, however the mitigation strategy dis
 We increased the number of SCRUM meetings to daily as we could all meet at a set time on a Discord voice channel.
 Larger meetings such as project review meetings took place on Microsoft Teams as the screen sharing functionality was crucial.
 
-* Sprint Burndown Chart
-** TODO Create the burndown based on data from George
+* Sprint Overview
+** User Stories Met
+Of the user stories we set out to achieve we completed 8/10, these are listed below.
+
+- As a <MOCT> I want <runways and thresholds sorted by their logical names> so that I can <quickly find what I am looking for>.
+- As a <MOCT> I want to <rotate the runway to match its compass heading> so that I can <orient myself with the simulation>.
+- As a <MOCT> I want <notifications of any changes to the systems> so that I can <ensure everything is correctly set up>.
+- As a <MOCT> I want <to switch between different runways> so that I can <see the impact of obstructions on different areas>.
+- As a <MOCT> I want to <have a representation take off climb surface slope> so that I can <view the take off climb surface slope.
+- As a <MOCT> I want <a visual display of all information relating to the runway thresholds> so that I can <better understand the situation>.
+- As a <MOCT> I want <a visual display re-declared distances and obstacles> so that I can <better understand the situation>.
+- As a <MOCT> I want <top-down and side-on views of the runway> so that I can <visualise scenarios>.
+** User Stories In Progress
+Below are some user stories that due to delays in the project we were unable to fully complete in this sprint.
+They are high priority for the next sprint.
+
+- As a <CAA Rep> I want <the system to be configurable> so that I can <promote it to all UK airports>.
+- As a <MOCT> I want to <export and import data to XML files> so that I can <re-create scenarios and share configurations>.
+** Burndown Chart
 * Plan for Increment 3
-** Day Zero Burndown Chart
-** Objectives 
+We will finish the Airport configuration, tidy up the interface, improve data validation and work on some additional functionality such as exporting views as images.
+
+#+caption: Plan for sprint 3
+#+attr_latex: :placement [H]
+#+label: fig:sprint3plan
+[[file:sprint3plan.png]]

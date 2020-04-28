@@ -47,10 +47,10 @@
   <VBox fx:id="sidePanel" alignment="CENTER" GridPane.rowIndex="0" GridPane.columnIndex="1">
     <VBox alignment="CENTER">
       <Button text="Return to Runway View" maxWidth="Infinity" onAction="#returnToRunwayView" fx:id="returnToRunwayViewButton"></Button>
-      <Button text="Load Airport" maxWidth="Infinity" onAction="#loadAirport"></Button>
-      <Button text="Create new Airport" maxWidth="Infinity" onAction="#createAirport"></Button>
-      <Button text="Load Obstacle" maxWidth="Infinity" onAction="#loadObstacle"></Button>
-      <Button text="Create Obstacle" maxWidth="Infinity" onAction="#createObstacle"></Button>
+      <Button text="Load Airport" maxWidth="Infinity" onAction="#loadAirport" fx:id="loadAirportButton"></Button>
+      <Button text="Create new Airport" maxWidth="Infinity" onAction="#createAirport" fx:id="createAirportButton"></Button>
+      <Button text="Load Obstacle" maxWidth="Infinity" onAction="#loadObstacle" fx:id="loadObstacleButton"></Button>
+      <Button text="Create Obstacle" maxWidth="Infinity" onAction="#createObstacle" fx:id="createObstacleButton"></Button>
     </VBox>
     <VBox fx:id="airportBox" alignment="CENTER" visible="false">
       <Label text="" fx:id="currentAirportName">
@@ -58,7 +58,7 @@
               <Font name="System Bold" size="16"></Font>
           </font>
       </Label>
-      <Button text="Edit Airport" maxWidth="Infinity" onAction="#editAirport"></Button>
+      <Button text="Edit Airport" maxWidth="Infinity" onAction="#editAirport" fx:id="editAirportButton"></Button>
       <VBox alignment="CENTER">
         <Label text="Runway">
         </Label>
@@ -66,11 +66,15 @@
       </VBox>
       <VBox alignment="CENTER">
         <Label text="Obstacle"></Label>
-        <Button text="Edit Obstacle" maxWidth="Infinity" onAction="#editObstacle"></Button>
+        <Button text="Edit Obstacle" maxWidth="Infinity" onAction="#editObstacle" fx:id="editObstacleButton"></Button>
         <ComboBox fx:id="obstaclePicker" maxWidth="Infinity"></ComboBox>
-        <Button text="View Calculations" maxWidth="Infinity" onAction="#viewCalculations"></Button>
-        <Button text="Toggle View" maxWidth="Infinity" onAction="#toggleView"></Button>
-        <Label fx:id="notificationLabel" visible="true"></Label>
+        <Button text="View Calculations" maxWidth="Infinity" onAction="#viewCalculations" fx:id="viewCalculationsButton"></Button>
+        <Button text="Toggle View" maxWidth="Infinity" onAction="#toggleView" fx:id="toggleViewButton"></Button>
+        <Label fx:id="notificationLabel" visible="true">
+          <font>
+              <Font name="System Bold" size="12" color="RED"></Font>
+          </font>
+        </Label>
       </VBox>
     </VBox>
   </VBox>

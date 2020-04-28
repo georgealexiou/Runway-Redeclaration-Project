@@ -57,6 +57,23 @@ public class MainView extends GridPane implements Initializable {
 
     @FXML
     private Button returnToRunwayViewButton;
+    @FXML
+    private Button loadAirportButton;
+    @FXML
+    private Button createAirportButton;
+    @FXML
+    private Button loadObstacleButton;
+    @FXML
+    private Button createObstacleButton;
+    @FXML
+    private Button editAirportButton;
+    @FXML
+    private Button editObstacleButton;
+    @FXML
+    private Button viewCalculationsButton;
+    @FXML
+    private Button toggleViewButton;
+
 
     @FXML
     private VBox splashScreen;
@@ -385,4 +402,53 @@ public class MainView extends GridPane implements Initializable {
         this.currentView.setVisible(true);
     }
 
+    private void updateButtons() {
+        if (currentView == topDownView || currentView == sideOnView) {
+            // Load and Create Airport always available here
+            loadAirportButton.setDisable(false);
+            createAirportButton.setDisable(false);
+            // Buttons you can press if an airport is loaded
+            if (this.currentAirport != null) {
+                editAirportButton.setDisable(false);
+                loadObstacleButton.setDisable(false);
+                createObstacleButton.setDisable(false);
+                toggleViewButton.setDisable(false);
+                // Buttons you can press if an obstacle is also loaded
+                if (this.currentObstacle != null) {
+                    editObstacleButton.setDisable(false);
+                    viewCalculationsButton.setDisable(false);
+                } else {
+                    editObstacleButton.setDisable(true);
+                    viewCalculationsButton.setDisable(true);
+                }
+            } else {
+                editAirportButton.setDisable(true);
+                loadObstacleButton.setDisable(true);
+                createObstacleButton.setDisable(true);
+                toggleViewButton.setDisable(true);
+            }
+        } else {
+            // Deal with splash screen button
+            if (this.currentView != splashScreen) {
+                loadAirportButton.setDisable(true);
+                createAirportButton.setDisable(true);
+            } else {
+                loadAirportButton.setDisable(false);
+                createAirportButton.setDisable(false);
+            }
+            // Hide every button
+            editAirportButton.setDisable(true);
+            loadObstacleButton.setDisable(true);
+            createObstacleButton.setDisable(true);
+            editObstacleButton.setDisable(true);
+            viewCalculationsButton.setDisable(true);
+            toggleViewButton.setDisable(true);
+            // Deal with runway view button
+            if (this.currentAirport == null || this.currentObstacle == null || currentView == splashScreen) {
+                returnToRunwayViewButton.setDisable(true);
+            } else {
+                returnToRunwayViewButton.setDisable(false);
+            }
+        }
+    }
 }

@@ -249,33 +249,11 @@ public class MainView extends GridPane implements Initializable {
             } else
                 label.setText("No File Selected");
 
-            String fileContents = "";
-            if (filePath != "") {
-
-                StringBuilder builder = new StringBuilder();
-                try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-                    String current = "";
-                    while ((current = br.readLine()) != null) {
-                        builder.append(current).append("\n");
-                    }
-
-                    fileContents = builder.toString();
-                } catch (IOException io) {
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Error");
-                    alert.setHeaderText("Error when loading the xml file");
-                    alert.setContentText("Error Messsage: " + io.getMessage());
-
-                    alert.showAndWait();
-                }
-            }
-
-            if (fileContents == "") {
+            if (file.length() == 0) {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("Warning");
                 alert.setHeaderText("The file you are trying to load is empty");
-                alert.setContentText(
-                                "Using this file may cause errors when loading the configuration");
+                alert.setContentText("Using this file may cause errors when loading the configuration");
 
                 alert.showAndWait();
             } else {
@@ -335,11 +313,59 @@ public class MainView extends GridPane implements Initializable {
 
     @FXML
     private void loadObstacle(ActionEvent e) {
+
+        Stage stage = new Stage();
+
+        stage.setTitle("Choose an Obstacle to load");
+
+        FileChooser chooser = new FileChooser();
+        chooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("XML Files", "*.xml"));
+
+        Label label = new Label("No files selected");
+        Button button = new Button("Select File");
+
+        EventHandler<ActionEvent> event = event1 -> {
+            File file = chooser.showOpenDialog(stage);
+            String filePath = "";
+
+            if (file != null) {
+                filePath = file.getAbsolutePath();
+                label.setText("You selected " + filePath);
+
+            } else
+                label.setText("No File Selected");
+
+            if (file.length() == 0) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Warning");
+                alert.setHeaderText("The file you are trying to load is empty");
+                alert.setContentText("Using this file may cause errors when loading the configuration");
+
+                alert.showAndWait();
+            } else {
+                XMLHandler xml = new XMLHandler();
+                obstacles.addAll(xml.readObstaclesXML(filePath));
+                stage.close();
+            }
+
+        };
+
+        button.setOnAction(event);
+        VBox vbox = new VBox(30, label, button);
+        vbox.setAlignment(Pos.CENTER);
+
+        Scene scene = new Scene(vbox, 800, 500);
+        stage.setScene(scene);
+        stage.setResizable(false);
+        stage.showAndWait();
+
+        /*
         this.loadAnObstacleView.loadPredefinedObstacle("Scenario 1 Obstacle",
                         "Obstacle from Scenario 1 of the Heathrow Example", 53.5, 70.3, 12);
         loadAnObstacleView.obstacleSaveButton
                         .setOnAction(obstacleSaveButtonAction(loadAnObstacleView));
         changeView(loadAnObstacleView);
+        */
     }
 
     @FXML

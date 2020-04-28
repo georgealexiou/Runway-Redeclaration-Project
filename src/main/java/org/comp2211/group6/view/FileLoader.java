@@ -28,7 +28,7 @@ public class FileLoader {
 
     public FileLoader() {
         this.filePath = "";
-        this.fileContents = "";
+        this.fileContents = ".";
         this.run();
     }
 
@@ -87,6 +87,9 @@ public class FileLoader {
                         alert.setContentText("Using this file may cause errors when loading the configuration");
 
                         alert.showAndWait();
+                    } else {
+                        XMLHandler xml = new XMLHandler();
+                        airport = xml.readAirportXML(filePath);
                     }
                 }
 

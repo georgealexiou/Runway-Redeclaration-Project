@@ -194,43 +194,13 @@ public class MainView extends GridPane implements Initializable {
         // TODO: Implement actual function
 
         FileLoader fileLoader = new FileLoader();
-        Airport airport = fileLoader.getAirport();
+        Airport airport = null;
 
-        if (airport == null){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("You loaded an empty configuration");
-            alert.setContentText("Please try loading your XML file again or try a new file");
-
-            alert.showAndWait();
+        while(airport == null){
+            airport = fileLoader.getAirport();
         }
 
-        if (this.currentAirportName.getText().equals("")) {
-            airport = new Airport("Heathrow");
-        } else {
-            airport = new Airport("Gatwick");
-        }
-        Runway runway = new Runway("09L27R");
-        LogicalRunway runway1 = new LogicalRunway(9, 306, 'L',
-                        new RunwayParameters(3902, 3902, 3902, 3595));
-        LogicalRunway runway2 =
-                        new LogicalRunway(27, 0, 'R', new RunwayParameters(3884, 3962, 3884, 3884));
-        Runway runway3 = new Runway("09R27L");
-        LogicalRunway runway4 = new LogicalRunway(9, 307, 'R',
-                        new RunwayParameters(3660, 3660, 3660, 3353));
-        LogicalRunway runway5 =
-                        new LogicalRunway(27, 0, 'L', new RunwayParameters(3660, 3660, 3660, 3660));
-        try {
-            runway.addRunway(runway1);
-            runway.addRunway(runway2);
-            runway3.addRunway(runway4);
-            runway3.addRunway(runway5);
-            airport.addRunway(runway);
-            airport.addRunway(runway3);
-            this.setAirport(airport);
-        } catch (Exception exception) {
-            exception.printStackTrace();
-        }
+        currentAirport = airport;
     }
 
     @FXML

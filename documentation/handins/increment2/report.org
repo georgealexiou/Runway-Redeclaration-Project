@@ -8,6 +8,7 @@
 #+select_tags: export
 #+exclude_tags: noexport
 #+latex_class: article
+#+latex_header_extra: \usepackage{pdfpages}
 #+subtitle: COMP2211 SEG - Group 6
 #+date: \today
 
@@ -17,20 +18,11 @@
 #+label: fig:uihierarchy
 [[file:UIHierachy.png]]
 * Storyboards
-#+caption: Airport Configuration View
-#+ATTR_LATEX: :placement [H]
-#+label: fig:airportconfig
-[[file:Storyboards/airport-configurator-logical-runways-annotated.png]]
-
 #+caption: Breakdown View
 #+ATTR_LATEX: :placement [H]
 #+label: fig:breakdownview
 [[file:Storyboards/breakdown-view-annotated.png]]
 
-#+caption: Component Wrapper
-#+ATTR_LATEX: :placement [H]
-#+label: fig:componentwrapper
-[[file:Storyboards/component-wrapper.png]]
 
 #+caption: Obstacle Configuration View
 #+ATTR_LATEX: :placement [H]
@@ -141,7 +133,6 @@ A drop-down list of obstacles is available to select from a list of predefined o
 logical runway are shown.
 She can also select to toggle the view from 'Top-Down' to 'Side-On' and vice versa or see the calculation breakdown.
 ** Manual Testing
-*** TODO Add in the manual testing table when completed
 ** Unit Testing
 No unit testable code was added during this sprint but we continued to run the unit tests using Travis CI to ensure that new additions to the software did not affect previous development.
 #+caption: Unit testing output
@@ -186,6 +177,10 @@ They are high priority for the next sprint.
 - As a <CAA Rep> I want <the system to be configurable> so that I can <promote it to all UK airports>.
 - As a <MOCT> I want to <export and import data to XML files> so that I can <re-create scenarios and share configurations>.
 ** Burndown Chart
+#+caption: Burndown Chart for Sprint 2
+#+attr_latex: :placement [H]
+#+label: fig:burndownchart
+[[file:burndownchart.png]]
 * Plan for Increment 3
 We will finish the Airport configuration, tidy up the interface, improve data validation and work on some additional functionality such as exporting views as images.
 

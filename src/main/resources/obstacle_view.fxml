@@ -19,7 +19,7 @@
 		<RowConstraints maxHeight="386.3333282470703" minHeight="20.0" percentHeight="80" vgrow="ALWAYS" />
 	</rowConstraints>
 	<padding>
-		<Insets bottom="50.0" left="40.0" right="40.0" />
+		<Insets bottom="10.0" left="40.0" right="40.0" />
 	</padding>
 	<children>
 		<GridPane>
@@ -52,7 +52,7 @@
 				</Button>
 			</children>
 		</GridPane>
-		<GridPane hgap="50.0" prefHeight="100.0" prefWidth="100.0" vgap="10.0" GridPane.rowIndex="1">
+		<GridPane hgap="50.0" prefHeight="100.0" prefWidth="100.0" vgap="5.0" GridPane.rowIndex="1">
 			<columnConstraints>
 				<ColumnConstraints hgrow="ALWAYS" maxWidth="265.3333435058594" minWidth="164.0" percentWidth="35" />
 				<ColumnConstraints hgrow="ALWAYS" maxWidth="449.0" minWidth="20.0" percentWidth="65" />

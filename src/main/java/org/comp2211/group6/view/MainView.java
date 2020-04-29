@@ -209,6 +209,15 @@ public class MainView extends GridPane implements Initializable {
                     runwayView.setObstacle(obstacleView.getNewObstacle());
                 }
                 changeView(runwayView);
+
+                obstacleView.obstacleName.clear();
+                obstacleView.obstacleDescription.clear();
+                obstacleView.obstacleLength.clear();
+                obstacleView.obstacleWidth.clear();
+                obstacleView.obstacleHeight.clear();
+                obstacleView.obstacleDistanceFromCentreLine.clear();
+                obstacleView.obstacleDistanceFromLeft.clear();
+                obstacleView.obstacleDistanceFromRight.clear();
                 notificationLabel.setText("Obstacle successfully saved");
                 event.consume();
             }

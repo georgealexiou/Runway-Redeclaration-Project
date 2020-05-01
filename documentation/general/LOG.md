@@ -16,3 +16,11 @@ Include things here that are important to note with regards to project planning.
   - Sprint will end
   
 - *23/02/20*: Finished the interface design / planning stage of Sprint 1
+
+- *01/05/20*: Sprint 2 Review Meeting
+  - Mention in the report units rather than time
+  - The report should say our method for determining if a task is done
+  - Explanation of burndown chart line should be added
+  - Keep track of the bugs/issues that need to be solved
+  - Validation and error checking - error messages in GUI
+  - Update design artefacts

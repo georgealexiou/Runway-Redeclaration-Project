@@ -173,7 +173,6 @@ public class RunwayView extends GridPane implements Initializable {
     }
 
     public void updateRunwayPicker(List<Runway> runways) {
-        System.out.println("Updating Runway Picker with " + runways.size() + " runways");
         runwayPicker.setItems(FXCollections.observableArrayList(runways));
         runwayPicker.getSelectionModel().selectFirst();
         runwayPicker.valueProperty().addListener((e, oldVal, newVal) -> {
@@ -200,7 +199,6 @@ public class RunwayView extends GridPane implements Initializable {
     }
 
     public void updateObstaclePicker(List<Obstacle> obstacles) {
-        System.out.println("Updating Obstacle Picker");
         obstaclePicker.setItems(FXCollections.observableArrayList(obstacles));
         obstaclePicker.getSelectionModel().selectFirst();
         obstaclePicker.valueProperty().addListener((e, oldVal, newVal) -> {
@@ -278,7 +276,6 @@ public class RunwayView extends GridPane implements Initializable {
      * updated Override this to add more functionality
      */
     private void redrawRunway() {
-        System.out.println(this.getWidth() + "x" + this.getHeight());
         // Handle takeoff landing direction arrow
         if (currentLogicalRunway != null) {
             if (currentLogicalRunway.getHeading() <= 18) {

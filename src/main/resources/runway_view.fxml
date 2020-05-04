@@ -32,6 +32,7 @@
               <RowConstraints minHeight="50" prefHeight="50"></RowConstraints>
               <RowConstraints minHeight="50" prefHeight="50"></RowConstraints>
               <RowConstraints vgrow="ALWAYS" prefHeight="350"></RowConstraints>
+              <RowConstraints minHeight="50" prefHeight="50"></RowConstraints>
           </rowConstraints>
 
           <VBox alignment="CENTER" GridPane.columnIndex="0"
@@ -75,8 +76,80 @@
           <Label text="Landing/Takeoff Direction"></Label>
           </VBox>
 
-          <Canvas fx:id="runwayCanvas"
-                  GridPane.columnIndex="0"
+          <ScrollPane GridPane.columnIndex="0"
                   GridPane.columnSpan="3"
-                  GridPane.rowIndex="2"></Canvas>
+                  GridPane.rowIndex="2"
+                  fx:id="canvasContainer"
+                  style=" -fx-border-color:black; -fx-border-width: 1; -fx-border-style: solid;">
+                  <Canvas fx:id="runwayCanvas"></Canvas>
+          </ScrollPane>
+
+          <VBox GridPane.columnIndex="0"
+                GridPane.rowIndex="3" prefWidth="200"
+                alignment="CENTER">
+                <Label text="Zoom">
+                  <font>
+                      <Font name="System Bold" size="12"></Font>
+                  </font>
+                </Label>
+                <Label fx:id="zoomLabel"></Label>
+                <Slider min="0.1" max="10" value="1" fx:id="zoomSlider"></Slider>
+                <Button fx:id="resetZoom" text="Reset Zoom" onAction="#scaleView"></Button>
+          </VBox>
+          <VBox GridPane.columnIndex="1"
+                GridPane.columnSpan="2"
+                GridPane.rowIndex="3"
+                alignment="CENTER">
+            <Label text="Instructions and Key">
+                <font>
+                    <Font name="System Bold" size="16"></Font>
+                </font>
+            </Label>
+            <HBox>
+              <VBox>
+                <HBox>
+                  <Label text="Click+Drag:">
+                    <font>
+                        <Font name="System Bold" size="12"></Font>
+                    </font>
+                  </Label>
+                  <Label text="Pan the View"></Label>
+                </HBox>
+
+                <HBox>
+                  <Label text="Double Click:">
+                    <font>
+                        <Font name="System Bold" size="12"></Font>
+                    </font>
+                  </Label>
+                  <Label text="Reset Scale and Pan"></Label>
+                </HBox>
+
+                <HBox>
+                  <Label text="Scroll/Zoom Slider:">
+                    <font>
+                        <Font name="System Bold" size="12"></Font>
+                    </font>
+                  </Label>
+                  <Label text="Zoom the view"></Label>
+                </HBox>
+              </VBox>
+              <VBox>
+                <HBox>
+                  <Rectangle x="0" y="0" width="20" height="20" fx:id="blastDistanceKey"></Rectangle>
+                  <Label text="Blast Distance"></Label>
+                </HBox>
+
+                <HBox>
+                  <Rectangle x="0" y="0" width="20" height="20" fx:id="slopeCalcKey"></Rectangle>
+                  <Label text="Slope Calculation"></Label>
+                </HBox>
+
+                <HBox>
+                  <Rectangle x="0" y="0" width="20" height="20" fx:id="blastDistanceKey"></Rectangle>
+                  <Label text="Blast Distance"></Label>
+                </HBox>
+              </VBox>
+            </HBox>
+          </VBox>
 </fx:root>

@@ -11,9 +11,11 @@ import org.comp2211.group6.Model.LogicalRunway;
 import org.comp2211.group6.Model.Obstacle;
 import org.comp2211.group6.Model.Runway;
 import org.comp2211.group6.Model.RunwayParameters;
-
+import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -21,12 +23,20 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.Labeled;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Slider;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.SVGPath;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.transform.Affine;
+import javafx.scene.transform.Scale;
 import javafx.scene.transform.Transform;
 import javafx.util.StringConverter;
 
@@ -61,6 +71,9 @@ public class RunwayView extends GridPane implements Initializable {
     protected double obstacleLeft;
     protected double totalLength;
 
+    /**
+     * Colour for runway view components
+     */
     protected final Color paramColor = Color.BLACK;
     protected final Color resaColor = Color.CADETBLUE;
     protected final Color seColor = Color.DODGERBLUE;
@@ -77,6 +90,8 @@ public class RunwayView extends GridPane implements Initializable {
     @FXML
     protected Canvas runwayCanvas;
     @FXML
+    private ScrollPane canvasContainer;
+    @FXML
     protected Label viewTitle;
 
     @FXML
@@ -86,7 +101,21 @@ public class RunwayView extends GridPane implements Initializable {
     @FXML
     public ComboBox<Obstacle> obstaclePicker;
 
+    @FXML
+    private Slider zoomSlider;
+    @FXML
+    private Label zoomLabel;
+
     private boolean topDownViewActive = true;
+
+    // 1 is the base zoom
+    private double currentViewScale = 1;
+
+    /**
+     * Used for panning
+     */
+    private double pressedX;
+    private double pressedY;
 
     /*
      * Construct a new RunwayView
@@ -105,6 +134,7 @@ public class RunwayView extends GridPane implements Initializable {
         setupLogicalRunwayPicker(FXCollections.observableArrayList());
         updateObstaclePicker(FXCollections.observableArrayList());
         updateRunwayPicker(FXCollections.observableArrayList());
+        setupZoomSlider();
         this.redrawRunway();
     }
 
@@ -131,10 +161,46 @@ public class RunwayView extends GridPane implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        runwayCanvas.widthProperty().bind(this.widthProperty().subtract(80));
-        runwayCanvas.heightProperty().bind(this.heightProperty().subtract(250));
+        canvasContainer.setVbarPolicy(ScrollBarPolicy.NEVER);
+        canvasContainer.setHbarPolicy(ScrollBarPolicy.NEVER);
+        runwayCanvas.widthProperty().bind(canvasContainer.widthProperty());
+        runwayCanvas.heightProperty().bind(canvasContainer.heightProperty());
         runwayCanvas.widthProperty().addListener(observable -> redraw());
         runwayCanvas.heightProperty().addListener(observable -> redraw());
+        runwayCanvas.addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
+            public void handle(MouseEvent event) {
+                pressedX = event.getX();
+                pressedY = event.getY();
+            }
+        });
+        runwayCanvas.addEventFilter(MouseEvent.MOUSE_DRAGGED, new EventHandler<MouseEvent>() {
+            public void handle(MouseEvent event) {
+                runwayCanvas.setTranslateX(runwayCanvas.getTranslateX() + event.getX() - pressedX);
+                runwayCanvas.setTranslateY(runwayCanvas.getTranslateY() + event.getY() - pressedY);
+
+                event.consume();
+            }
+        });
+        canvasContainer.addEventFilter(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            public void handle(MouseEvent event) {
+                if (event.getClickCount() == 2) {
+                    runwayCanvas.setTranslateX(0);
+                    runwayCanvas.setTranslateY(0);
+                    scaleView();
+                }
+                event.consume();
+            }
+        });
+        runwayCanvas.addEventFilter(ScrollEvent.ANY, new EventHandler<ScrollEvent>() {
+            public void handle(ScrollEvent event) {
+                if (event.getDeltaY() < 0) {
+                    scaleView(currentViewScale - 0.1);
+                }
+                if (event.getDeltaY() > 0) {
+                    scaleView(currentViewScale + 0.1);
+                }
+            }
+        });
     }
 
     /*
@@ -220,6 +286,28 @@ public class RunwayView extends GridPane implements Initializable {
         });
     }
 
+    private void setupZoomSlider() {
+        zoomSlider.valueProperty().addListener((e, oldVal, newVal) -> {
+            scaleView(newVal.doubleValue());
+            zoomLabel.setText(String.format("%.2f%%", newVal.doubleValue() * 100));
+        });
+        zoomLabel.setText(String.format("%.2f%%", currentViewScale * 100));
+    }
+
+    @FXML
+    private void scaleView() {
+        scaleView(1);
+    }
+
+    private void scaleView(double scale) {
+        if (scale < 0.1 || scale > 10) {
+            return;
+        }
+        zoomSlider.setValue(scale);
+        currentViewScale = scale;
+        redrawRunway();
+    }
+
     /*
      * Returns the runway currently in use
      */
@@ -293,6 +381,8 @@ public class RunwayView extends GridPane implements Initializable {
     }
 
     protected void redraw() {
+        runwayCanvas.setScaleX(currentViewScale);
+        runwayCanvas.setScaleY(currentViewScale);
         GraphicsContext gc = runwayCanvas.getGraphicsContext2D();
         gc.clearRect(0, 0, runwayCanvas.getWidth(), runwayCanvas.getHeight());
         if (this.topDownViewActive) {

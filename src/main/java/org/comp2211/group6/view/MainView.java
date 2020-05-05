@@ -1,35 +1,29 @@
 package org.comp2211.group6.view;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 import org.comp2211.group6.Model.Airport;
+import org.comp2211.group6.Model.ColourScheme;
 import org.comp2211.group6.Model.Obstacle;
 import org.comp2211.group6.Controller.Calculator;
-
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import org.comp2211.group6.XMLHandler;
 
-public class MainView extends GridPane implements Initializable {
+public class MainView extends GridPane implements Initializable, IStyleable {
 
     /*
      * FXML Components
@@ -78,6 +72,7 @@ public class MainView extends GridPane implements Initializable {
      */
     private Airport currentAirport;
     private List<Obstacle> obstacles = new ArrayList<Obstacle>();
+    private ColourScheme colourScheme = ColourScheme.getInstance(this);
 
     public MainView() {
         super();
@@ -103,6 +98,11 @@ public class MainView extends GridPane implements Initializable {
         this.currentView = newView;
         this.currentView.setVisible(true);
         updateAirportFields();
+    }
+
+    @FXML
+    private void invertColourScheme() {
+        colourScheme.invertColourScheme();
     }
 
     /*

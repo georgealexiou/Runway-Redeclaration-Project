@@ -167,6 +167,7 @@ public class RunwayView extends GridPane implements Initializable {
         runwayCanvas.heightProperty().bind(canvasContainer.heightProperty());
         runwayCanvas.widthProperty().addListener(observable -> redraw());
         runwayCanvas.heightProperty().addListener(observable -> redraw());
+        // Add event handlers for panning and zooming
         runwayCanvas.addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
             public void handle(MouseEvent event) {
                 pressedX = event.getX();

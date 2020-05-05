@@ -36,7 +36,7 @@ import javafx.scene.transform.Affine;
 import javafx.scene.transform.Transform;
 import javafx.util.StringConverter;
 
-public class RunwayView extends GridPane implements Initializable, IStyleable {
+public class RunwayView extends GridPane implements Initializable {
 
     /*
      * Data
@@ -70,7 +70,7 @@ public class RunwayView extends GridPane implements Initializable, IStyleable {
     /**
      * Colour for runway view components
      */
-    private ColourScheme colours = ColourScheme.getInstance(this);
+    private ColourScheme colours = ColourScheme.getInstance();
 
     /*
      * View Components
@@ -138,7 +138,9 @@ public class RunwayView extends GridPane implements Initializable, IStyleable {
         updateRunwayPicker(FXCollections.observableArrayList());
         setupZoomSlider();
         this.redrawRunway();
-        applyStyles();
+        colours.getCurrentThemeProperty().addListener((o, orig, newVal) -> {
+            this.redrawRunway();
+        });
     }
 
     public void toggleRunwayView() {
@@ -924,24 +926,5 @@ public class RunwayView extends GridPane implements Initializable, IStyleable {
         gc.setTransform(new Affine(transform));
     }
 
-    public void setColourScheme(ColourScheme colourScheme) {
-        this.colours = colourScheme;
-    }
-
-    @Override
-    public void applyStyles() {
-        if (this.getScene() == null)
-            return;
-        String styleString = String.format("-fx-text-fill: #%s; -fx-background-color: #%s;",
-                        colours.getTextColour().toString().substring(2, 8),
-                        colours.getBackgroundColour().toString().substring(2, 8));
-        if (styleString.equals(styleString)) {
-            this.setStyle(styleString);
-            for (Node c : this.getChildren()) {
-                c.setStyle(styleString);
-            }
-            this.redrawRunway();
-        }
-    }
 }
 

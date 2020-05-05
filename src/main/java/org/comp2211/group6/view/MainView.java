@@ -18,12 +18,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import org.comp2211.group6.XMLHandler;
 
-public class MainView extends GridPane implements Initializable, IStyleable {
+public class MainView extends GridPane implements Initializable {
 
     /*
      * FXML Components
@@ -74,7 +73,7 @@ public class MainView extends GridPane implements Initializable, IStyleable {
      */
     private Airport currentAirport;
     private List<Obstacle> obstacles = new ArrayList<Obstacle>();
-    private ColourScheme colourScheme = ColourScheme.getInstance(this);
+    private ColourScheme colourScheme = ColourScheme.getInstance();
 
     public MainView() {
         super();
@@ -88,6 +87,7 @@ public class MainView extends GridPane implements Initializable, IStyleable {
             e.printStackTrace();
         }
         changeView(splashScreen);
+        colourScheme.invertColourScheme();
     }
 
     @Override
@@ -346,12 +346,6 @@ public class MainView extends GridPane implements Initializable, IStyleable {
                 returnToRunwayViewButton.setDisable(false);
             }
         }
-    }
-
-    @Override
-    public void applyStyles() {
-
-
     }
 
 }

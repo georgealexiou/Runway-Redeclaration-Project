@@ -36,6 +36,7 @@
               <items>
                 <MenuItem text="Toggle View" onAction="#toggleView" fx:id="toggleViewButton"></MenuItem>
                 <MenuItem text="Return to Runway View" onAction="#returnToRunwayView" fx:id="returnToRunwayViewButton"></MenuItem>
+                <MenuItem text="Invert Colours" onAction="#invertColourScheme" fx:id="invertColoursButton"></MenuItem>
               </items>
            </Menu>
            <Menu text="Airports">

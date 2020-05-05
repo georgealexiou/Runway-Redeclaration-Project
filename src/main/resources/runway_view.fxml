@@ -9,6 +9,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.shape.SVGPath?>
+<?import javafx.scene.shape.Rectangle?>
 
 
 <fx:root type="javafx.scene.layout.GridPane"
@@ -32,7 +33,7 @@
               <RowConstraints minHeight="50" prefHeight="50"></RowConstraints>
               <RowConstraints minHeight="50" prefHeight="50"></RowConstraints>
               <RowConstraints vgrow="ALWAYS" prefHeight="350"></RowConstraints>
-              <RowConstraints minHeight="50" prefHeight="50"></RowConstraints>
+              <RowConstraints minHeight="100" prefHeight="100"></RowConstraints>
           </rowConstraints>
 
           <VBox alignment="CENTER" GridPane.columnIndex="0"
@@ -139,15 +140,17 @@
                   <Rectangle x="0" y="0" width="20" height="20" fx:id="blastDistanceKey"></Rectangle>
                   <Label text="Blast Distance"></Label>
                 </HBox>
-
                 <HBox>
                   <Rectangle x="0" y="0" width="20" height="20" fx:id="slopeCalcKey"></Rectangle>
-                  <Label text="Slope Calculation"></Label>
+                  <Label text="Slope Calculation (h x 50)"></Label>
                 </HBox>
-
                 <HBox>
-                  <Rectangle x="0" y="0" width="20" height="20" fx:id="blastDistanceKey"></Rectangle>
-                  <Label text="Blast Distance"></Label>
+                  <Rectangle x="0" y="0" width="20" height="20" fx:id="stripEndKey"></Rectangle>
+                  <Label text="Strip End"></Label>
+                </HBox>
+                <HBox>
+                  <Rectangle x="0" y="0" width="20" height="20" fx:id="resaKey"></Rectangle>
+                  <Label text="Runway End Safety Area"></Label>
                 </HBox>
               </VBox>
             </HBox>

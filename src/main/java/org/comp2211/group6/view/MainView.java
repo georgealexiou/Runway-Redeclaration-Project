@@ -40,6 +40,8 @@ public class MainView extends GridPane implements Initializable, IStyleable {
     private CreateAnObstacleView createAnObstacleView;
     @FXML
     private LoadAnObstacleView loadAnObstacleView;
+    @FXML
+    private FileView fileView;
 
     @FXML
     private MenuItem returnToRunwayViewButton;
@@ -89,7 +91,19 @@ public class MainView extends GridPane implements Initializable, IStyleable {
     }
 
     @Override
-    public void initialize(URL location, ResourceBundle resources) {}
+    public void initialize(URL location, ResourceBundle resources) {
+        fileView.cancelButton.addEventHandler(ActionEvent.ANY, new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                fileView.reset();
+                if (currentAirport != null) {
+                    changeView(runwayView);
+                } else {
+                    changeView(splashScreen);
+                }
+            }
+        });
+    }
 
     private void changeView(Node newView) {
         if (this.currentView != null) {
@@ -132,52 +146,19 @@ public class MainView extends GridPane implements Initializable, IStyleable {
 
     @FXML
     private void loadAirport(ActionEvent e) {
-        Stage stage = new Stage();
-
-        stage.setTitle("Choose an Airport to load");
-
-        FileChooser chooser = new FileChooser();
-        chooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("XML Files", "*.xml"));
-
-        Label label = new Label("No files selected");
-        Button button = new Button("Select File");
-
-        EventHandler<ActionEvent> event = event1 -> {
-            File file = chooser.showOpenDialog(stage);
-            String filePath = "";
-
-            if (file != null) {
-                filePath = file.getAbsolutePath();
-                label.setText("You selected " + filePath);
-
-            } else
-                label.setText("No File Selected");
-
-            if (file.length() == 0) {
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Warning");
-                alert.setHeaderText("The file you are trying to load is empty");
-                alert.setContentText(
-                                "Using this file may cause errors when loading the configuration");
-
-                alert.showAndWait();
-            } else {
-                XMLHandler xml = new XMLHandler();
-                setAirport(xml.readAirportXML(filePath));
-                stage.close();
-            }
-
-        };
-
-        button.setOnAction(event);
-        VBox vbox = new VBox(30, label, button);
-        vbox.setAlignment(Pos.CENTER);
-
-        Scene scene = new Scene(vbox, 800, 500);
-        stage.setScene(scene);
-        stage.setResizable(false);
-        stage.showAndWait();
+        fileView.setValidator(airportLoadHandler);
+        changeView(fileView);
     }
+
+    private EventHandler<ActionEvent> airportLoadHandler = new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            XMLHandler handler = new XMLHandler();
+            Airport airport = handler.readAirportXML(fileView.filePath.get());
+            setAirport(airport);
+            fileView.reset();
+        }
+    };
 
     @FXML
     private void createAirport(ActionEvent e) {
@@ -226,71 +207,52 @@ public class MainView extends GridPane implements Initializable, IStyleable {
         return saveButtonHandler;
     }
 
+    private EventHandler<ActionEvent> obstacleExportButtonAction = new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            fileView.setTitle("Choose a location to export the obstacle");
+            fileView.setLoading(false);
+            fileView.setValidator(obstacleExportValidateAction);
+            changeView(fileView);
+            event.consume();
+        }
+    };
+    private EventHandler<ActionEvent> obstacleExportValidateAction =
+                    new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent event) {
+                            XMLHandler xml = new XMLHandler();
+                            xml.saveObstacleToXML(fileView.filePath.get(),
+                                            runwayView.currentObstacle);
+                            event.consume();
+                        }
+                    };
+
     @FXML
     private void loadObstacle(ActionEvent e) {
-
-        Stage stage = new Stage();
-
-        stage.setTitle("Choose an Obstacle to load");
-
-        FileChooser chooser = new FileChooser();
-        chooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("XML Files", "*.xml"));
-
-        Label label = new Label("No files selected");
-        Button button = new Button("Select File");
-
-        EventHandler<ActionEvent> event = event1 -> {
-            File file = chooser.showOpenDialog(stage);
-            String filePath = "";
-
-            if (file != null) {
-                filePath = file.getAbsolutePath();
-                label.setText("You selected " + filePath);
-
-            } else
-                label.setText("No File Selected");
-
-            if (file.length() == 0) {
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Warning");
-                alert.setHeaderText("The file you are trying to load is empty");
-                alert.setContentText(
-                                "Using this file may cause errors when loading the configuration");
-
-                alert.showAndWait();
-            } else {
-                XMLHandler xml = new XMLHandler();
-                loadAnObstacleView.loadPredefinedObstacle(xml.readObstacleXML(filePath));
-                loadAnObstacleView.obstacleSaveButton
-                                .setOnAction(obstacleSaveButtonAction(loadAnObstacleView));
-                changeView(loadAnObstacleView);
-                stage.close();
-            }
-
-        };
-
-        button.setOnAction(event);
-        VBox vbox = new VBox(30, label, button);
-        vbox.setAlignment(Pos.CENTER);
-
-        Scene scene = new Scene(vbox, 800, 500);
-        stage.setScene(scene);
-        stage.setResizable(false);
-        stage.showAndWait();
-
-        /*
-         * this.loadAnObstacleView.loadPredefinedObstacle("Scenario 1 Obstacle",
-         * "Obstacle from Scenario 1 of the Heathrow Example", 53.5, 70.3, 12);
-         * loadAnObstacleView.obstacleSaveButton
-         * .setOnAction(obstacleSaveButtonAction(loadAnObstacleView));
-         * changeView(loadAnObstacleView);
-         */
+        fileView.setTitle("Choose an obstacle to load");
+        fileView.setValidator(loadObstacleHandler);
+        changeView(fileView);
     }
+
+    private EventHandler<ActionEvent> loadObstacleHandler = new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            XMLHandler xml = new XMLHandler();
+            loadAnObstacleView.loadPredefinedObstacle(xml.readObstacleXML(fileView.filePath.get()));
+            loadAnObstacleView.obstacleSaveButton
+                            .setOnAction(obstacleSaveButtonAction(loadAnObstacleView));
+            loadAnObstacleView.obstacleExportButton.setOnAction(obstacleExportButtonAction);
+            changeView(loadAnObstacleView);
+            fileView.reset();
+        }
+    };
 
     @FXML
     private void createObstacle(ActionEvent e) {
         createAnObstacleView.obstacleSaveButton
                         .setOnAction(obstacleSaveButtonAction(createAnObstacleView));
+        loadAnObstacleView.obstacleExportButton.setOnAction(obstacleExportButtonAction);
         changeView(createAnObstacleView);
     }
 
@@ -303,6 +265,7 @@ public class MainView extends GridPane implements Initializable, IStyleable {
             editAnObstacleView.loadCurrentObstacle(runwayView.currentObstacle);
             editAnObstacleView.obstacleSaveButton
                             .setOnAction(obstacleSaveButtonAction(editAnObstacleView));
+            loadAnObstacleView.obstacleExportButton.setOnAction(obstacleExportButtonAction);
             changeView(editAnObstacleView);
         }
     }
@@ -384,4 +347,11 @@ public class MainView extends GridPane implements Initializable, IStyleable {
             }
         }
     }
+
+    @Override
+    public void applyStyles() {
+
+
+    }
+
 }

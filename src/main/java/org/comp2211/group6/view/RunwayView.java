@@ -168,10 +168,8 @@ public class RunwayView extends GridPane implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         canvasContainer.setVbarPolicy(ScrollBarPolicy.NEVER);
         canvasContainer.setHbarPolicy(ScrollBarPolicy.NEVER);
-        runwayCanvas.widthProperty().bind(canvasContainer.widthProperty());
-        runwayCanvas.heightProperty().bind(canvasContainer.heightProperty());
-        runwayCanvas.widthProperty().addListener(observable -> redraw());
-        runwayCanvas.heightProperty().addListener(observable -> redraw());
+        canvasContainer.widthProperty().addListener(observable -> redraw());
+        canvasContainer.heightProperty().addListener(observable -> redraw());
         // Add event handlers for panning and zooming
         runwayCanvas.addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
             public void handle(MouseEvent event) {
@@ -310,7 +308,7 @@ public class RunwayView extends GridPane implements Initializable {
     }
 
     private void scaleView(double scale) {
-        if (scale < 0.1 || scale > 10) {
+        if (scale < zoomSlider.getMin() || scale > zoomSlider.getMax()) {
             return;
         }
         if (zoomSlider.getValue() != scale) {
@@ -394,6 +392,14 @@ public class RunwayView extends GridPane implements Initializable {
     }
 
     protected void redraw() {
+        double canvasMinWidth = 800 * currentViewScale;
+        double canvasMinHeight = 600 * currentViewScale;
+        runwayCanvas.setHeight(
+                        canvasContainer.getHeight() > canvasMinHeight ? canvasContainer.getHeight()
+                                        : canvasMinHeight);
+        runwayCanvas.setWidth(
+                        canvasContainer.getWidth() > canvasMinWidth ? canvasContainer.getWidth()
+                                        : canvasMinWidth);
         runwayCanvas.setScaleX(currentViewScale);
         runwayCanvas.setScaleY(currentViewScale);
         GraphicsContext gc = runwayCanvas.getGraphicsContext2D();

@@ -7,8 +7,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringPropertyBase;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
@@ -137,8 +135,6 @@ public class ColourScheme {
     }
 
     public void setDefaultColourScheme() {
-        System.out.println(this.availableThemes.stream()
-                        .filter(t -> t.ThemeIdentifier.equals("Default")).findFirst().orElse(null));
         this.CURRENT_THEME.set(this.availableThemes.stream()
                         .filter(t -> t.ThemeIdentifier.equals("Default")).findFirst().orElse(null));
     }

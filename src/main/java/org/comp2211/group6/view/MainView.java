@@ -18,6 +18,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
+
+
+
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import org.comp2211.group6.XMLHandler;
@@ -87,7 +90,6 @@ public class MainView extends GridPane implements Initializable {
             e.printStackTrace();
         }
         changeView(splashScreen);
-        colourScheme.invertColourScheme();
     }
 
     @Override

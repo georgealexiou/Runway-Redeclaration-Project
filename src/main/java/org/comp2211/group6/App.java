@@ -16,7 +16,9 @@ public class App extends Application {
         Application.setUserAgentStylesheet(STYLESHEET_MODENA);
         MainView root = new MainView();
         primaryStage.setTitle("Runway Re-declaration Tool");
-        primaryStage.setScene(new Scene(root, 800, 500));
+        primaryStage.setScene(new Scene(root, 800, 600));
+        primaryStage.setMinHeight(600);
+        primaryStage.setMinWidth(800);
         primaryStage.show();
         ColourScheme.getInstance().generateRootStyleString(Window.getWindows());
     }

@@ -94,7 +94,7 @@
                   </font>
                 </Label>
                 <Label fx:id="zoomLabel"></Label>
-                <Slider min="0.1" max="10" value="1" fx:id="zoomSlider"></Slider>
+                <Slider min="0.5" max="5" value="1" fx:id="zoomSlider"></Slider>
                 <Button fx:id="resetZoom" text="Reset Zoom" onAction="#scaleView"></Button>
           </VBox>
           <VBox GridPane.columnIndex="1"

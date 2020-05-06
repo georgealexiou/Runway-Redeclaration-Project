@@ -313,7 +313,9 @@ public class RunwayView extends GridPane implements Initializable {
         if (scale < 0.1 || scale > 10) {
             return;
         }
-        zoomSlider.setValue(scale);
+        if (zoomSlider.getValue() != scale) {
+            zoomSlider.setValue(scale);
+        }
         currentViewScale = scale;
         redrawRunway();
     }

@@ -44,6 +44,9 @@ public class MainView extends GridPane implements Initializable {
     private FileView fileView;
 
     @FXML
+    public Scale u;
+
+    @FXML
     private MenuItem returnToRunwayViewButton;
     @FXML
     private MenuItem loadAirportButton;

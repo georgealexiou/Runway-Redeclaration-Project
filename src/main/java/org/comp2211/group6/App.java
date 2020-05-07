@@ -18,7 +18,7 @@ public class App extends Application {
     public void start(Stage primaryStage) throws Exception {
         Application.setUserAgentStylesheet(STYLESHEET_MODENA);
         MainView root = new MainView();
-//        root.u.setEm(rem);
+        root.u.setEm(rem);
         primaryStage.setTitle("Runway Re-declaration Tool");
         primaryStage.setScene(new Scene(root, 66.6 * rem, 50 * rem));
         primaryStage.setMinHeight(66.6 * rem);

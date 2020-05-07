@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.BorderPane;
 import org.comp2211.group6.Model.Airport;
 import org.comp2211.group6.Model.ColourScheme;
 import org.comp2211.group6.Model.Obstacle;
@@ -16,11 +18,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
-
-
-
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import org.comp2211.group6.XMLHandler;
@@ -67,10 +65,12 @@ public class MainView extends GridPane implements Initializable {
 
     @FXML
     private VBox splashScreen;
-
-
     @FXML
-    private Label notificationLabel;
+    private BorderPane notificationPane;
+    @FXML
+    private ScrollPane scrollPane;
+
+    
     /*
      * Properties
      */
@@ -180,7 +180,7 @@ public class MainView extends GridPane implements Initializable {
      * 
      */
     private EventHandler<ActionEvent> obstacleSaveButtonAction(ObstacleView obstacleView) {
-        notificationLabel.setText(" ");
+//        notificationLabel.setText(" ");
         EventHandler<ActionEvent> saveButtonHandler = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -201,7 +201,7 @@ public class MainView extends GridPane implements Initializable {
                 obstacleView.obstacleDistanceFromCentreLine.clear();
                 obstacleView.obstacleDistanceFromLeft.clear();
                 obstacleView.obstacleDistanceFromRight.clear();
-                notificationLabel.setText("Obstacle successfully saved");
+//                notificationLabel.setText("Obstacle successfully saved");
                 event.consume();
             }
         };
@@ -350,4 +350,7 @@ public class MainView extends GridPane implements Initializable {
         }
     }
 
+    public ScrollPane getScrollPane() {
+        return scrollPane;
+    }
 }

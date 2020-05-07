@@ -6,6 +6,8 @@
 <?import org.comp2211.group6.view.EditAnObstacleView?>
 <?import org.comp2211.group6.view.CreateAnObstacleView?>
 <?import org.comp2211.group6.view.LoadAnObstacleView?>
+<?import org.comp2211.group6.view.FileView?>
+<?import org.comp2211.group6.view.Scale?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.RowConstraints?>
 
@@ -15,19 +17,21 @@
          xmlns:fx="http://javafx.com/fxml"
          maxHeight="-Infinity"
          maxWidth="-Infinity" minHeight="-Infinity"
-         minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0">
-
+         minWidth="-Infinity" prefHeight="${u.em*50}" prefWidth="${u.em*66.6}">
+  <fx:define>
+    <Scale fx:id="u" em="12.0" />
+  </fx:define>
   <columnConstraints>
-              <ColumnConstraints minWidth="600" prefWidth="600"
+              <ColumnConstraints minWidth="${66.6*u.em}" prefWidth="${66.6*u.em}"
                                  maxWidth="Infinity" halignment="CENTER" hgrow="ALWAYS">
               </ColumnConstraints>
   </columnConstraints>
   <rowConstraints>
-    <RowConstraints minHeight="50" maxHeight="Infinity" vgrow="NEVER">
+    <RowConstraints minHeight="${4*u.em}" maxHeight="Infinity" vgrow="NEVER">
     </RowConstraints>
-    <RowConstraints minHeight="350" maxHeight="Infinity" vgrow="ALWAYS">
+    <RowConstraints minHeight="${40*u.em}" maxHeight="Infinity" vgrow="ALWAYS">
     </RowConstraints>
-    <RowConstraints maxHeight="200" vgrow="NEVER">
+    <RowConstraints maxHeight="${15*u.em}" vgrow="NEVER">
     </RowConstraints>
   </rowConstraints>
   <MenuBar GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.columnSpan="2" useSystemMenuBar="false">
@@ -36,6 +40,7 @@
               <items>
                 <MenuItem text="Toggle View" onAction="#toggleView" fx:id="toggleViewButton"></MenuItem>
                 <MenuItem text="Return to Runway View" onAction="#returnToRunwayView" fx:id="returnToRunwayViewButton"></MenuItem>
+                <MenuItem text="Invert Colours" onAction="#invertColourScheme" fx:id="invertColoursButton"></MenuItem>
               </items>
            </Menu>
            <Menu text="Airports">
@@ -65,6 +70,7 @@
   <EditAnObstacleView fx:id="editAnObstacleView" GridPane.rowIndex="1" GridPane.columnIndex="0" visible="false"></EditAnObstacleView> 
   <BreakdownView fx:id="breakdownView" GridPane.rowIndex="1" GridPane.columnIndex="0" visible="false"></BreakdownView>
   <RunwayView fx:id="runwayView" GridPane.rowIndex="1" GridPane.columnIndex="0" visible="false"></RunwayView> 
+  <FileView fx:id="fileView" GridPane.rowIndex="1" GridPane.columnIndex="0" visible="false"></FileView>
   <VBox fx:id="splashScreen" GridPane.rowIndex="1" GridPane.columnIndex="0" visible="true" alignment="CENTER">
     <Label text="Welcome to the Runway Redeclaration Tool">
           <font>
@@ -79,10 +85,9 @@
   </VBox>
   
   <VBox alignment="CENTER" MaxWidth="Infinity" GridPane.rowIndex="2" GridPane.columnIndex="0">
-      <padding><Insets top="40" right="40" bottom="40" left="40"/></padding>
       <Label text="Notifications" visible="true">
         <font>
-          <Font name="System Bold Underline" size="14"></Font>
+          <Font name="System Bold Underline" size="12"></Font>
         </font>
       </Label>
       <Label fx:id="notificationLabel" visible="true">

@@ -1,0 +1,23 @@
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+.scroll-pane {
+    -fx-background-color: transparent;
+}
+
+.menu-bar {
+    -fx-background-color: transparent;
+    -fx-padding: 0em;
+    -fx-margin: 0em;
+}
+
+.menu-bar .label {
+    -fx-font-weight: bold; 
+    -fx-padding: 10.0px;
+}
+
+.menu-item {
+    -fx-padding: 0.0em 0.0em 0.0em 0.0em;
+}
+

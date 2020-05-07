@@ -9,33 +9,38 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.shape.SVGPath?>
+<?import javafx.scene.shape.Rectangle?>
+<?import org.comp2211.group6.view.Scale?>
 
 
 <fx:root type="javafx.scene.layout.GridPane"
          xmlns:fx="http://javafx.com/fxml" alignment="center"
-          hgap="10" vgap="10">
-          <padding><Insets top="40" right="40" bottom="40" left="40"/></padding>
+          hgap="${u.em*0.8}" vgap="${u.em*0.8}">
+<fx:define>
+    <Scale fx:id="u" em="12.0" />
+  </fx:define>
           <columnConstraints>
-              <ColumnConstraints minWidth="200" prefWidth="200"
+              <ColumnConstraints minWidth="${u.em*15}" prefWidth="${u.em*15}"
                                  maxWidth="Infinity" halignment="LEFT">
               </ColumnConstraints>
-              <ColumnConstraints minWidth="400"
+              <ColumnConstraints minWidth="${u.em*30}"
                                  maxWidth="Infinity" hgrow="ALWAYS"
-                                 prefWidth="400"
+                                 prefWidth="${u.em*40}"
                                  halignment="CENTER">
               </ColumnConstraints>
-              <ColumnConstraints minWidth="200" prefWidth="200"
+              <ColumnConstraints minWidth="${u.em*15}" prefWidth="${u.em*15}"
                                  maxWidth="Infinity" halignment="RIGHT">
               </ColumnConstraints>
           </columnConstraints>
           <rowConstraints>
-              <RowConstraints minHeight="50" prefHeight="50"></RowConstraints>
-              <RowConstraints minHeight="50" prefHeight="50"></RowConstraints>
-              <RowConstraints vgrow="ALWAYS" prefHeight="350"></RowConstraints>
+              <RowConstraints minHeight="${u.em*4}" prefHeight="${u.em*4}"></RowConstraints>
+              <RowConstraints minHeight="${u.em*4}" prefHeight="${u.em*4}"></RowConstraints>
+              <RowConstraints vgrow="ALWAYS" prefHeight="${u.em*30}"></RowConstraints>
+              <RowConstraints minHeight="${u.em*8}" prefHeight="${u.em*8}"></RowConstraints>
           </rowConstraints>
 
           <VBox alignment="CENTER" GridPane.columnIndex="0"
-                GridPane.rowIndex="0" prefWidth="200">
+                GridPane.rowIndex="0" prefWidth="${u.em*15}">
             <Label text="Select a Runway:"></Label>
             <ComboBox fx:id="runwayPicker"></ComboBox>
           </VBox>
@@ -47,13 +52,13 @@
               </font>
           </Label>
           <VBox alignment="CENTER" GridPane.columnIndex="2"
-                GridPane.rowIndex="0" prefWidth="200">
+                GridPane.rowIndex="0" prefWidth="${u.em*8}">
             <Label text="Select an Obstacle: "></Label>
             <ComboBox fx:id="obstaclePicker"></ComboBox>
           </VBox>
 
           <VBox GridPane.columnIndex="0"
-                GridPane.rowIndex="1" prefWidth="200"
+                GridPane.rowIndex="1" prefWidth="${u.em*8}"
                 alignment="CENTER">
           <Label text="Threshold: "></Label>
           <ComboBox fx:id="logicalRunwayPicker"></ComboBox>
@@ -67,7 +72,7 @@
           </Label>
 
           <VBox GridPane.columnIndex="2"
-                GridPane.rowIndex="1"  prefWidth="200"
+                GridPane.rowIndex="1"  prefWidth="${u.em*15}"
                 alignment="CENTER">
           <SVGPath content="M199.33 285.42L246.53 267.06L199.33 248.69L199.33 260.33L149.28 260.33L149.28 273.81L199.33 273.81L199.33 285.42Z"
                    fx:id="runwayDirectionArrow">
@@ -75,8 +80,82 @@
           <Label text="Landing/Takeoff Direction"></Label>
           </VBox>
 
-          <Canvas fx:id="runwayCanvas"
-                  GridPane.columnIndex="0"
+          <ScrollPane GridPane.columnIndex="0"
                   GridPane.columnSpan="3"
-                  GridPane.rowIndex="2"></Canvas>
+                  GridPane.rowIndex="2"
+                  fx:id="canvasContainer"
+                  style=" -fx-border-color:black; -fx-border-width: 1; -fx-border-style: solid;">
+                  <Canvas fx:id="runwayCanvas"></Canvas>
+          </ScrollPane>
+
+          <VBox GridPane.columnIndex="0"
+                GridPane.rowIndex="3" prefWidth="${u.em*15}"
+                alignment="CENTER">
+                <Label text="Zoom">
+                  <font>
+                      <Font name="System Bold" size="12"></Font>
+                  </font>
+                </Label>
+                <Label fx:id="zoomLabel"></Label>
+                <Slider min="0.5" max="5" value="1" fx:id="zoomSlider"></Slider>
+                <Button fx:id="resetZoom" text="Reset Zoom" onAction="#scaleView"></Button>
+          </VBox>
+          <VBox GridPane.columnIndex="1"
+                GridPane.columnSpan="2"
+                GridPane.rowIndex="3"
+                alignment="CENTER">
+            <Label text="Instructions and Key">
+                <font>
+                    <Font name="System Bold" size="16"></Font>
+                </font>
+            </Label>
+            <HBox>
+              <VBox>
+                <HBox>
+                  <Label text="Click+Drag:">
+                    <font>
+                        <Font name="System Bold" size="12"></Font>
+                    </font>
+                  </Label>
+                  <Label text="Pan the View"></Label>
+                </HBox>
+
+                <HBox>
+                  <Label text="Double Click:">
+                    <font>
+                        <Font name="System Bold" size="12"></Font>
+                    </font>
+                  </Label>
+                  <Label text="Reset Scale and Pan"></Label>
+                </HBox>
+
+                <HBox>
+                  <Label text="Scroll/Zoom Slider:">
+                    <font>
+                        <Font name="System Bold" size="12"></Font>
+                    </font>
+                  </Label>
+                  <Label text="Zoom the view"></Label>
+                </HBox>
+              </VBox>
+              <VBox>
+                <HBox>
+                  <Rectangle x="0" y="0" width="${u.em*2}" height="${u.em*2}" fx:id="blastDistanceKey"></Rectangle>
+                  <Label text="Blast Distance"></Label>
+                </HBox>
+                <HBox>
+                  <Rectangle x="0" y="0" width="${u.em*2}" height="${u.em*2}"  fx:id="slopeCalcKey"></Rectangle>
+                  <Label text="Slope Calculation (h x 50)"></Label>
+                </HBox>
+                <HBox>
+                  <Rectangle x="0" y="0" width="${u.em*2}" height="${u.em*2}" fx:id="stripEndKey"></Rectangle>
+                  <Label text="Strip End"></Label>
+                </HBox>
+                <HBox>
+                  <Rectangle x="0" y="0" width="${u.em*2}" height="${u.em*2}" fx:id="resaKey"></Rectangle>
+                  <Label text="Runway End Safety Area"></Label>
+                </HBox>
+              </VBox>
+            </HBox>
+          </VBox>
 </fx:root>

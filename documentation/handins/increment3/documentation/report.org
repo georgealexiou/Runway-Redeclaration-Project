@@ -1,0 +1,33 @@
+#+options: ':t *:t -:t ::t <:t H:5 \n:nil ^:t arch:headline author:t
+#+options: broken-links:nil c:nil creator:nil d:(not "LOGBOOK") date:t e:t
+#+options: email:nil f:t inline:t num:t p:nil pri:nil prop:nil stat:t tags:t
+#+options: tasks:t tex:t timestamp:t title:t toc:t todo:t |:t
+#+title: Increment 3 Report
+#+author: Jonathan Bartlett \\ George Alexiou \\ Odysseas Kalatzis \\ Manqi Dong \\ Liyu Su
+#+language: en
+#+select_tags: export
+#+exclude_tags: noexport
+#+latex_class: article
+#+latex_header_extra: \usepackage{pdfpages}
+#+subtitle: COMP2211 SEG - Group 6
+#+date: \today
+
+* Design Artefacts
+** TODO Updated hierarchy from the changes in this sprint
+* Storyboards
+** TODO Storyboards from this sprint including any changes from last sprint
+* Design Decisions
+** TODO Talk about DPI scaling 
+* Scenarios and Test Output
+** TODO Include any updated or new scenarios
+** Manual Testing
+*** TODO include the testing report again
+** Unit Testing
+*** TODO Add a screen shot of regression tests
+* Sprint Overview
+** Our Definition of Done
+*** TODO Include how we define a task as being done
+** User Stories Met
+** Burndown Chart
+*** TODO Make sure there is no mention of time
+*** TODO Include both burndown charts

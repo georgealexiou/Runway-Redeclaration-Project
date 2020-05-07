@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
@@ -84,20 +81,4 @@
           </font>
     </Label>
   </VBox>
-   <VBox GridPane.rowIndex="3">
-      <children>
-         <BorderPane fx:id="notificationPane" prefHeight="200.0" prefWidth="200.0">
-            <top>
-               <Label text="Notifications" BorderPane.alignment="CENTER" />
-            </top>
-            <center>
-               <ScrollPane fx:id="scrollPane" fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-                  <content>
-                     <ListView prefHeight="200.0" prefWidth="200.0" />
-                  </content>
-               </ScrollPane>
-            </center>
-         </BorderPane>
-      </children>
-   </VBox>
 </fx:root>

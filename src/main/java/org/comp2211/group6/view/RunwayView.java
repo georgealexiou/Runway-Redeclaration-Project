@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
+import javafx.scene.control.ListView;
 import org.comp2211.group6.Controller.Calculator;
 import org.comp2211.group6.Model.ColourScheme;
 import org.comp2211.group6.Model.LogicalRunway;
@@ -106,7 +107,10 @@ public class RunwayView extends GridPane implements Initializable {
     private Rectangle stripEndKey;
     @FXML
     private Rectangle resaKey;
+    @FXML
+    protected ListView notificationList;
 
+    protected ObservableList<String> strList = FXCollections.observableArrayList();
 
     private boolean topDownViewActive = true;
 

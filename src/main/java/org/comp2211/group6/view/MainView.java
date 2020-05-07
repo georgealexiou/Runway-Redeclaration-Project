@@ -2,6 +2,7 @@ package org.comp2211.group6.view;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -73,7 +74,8 @@ public class MainView extends GridPane implements Initializable {
     @FXML
     private ScrollPane scrollPane;
 
-    
+    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
     /*
      * Properties
      */
@@ -183,7 +185,6 @@ public class MainView extends GridPane implements Initializable {
      * 
      */
     private EventHandler<ActionEvent> obstacleSaveButtonAction(ObstacleView obstacleView) {
-//        notificationLabel.setText(" ");
         EventHandler<ActionEvent> saveButtonHandler = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -204,7 +205,8 @@ public class MainView extends GridPane implements Initializable {
                 obstacleView.obstacleDistanceFromCentreLine.clear();
                 obstacleView.obstacleDistanceFromLeft.clear();
                 obstacleView.obstacleDistanceFromRight.clear();
-//                notificationLabel.setText("Obstacle successfully saved");
+                runwayView.strList.add(df.format(System.currentTimeMillis())+": Obstacle "+ obstacles.get(obstacles.size()-1).getName() +" successfully saved");
+                runwayView.notificationList.setItems(runwayView.strList);
                 event.consume();
             }
         };

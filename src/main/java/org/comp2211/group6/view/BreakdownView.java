@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
-import java.util.stream.Collectors;
 import org.comp2211.group6.Model.LogicalRunway;
 import org.comp2211.group6.Model.RunwayParameters;
 import javafx.beans.binding.Bindings;

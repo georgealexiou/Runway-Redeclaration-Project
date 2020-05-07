@@ -6,6 +6,7 @@
 <?import org.comp2211.group6.view.EditAnObstacleView?>
 <?import org.comp2211.group6.view.CreateAnObstacleView?>
 <?import org.comp2211.group6.view.LoadAnObstacleView?>
+<?import org.comp2211.group6.view.FileView?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.RowConstraints?>
 
@@ -36,6 +37,7 @@
               <items>
                 <MenuItem text="Toggle View" onAction="#toggleView" fx:id="toggleViewButton"></MenuItem>
                 <MenuItem text="Return to Runway View" onAction="#returnToRunwayView" fx:id="returnToRunwayViewButton"></MenuItem>
+                <MenuItem text="Invert Colours" onAction="#invertColourScheme" fx:id="invertColoursButton"></MenuItem>
               </items>
            </Menu>
            <Menu text="Airports">
@@ -65,6 +67,7 @@
   <EditAnObstacleView fx:id="editAnObstacleView" GridPane.rowIndex="1" GridPane.columnIndex="0" visible="false"></EditAnObstacleView> 
   <BreakdownView fx:id="breakdownView" GridPane.rowIndex="1" GridPane.columnIndex="0" visible="false"></BreakdownView>
   <RunwayView fx:id="runwayView" GridPane.rowIndex="1" GridPane.columnIndex="0" visible="false"></RunwayView> 
+  <FileView fx:id="fileView" GridPane.rowIndex="1" GridPane.columnIndex="0" visible="false"></FileView>
   <VBox fx:id="splashScreen" GridPane.rowIndex="1" GridPane.columnIndex="0" visible="true" alignment="CENTER">
     <Label text="Welcome to the Runway Redeclaration Tool">
           <font>

@@ -335,7 +335,9 @@ public class MainView extends GridPane implements Initializable {
                     
                     FileChooser fileChooser = new FileChooser();
                     fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PNG", "*.png"));
-                    File file = new File(folderView.filePath.get() + "\\" + viewName + "-" +currentTime + ".png");
+                    String path = folderView.filePath.get();
+                    System.out.println(path);
+                    File file = new File(path + "\\" + viewName + "-" +currentTime + ".png");
                     
                     int width = (int) Math.round(runwayView.runwayCanvas.getWidth());
                     int height = (int) Math.round(runwayView.runwayCanvas.getHeight());

@@ -42,11 +42,11 @@ public class MainView extends GridPane implements Initializable {
     @FXML
     private LoadAnObstacleView loadAnObstacleView;
     @FXML
-    private FileView fileView;
+    private AirportConfigView airportConfigView;
 
+    private FileView fileView;
     @FXML
     public Scale u;
-
     @FXML
     private MenuItem returnToRunwayViewButton;
     @FXML
@@ -175,9 +175,9 @@ public class MainView extends GridPane implements Initializable {
 
     @FXML
     private void editAirport(ActionEvent e) {
-        // TODO: Load the edit airport dialog
-        // TODO: Set the newly edited airport
-    }
+        AirportConfigView airportConfigView = new AirportConfigView(currentAirport);
+        changeView(airportConfigView);
+    };
 
     /*
      * listener for Save button in obstacle views. cater for different obstacle views(create, edit,

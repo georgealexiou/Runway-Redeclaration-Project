@@ -1,6 +1,7 @@
 package org.comp2211.group6.Model;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 /**
@@ -11,7 +12,7 @@ public class Runway {
     /**
      * Private Properties
      */
-    private final String name;
+    private String name;
     private Set<LogicalRunway> logicalRunways = new HashSet<LogicalRunway>();
     private Obstacle obstacle;
 
@@ -21,6 +22,8 @@ public class Runway {
     public Runway(String name) {
         this.name = name;
     }
+
+    public Runway (){}
 
     public Obstacle getObstacle() {
         return obstacle;
@@ -35,8 +38,16 @@ public class Runway {
     }
 
     public void addRunway(LogicalRunway runway) throws Exception {
-        if (logicalRunways.size() < 3)
+        if (logicalRunways.size() < 3) {
             logicalRunways.add(runway);
+
+            StringBuilder nameBuilder = new StringBuilder("");
+            for (Iterator<LogicalRunway> it = this.logicalRunways.iterator(); it.hasNext(); ) {
+                LogicalRunway temp = it.next();
+                nameBuilder.append(temp.getIdentifier());
+            }
+            this.name = nameBuilder.toString();
+        }
         else
             throw new Exception(
                             "Error. Logical runway cannot be added to this runway, which can have three logical runways at most.");

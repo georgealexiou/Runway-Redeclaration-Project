@@ -1,0 +1,190 @@
+#+options: ':t *:t -:t ::t <:t H:5 \n:nil ^:t arch:headline author:t
+#+options: broken-links:nil c:nil creator:nil d:(not "LOGBOOK") date:t e:t
+#+options: email:nil f:t inline:t num:t p:nil pri:nil prop:nil stat:t tags:t
+#+options: tasks:t tex:t timestamp:t title:t toc:t todo:t |:t
+#+title: Increment 2 Report
+#+author: Jonathan Bartlett \\ George Alexiou \\ Odysseas Kalatzis \\ Manqi Dong \\ Liyu Su
+#+language: en
+#+select_tags: export
+#+exclude_tags: noexport
+#+latex_class: article
+#+latex_header_extra: \usepackage{pdfpages}
+#+subtitle: COMP2211 SEG - Group 6
+#+date: \today
+
+* Design Artefacts
+#+caption: A diagram representing the planned hierarchy for UI components
+#+ATTR_LATEX: :placement [H]
+#+label: fig:uihierarchy
+[[file:UIHierachy.png]]
+* Storyboards
+#+caption: Breakdown View
+#+ATTR_LATEX: :placement [H]
+#+label: fig:breakdownview
+[[file:Storyboards/breakdown-view-annotated.png]]
+
+
+#+caption: Obstacle Configuration View
+#+ATTR_LATEX: :placement [H]
+#+label: fig:obstacleconfig
+[[file:Storyboards/obstacle-configurator.png]]
+
+#+caption: Side on View
+#+ATTR_LATEX: :placement [H]
+#+label: fig:sideonview
+[[file:Storyboards/side-on-obstacle-annotated.png]]
+
+#+caption: Top Down View
+#+ATTR_LATEX: :placement [H]
+#+label: fig:topdownview
+[[file:Storyboards/top-down-obstacle-annotated.png]]
+* Design Decisions
+** Side Panel to Tool Bar
+We decided that a tool bar would be a more suitable way of interacting with out system and changed the design of the application from a side panel to use a tool bar instead.
+** XML Loading and Saving
+Although there was a general feeling that the obstacles should be loaded and saved in batches, we implemented the system to load and save single obstacles as this was easier and fit with our original designs.
+However we may change this again in the next sprint.
+* Scenarios and Test Output
+** Scenarios
+*** Top Down View
+**** No Obstacle
+Chris starts the runway redeclaration tool and loads in 'Heathrow Airport'.
+He is presented with a top-down view of the first runway in 'Heathrow' - '09L27R'.
+On the right hand side of the screen is a panel where he can change the runway and see the
+original values for each logical runway.
+He can select the logical runway to focus on in the top left.
+An arrow in the top right updates to reflect the landing and takeoff direction when he changes logical runway.
+The currently selected threshold should be highlighted with an orange box.
+The original runway values should be displayed, including a displaced threshold if one is present.
+The runway centre line should be visible, as should the clearway and stopway at each end of the runway if applicable.
+**** Obstacle
+Given that Chris has started the application, loaded an airport and selected a runway he should be able to choose a
+predefined obstacle from a list on the lower right hand side. 
+Upon selecting the obstacle, it should appear on the runway in the expected location.
+The recalculated values for the currently selected threshold should be displayed based on the obstacle.
+Factors such as slope calculation, blast protection, strip end and runway end safety area should also be displayed.
+All values should be labelled.
+Chris can select to change the currently selected logical runway in the top left.
+Upon doing so, the values should all update to reflect the impact the obstacle has on this logical runway.
+*** Side On View
+**** No Obstacle
+Hallie starts the runway redeclaration tool and loads in 'Heathrow Airport'
+She is presented with the side-on view of the first runway in 'Heathrow' - '09L27R'
+On the right hand side of the screen is a panel where she can change the runway and see the original values for each logical runway.
+She has the choice of two thresholds to focus on: '09L' and '27R', these are listed in the top left corner and can be selected.
+Upon selecting '27R' the values on the 2D side-on view should update to reflect the differing values for '27R'.
+Each of the original parameters should be visible: TORA, TODA, ASDA and LDA. In addition to this, the displaced threshold should be shown.
+Since there is no obstacle present, there should be NO representation of the takeoff and landing slope.
+The currently selected threshold should be highlighted so that it is clear to Hallie which logical runway she is prioritising.
+**** Obstacle
+Given the Hallie has loaded the application and an airport and selected a logical runway, she should be given the choice to load an obstacle from a list of predefined obstacles.
+Hallie chooses to click on the button, this causes a menu to appear where she selects the obstacle and gives it some required values: 'Distance from Left', 'Distance from Right' and 'Distance from Centre Line'. 
+She can then click on the 'Add to Runway' button to complete the process and add it to the runway.
+The recalculated values should appear on the visualisation, and where necessary be broken down into the factors that cause the values to change such as the 'blast protection', 'strip end' and 'slope calculation'.
+She should also see a representation of the obstacle.
+She opts to change the logical runway and sees that the values change to reflect this.
+*** Airport Configuration
+**** Existing Airport - Editing
+Chris wants to change some details about a previously defined runway. He clicks the 'Edit' button from the sidebar and is presented with the airport configuration view with the details of the runway loaded in.
+He is able to change all of the values, including the deletion of a runway.
+Upon completing the changes he is able to save the runway for the current session or export it to the file it was loaded from.
+He chooses to export it to the file as it is not a temporary change. This updates it for the current session and the changes are written to disk.
+**** New Airport - Creating
+Jules wants to configure a new airport on the tool so that she can roll out the software in other airports.
+She starts the application and clicks the 'Add Airport' button.
+She is able to enter a name and select a number of runways. The number of runways must be at least 1.
+At this point, she sees that the 'Save' and 'Export' buttons are greyed out since the airport is incomplete.
+She enters a name and selects to have 2 runways.
+A stacked list of Runways appears with 'Runway 1 -' and 'Runway 2 -' as their names. She clicks 'Runway 1 -' and the runway configuration opens. 
+She can now select the number of logical runways/thresholds from a number picker that limits her to between 1 and 3.
+For each logical runway, a form appears allowing her to choose the 'Heading', 'Position' and Runway Parameters for each runway and optionally the 'Displaced Threshold'.
+She completes the values for one of the logical runways but moves on to the other runway before completing the other.
+She sees a message next to 'Runway 1 -' that tells her there are incomplete logical runways.
+She completes all of the required fields and sees that the 'Save' and 'Export' buttons are now available.
+She chooses to 'Export' as this is to be used for more than one session. A file dialog opens and she selects a location. The file is written to disk and loaded for the current session.
+
+*** Breakdown Of Calculations
+Chris wants to view the breakdown of calculations for his current sessions so that he can compare them with his paper calculations to further his training.
+He has added an obstacle and sees the option to select 'View Breakdown' from the sidebar. Upon clicking this, he is presented with breakdowns for all of the logical runways.
+He chooses to limit this to just one as he is only concerned with '09R' for now. The drop-down list at the top of the view allows him to select this logical runway. 
+The original and recalculated values are shown for each of the runway parameters.
+Each of the parameters is shown below this with each of the factors used to calculate it displayed.
+*** Obstacle Configuration
+**** New Obstacle - Creating
+Hallie wants to add a new obstacle to the system and clicks the button 'Create Obstacle'. 
+This opens a new view where she is able to enter the name of the obstacle, a short (optional) description and the parameters of the obstacle.
+She enters the height of the obstacle and sees the 'Save' and 'Export' buttons are now clickable. She can export here as all the data required to export
+has been provided. She chooses to continue as she will be using the obstacle in the current session. She completed the remaining fields and clicks 'Export'.
+This prompts her to select a file to save the XML in and write the data to the file (excluding the distances from left, right and centre line).
+The obstacle is now loaded on to the runway if one is present or saved until a runway is loaded otherwise.
+**** Existing Obstacle - Loading
+Chris wants to load a predefined obstacle to help in his understanding of the program's function. He clicks the 'Load Obstacle' button from the side panel. 
+The 'Load an Obstacle' screen (variation of Create an Obstacle) is shown with the name, description and height preloaded.
+He is asked to provide the distances from the centre line, left and right before continuing.
+Upon completing the fields he can press 'Save' and the obstacle will be available in the current session.
+**** Existing Obstacle - Editing
+Chris has noticed that the values he entered previously are incorrect. He selects to edit the current obstacle.
+The 'Edit Obstacle' view is shown and he enters the modified values. He cannot 'Export' as the name, description and height did not change.
+He chooses 'Save' and immediately sees the values on the current runway have been updated and the representation of the obstacle has changed.
+*** Main View Wrapper
+Hallie opens the application and sees the sidebar. It contains several buttons, initially the only ones available are 'Load Airport' and 'Create Airport'.
+After an airport is loaded the 'Load Obstacle' and 'Create Obstacle' buttons are no longer greyed out and the airport details are shown in a panel of the sidebar.
+A drop-down list of obstacles is available to select from a list of predefined obstacles. She can select an obstacle and the recalculated values for the current
+logical runway are shown.
+She can also select to toggle the view from 'Top-Down' to 'Side-On' and vice versa or see the calculation breakdown.
+** Manual Testing
+** Unit Testing
+No unit testable code was added during this sprint but we continued to run the unit tests using Travis CI to ensure that new additions to the software did not affect previous development.
+#+caption: Unit testing output
+#+attr_latex: :placement [H]
+#+label: fig:unit-test-output
+[[file:test-output.png]]
+
+* Responses to Feedback
+** CLI Improvements
+There was no further work on the CLI in this sprint as the GUI is the primary requirement and now far exceeds the power of the CLI.
+We may choose to continue the CLI work if there is time in Sprint 3.
+** Additional Dimensions for obstacles
+We have chosen to leave the additional dimensions and provide a default dimension.
+* Overcoming Problems
+
+Towards then end of this increment the Coronavirus pandemic started to have an impact.
+We were forced to stop working on the sprint and work was left untouched for close to 6 weeks.
+This time apart from the code meant that some time needed to be spent re-familiarising ourselves with the code and wider project. 
+Thankfully our earlier decision, to document key areas rigorously, paid off here.
+
+Some members were more affected than others, however the mitigation strategy discussed in our risk assessment allowed us to cope and we met the original target we set out to achieve.
+
+We increased the number of SCRUM meetings to daily as we could all meet at a set time on a Discord voice channel.
+Larger meetings such as project review meetings took place on Microsoft Teams as the screen sharing functionality was crucial.
+
+* Sprint Overview
+** User Stories Met
+Of the user stories we set out to achieve we completed 8/10, these are listed below.
+
+- As a <MOCT> I want <runways and thresholds sorted by their logical names> so that I can <quickly find what I am looking for>.
+- As a <MOCT> I want to <rotate the runway to match its compass heading> so that I can <orient myself with the simulation>.
+- As a <MOCT> I want <notifications of any changes to the systems> so that I can <ensure everything is correctly set up>.
+- As a <MOCT> I want <to switch between different runways> so that I can <see the impact of obstructions on different areas>.
+- As a <MOCT> I want to <have a representation take off climb surface slope> so that I can <view the take off climb surface slope.
+- As a <MOCT> I want <a visual display of all information relating to the runway thresholds> so that I can <better understand the situation>.
+- As a <MOCT> I want <a visual display re-declared distances and obstacles> so that I can <better understand the situation>.
+- As a <MOCT> I want <top-down and side-on views of the runway> so that I can <visualise scenarios>.
+** User Stories In Progress
+Below are some user stories that due to delays in the project we were unable to fully complete in this sprint.
+They are high priority for the next sprint.
+
+- As a <CAA Rep> I want <the system to be configurable> so that I can <promote it to all UK airports>.
+- As a <MOCT> I want to <export and import data to XML files> so that I can <re-create scenarios and share configurations>.
+** Burndown Chart
+#+caption: Burndown Chart for Sprint 2
+#+attr_latex: :placement [H]
+#+label: fig:burndownchart
+[[file:burndownchart.png]]
+* Plan for Increment 3
+We will finish the Airport configuration, tidy up the interface, improve data validation and work on some additional functionality such as exporting views as images.
+
+#+caption: Plan for sprint 3
+#+attr_latex: :placement [H]
+#+label: fig:sprint3plan
+[[file:sprint3plan.png]]

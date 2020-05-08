@@ -1,7 +1,10 @@
 package org.comp2211.group6.view;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,10 +22,17 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.SnapshotParameters;
+import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
+import javafx.scene.image.WritableImage;
+import javax.imageio.ImageIO;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import org.comp2211.group6.XMLHandler;
+import javafx.embed.swing.SwingFXUtils;
 
 public class MainView extends GridPane implements Initializable {
 
@@ -46,6 +56,8 @@ public class MainView extends GridPane implements Initializable {
     @FXML
     private FileView fileView;
     @FXML
+    private FolderView folderView;
+    @FXML
     public Scale u;
     @FXML
     private MenuItem returnToRunwayViewButton;
@@ -65,6 +77,8 @@ public class MainView extends GridPane implements Initializable {
     private MenuItem viewCalculationsButton;
     @FXML
     private MenuItem toggleViewButton;
+    @FXML
+    private MenuItem exportImageButton;
 
 
     @FXML
@@ -110,7 +124,16 @@ public class MainView extends GridPane implements Initializable {
                 }
             }
         });
+        
+        folderView.cancelButton.addEventHandler(ActionEvent.ANY, new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                folderView.filePath.set("No directory selected");
+                changeView(runwayView);
+            }
+        });        
     }
+    
 
     private void changeView(Node newView) {
         if (this.currentView != null) {
@@ -303,18 +326,63 @@ public class MainView extends GridPane implements Initializable {
         this.returnToRunwayViewButton.setVisible(false);
         changeView(runwayView);
     }
+    
+    private EventHandler<ActionEvent> imageExportValidateAction =
+            new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    final double currentScale = runwayView.getCurrentViewScale();
+                    runwayView.setCurrentViewScale(1);
+                    runwayView.redraw();
+                    
+                    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss");  
+                    LocalDateTime now = LocalDateTime.now();
+                    String currentTime = dtf.format(now);
+                    String viewName = runwayView.viewTitle.getText().replaceAll("\\s+","");
+                    
+                    FileChooser fileChooser = new FileChooser();
+                    fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PNG", "*.png"));
+                    String path = folderView.filePath.get();
+                    File file = new File(path + "\\" + viewName + "-" +currentTime + ".png");
+                    
+                    int width = (int) Math.round(runwayView.runwayCanvas.getWidth());
+                    int height = (int) Math.round(runwayView.runwayCanvas.getHeight());
+                    
+                    WritableImage image = new WritableImage(width, height);
+                    SnapshotParameters sp = new SnapshotParameters();
+                    try {
+                        ImageIO.write(SwingFXUtils.fromFXImage(runwayView.runwayCanvas.snapshot(sp, image), null), "png", file);
+                    } catch (IOException ex) {
+                        System.out.println("Failed to export runway view as an image.");
+                        ex.printStackTrace();
+                    }
+                    folderView.filePath.set("No directory selected");
+                    runwayView.setCurrentViewScale(currentScale);
+                    runwayView.redraw();
+                    changeView(runwayView);
+                    event.consume();
+                }
+            };
+    
+    @FXML
+    private void exportImage(ActionEvent e) {
+        changeView(folderView);
+        folderView.setValidator(imageExportValidateAction);
+    }
 
     private void updateButtons() {
         if (currentView == runwayView) {
             // Load and Create Airport always available here
             loadAirportButton.setDisable(false);
             createAirportButton.setDisable(false);
+            exportImageButton.setDisable(false);
             // Buttons you can press if an airport is loaded
             if (this.currentAirport != null) {
                 editAirportButton.setDisable(false);
                 loadObstacleButton.setDisable(false);
                 createObstacleButton.setDisable(false);
                 toggleViewButton.setDisable(false);
+                exportImageButton.setDisable(false);
                 // Buttons you can press if an obstacle is also loaded
                 if (runwayView.currentObstacle != null) {
                     editObstacleButton.setDisable(false);
@@ -328,6 +396,7 @@ public class MainView extends GridPane implements Initializable {
                 loadObstacleButton.setDisable(true);
                 createObstacleButton.setDisable(true);
                 toggleViewButton.setDisable(true);
+                exportImageButton.setDisable(true);
             }
         } else {
             // Deal with splash screen button
@@ -345,6 +414,7 @@ public class MainView extends GridPane implements Initializable {
             editObstacleButton.setDisable(true);
             viewCalculationsButton.setDisable(true);
             toggleViewButton.setDisable(true);
+            exportImageButton.setDisable(true);
             // Deal with runway view button
             if (this.currentAirport == null || runwayView.currentObstacle == null
                             || currentView == splashScreen) {

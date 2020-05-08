@@ -348,6 +348,7 @@ public class MainView extends GridPane implements Initializable {
                         System.out.println("Failed to export runway view as an image.");
                         ex.printStackTrace();
                     }
+                    folderView.filePath.set("No directory selected");
                     runwayView.setCurrentViewScale(currentScale);
                     runwayView.redraw();
                     changeView(runwayView);

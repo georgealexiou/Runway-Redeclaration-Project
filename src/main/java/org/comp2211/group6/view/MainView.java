@@ -43,7 +43,7 @@ public class MainView extends GridPane implements Initializable {
     private LoadAnObstacleView loadAnObstacleView;
     @FXML
     private AirportConfigView airportConfigView;
-
+    @FXML
     private FileView fileView;
     @FXML
     public Scale u;
@@ -175,7 +175,7 @@ public class MainView extends GridPane implements Initializable {
 
     @FXML
     private void editAirport(ActionEvent e) {
-        AirportConfigView airportConfigView = new AirportConfigView(currentAirport);
+        this.returnToRunwayViewButton.setVisible(true);
         changeView(airportConfigView);
     };
 

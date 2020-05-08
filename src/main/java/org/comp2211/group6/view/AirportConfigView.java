@@ -13,6 +13,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import org.comp2211.group6.Model.Airport;
 import org.comp2211.group6.Model.LogicalRunway;
@@ -32,45 +33,45 @@ public class AirportConfigView extends GridPane implements Initializable {
     /*
     FXML Stuff
      */
-    @FXML // fx:id="totalGrid"
-    private GridPane totalGrid; // Value injected by FXMLLoader
-
-    @FXML // fx:id="topGrid"
-    private GridPane topGrid; // Value injected by FXMLLoader
-
-    @FXML // fx:id="airportConfigText"
-    private Text airportConfigText; // Value injected by FXMLLoader
-
-    @FXML // fx:id="nameField"
-    private GridPane nameField; // Value injected by FXMLLoader
-
-    @FXML // fx:id="airportNameField"
-    private TextField airportNameField; // Value injected by FXMLLoader
-
-    @FXML // fx:id="airportNameText"
-    private Text airportNameText; // Value injected by FXMLLoader
-
-    @FXML // fx:id="buttonGrids"
-    private GridPane buttonGrids; // Value injected by FXMLLoader
-
-    @FXML // fx:id="saveButton"
-    private Button saveButton; // Value injected by FXMLLoader
-
-    @FXML // fx:id="exportButton"
-    private Button exportButton; // Value injected by FXMLLoader
-
-    @FXML // fx:id="runwayAccordion"
-    private Accordion runwayAccordion; // Value injected by FXMLLoader
+    @FXML
+    private ResourceBundle resources;
 
     @FXML
-    void exportButtonClicked(MouseEvent event) {
-
-    }
+    private URL location;
 
     @FXML
-    void saveButtonClicked(MouseEvent event) {
+    private GridPane baseGrid;
 
-    }
+    @FXML
+    private Text airportConfigText;
+
+    @FXML
+    private GridPane nameGrid;
+
+    @FXML
+    private VBox nameVBox;
+
+    @FXML
+    private Text airportNameText;
+
+    @FXML
+    private TextField airportName;
+
+    @FXML
+    private ButtonBar optionsBar;
+
+    @FXML
+    private Button save;
+
+    @FXML
+    private Button export;
+
+    @FXML
+    private Button delete;
+
+    @FXML
+    private Accordion runwayAccordion;
+
 
     /*
     Other Parameters
@@ -78,8 +79,7 @@ public class AirportConfigView extends GridPane implements Initializable {
     private Airport airport;
 
 
-    public AirportConfigView(Airport airport) {
-        this.airport = airport;
+    public AirportConfigView() {
         loadFxml(getClass().getResource("/airport_config.fxml"), this);
     }
 

@@ -10,6 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
+<?import org.comp2211.group6.view.AirportConfigView?>
 <?import org.comp2211.group6.view.RunwayView?>
 <?import org.comp2211.group6.view.BreakdownView?>
 <?import org.comp2211.group6.view.EditAnObstacleView?>
@@ -63,6 +64,7 @@
            </Menu>
        </menus>
   </MenuBar>
+  <AirportConfigView fx:id="airportConfigView" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="1" />
   <CreateAnObstacleView fx:id="createAnObstacleView" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="1" />
   <LoadAnObstacleView fx:id="loadAnObstacleView" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="1" />
   <EditAnObstacleView fx:id="editAnObstacleView" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="1" />

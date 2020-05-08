@@ -1,29 +1,24 @@
 package org.comp2211.group6.view;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.stage.FileChooser;
-import javafx.stage.Stage;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.BorderPane;
 import org.comp2211.group6.Model.Airport;
+import org.comp2211.group6.Model.ColourScheme;
 import org.comp2211.group6.Model.Obstacle;
 import org.comp2211.group6.Controller.Calculator;
-
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
@@ -46,7 +41,12 @@ public class MainView extends GridPane implements Initializable {
     private CreateAnObstacleView createAnObstacleView;
     @FXML
     private LoadAnObstacleView loadAnObstacleView;
+    @FXML
+    private AirportConfigView airportConfigView;
 
+    private FileView fileView;
+    @FXML
+    public Scale u;
     @FXML
     private MenuItem returnToRunwayViewButton;
     @FXML
@@ -69,15 +69,19 @@ public class MainView extends GridPane implements Initializable {
 
     @FXML
     private VBox splashScreen;
-
-
     @FXML
-    private Label notificationLabel;
+    private BorderPane notificationPane;
+    @FXML
+    private ScrollPane scrollPane;
+
+    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
     /*
      * Properties
      */
     private Airport currentAirport;
     private List<Obstacle> obstacles = new ArrayList<Obstacle>();
+    private ColourScheme colourScheme = ColourScheme.getInstance();
 
     public MainView() {
         super();
@@ -94,7 +98,19 @@ public class MainView extends GridPane implements Initializable {
     }
 
     @Override
-    public void initialize(URL location, ResourceBundle resources) {}
+    public void initialize(URL location, ResourceBundle resources) {
+        fileView.cancelButton.addEventHandler(ActionEvent.ANY, new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                fileView.reset();
+                if (currentAirport != null) {
+                    changeView(runwayView);
+                } else {
+                    changeView(splashScreen);
+                }
+            }
+        });
+    }
 
     private void changeView(Node newView) {
         if (this.currentView != null) {
@@ -103,6 +119,11 @@ public class MainView extends GridPane implements Initializable {
         this.currentView = newView;
         this.currentView.setVisible(true);
         updateAirportFields();
+    }
+
+    @FXML
+    private void invertColourScheme() {
+        colourScheme.invertColourScheme();
     }
 
     /*
@@ -132,52 +153,19 @@ public class MainView extends GridPane implements Initializable {
 
     @FXML
     private void loadAirport(ActionEvent e) {
-        Stage stage = new Stage();
-
-        stage.setTitle("Choose an Airport to load");
-
-        FileChooser chooser = new FileChooser();
-        chooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("XML Files", "*.xml"));
-
-        Label label = new Label("No files selected");
-        Button button = new Button("Select File");
-
-        EventHandler<ActionEvent> event = event1 -> {
-            File file = chooser.showOpenDialog(stage);
-            String filePath = "";
-
-            if (file != null) {
-                filePath = file.getAbsolutePath();
-                label.setText("You selected " + filePath);
-
-            } else
-                label.setText("No File Selected");
-
-            if (file.length() == 0) {
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Warning");
-                alert.setHeaderText("The file you are trying to load is empty");
-                alert.setContentText(
-                                "Using this file may cause errors when loading the configuration");
-
-                alert.showAndWait();
-            } else {
-                XMLHandler xml = new XMLHandler();
-                setAirport(xml.readAirportXML(filePath));
-                stage.close();
-            }
-
-        };
-
-        button.setOnAction(event);
-        VBox vbox = new VBox(30, label, button);
-        vbox.setAlignment(Pos.CENTER);
-
-        Scene scene = new Scene(vbox, 800, 500);
-        stage.setScene(scene);
-        stage.setResizable(false);
-        stage.showAndWait();
+        fileView.setValidator(airportLoadHandler);
+        changeView(fileView);
     }
+
+    private EventHandler<ActionEvent> airportLoadHandler = new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            XMLHandler handler = new XMLHandler();
+            Airport airport = handler.readAirportXML(fileView.filePath.get());
+            setAirport(airport);
+            fileView.reset();
+        }
+    };
 
     @FXML
     private void createAirport(ActionEvent e) {
@@ -187,9 +175,9 @@ public class MainView extends GridPane implements Initializable {
 
     @FXML
     private void editAirport(ActionEvent e) {
-        // TODO: Load the edit airport dialog
-        // TODO: Set the newly edited airport
-    }
+        AirportConfigView airportConfigView = new AirportConfigView(currentAirport);
+        changeView(airportConfigView);
+    };
 
     /*
      * listener for Save button in obstacle views. cater for different obstacle views(create, edit,
@@ -197,7 +185,6 @@ public class MainView extends GridPane implements Initializable {
      * 
      */
     private EventHandler<ActionEvent> obstacleSaveButtonAction(ObstacleView obstacleView) {
-        notificationLabel.setText(" ");
         EventHandler<ActionEvent> saveButtonHandler = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -218,7 +205,8 @@ public class MainView extends GridPane implements Initializable {
                 obstacleView.obstacleDistanceFromCentreLine.clear();
                 obstacleView.obstacleDistanceFromLeft.clear();
                 obstacleView.obstacleDistanceFromRight.clear();
-                notificationLabel.setText("Obstacle successfully saved");
+                runwayView.strList.add(df.format(System.currentTimeMillis())+": Obstacle "+ obstacles.get(obstacles.size()-1).getName() +" successfully saved");
+                runwayView.notificationList.setItems(runwayView.strList);
                 event.consume();
             }
         };
@@ -226,71 +214,52 @@ public class MainView extends GridPane implements Initializable {
         return saveButtonHandler;
     }
 
+    private EventHandler<ActionEvent> obstacleExportButtonAction = new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            fileView.setTitle("Choose a location to export the obstacle");
+            fileView.setLoading(false);
+            fileView.setValidator(obstacleExportValidateAction);
+            changeView(fileView);
+            event.consume();
+        }
+    };
+    private EventHandler<ActionEvent> obstacleExportValidateAction =
+                    new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent event) {
+                            XMLHandler xml = new XMLHandler();
+                            xml.saveObstacleToXML(fileView.filePath.get(),
+                                            runwayView.currentObstacle);
+                            event.consume();
+                        }
+                    };
+
     @FXML
     private void loadObstacle(ActionEvent e) {
-
-        Stage stage = new Stage();
-
-        stage.setTitle("Choose an Obstacle to load");
-
-        FileChooser chooser = new FileChooser();
-        chooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("XML Files", "*.xml"));
-
-        Label label = new Label("No files selected");
-        Button button = new Button("Select File");
-
-        EventHandler<ActionEvent> event = event1 -> {
-            File file = chooser.showOpenDialog(stage);
-            String filePath = "";
-
-            if (file != null) {
-                filePath = file.getAbsolutePath();
-                label.setText("You selected " + filePath);
-
-            } else
-                label.setText("No File Selected");
-
-            if (file.length() == 0) {
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Warning");
-                alert.setHeaderText("The file you are trying to load is empty");
-                alert.setContentText(
-                                "Using this file may cause errors when loading the configuration");
-
-                alert.showAndWait();
-            } else {
-                XMLHandler xml = new XMLHandler();
-                loadAnObstacleView.loadPredefinedObstacle(xml.readObstacleXML(filePath));
-                loadAnObstacleView.obstacleSaveButton
-                                .setOnAction(obstacleSaveButtonAction(loadAnObstacleView));
-                changeView(loadAnObstacleView);
-                stage.close();
-            }
-
-        };
-
-        button.setOnAction(event);
-        VBox vbox = new VBox(30, label, button);
-        vbox.setAlignment(Pos.CENTER);
-
-        Scene scene = new Scene(vbox, 800, 500);
-        stage.setScene(scene);
-        stage.setResizable(false);
-        stage.showAndWait();
-
-        /*
-         * this.loadAnObstacleView.loadPredefinedObstacle("Scenario 1 Obstacle",
-         * "Obstacle from Scenario 1 of the Heathrow Example", 53.5, 70.3, 12);
-         * loadAnObstacleView.obstacleSaveButton
-         * .setOnAction(obstacleSaveButtonAction(loadAnObstacleView));
-         * changeView(loadAnObstacleView);
-         */
+        fileView.setTitle("Choose an obstacle to load");
+        fileView.setValidator(loadObstacleHandler);
+        changeView(fileView);
     }
+
+    private EventHandler<ActionEvent> loadObstacleHandler = new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            XMLHandler xml = new XMLHandler();
+            loadAnObstacleView.loadPredefinedObstacle(xml.readObstacleXML(fileView.filePath.get()));
+            loadAnObstacleView.obstacleSaveButton
+                            .setOnAction(obstacleSaveButtonAction(loadAnObstacleView));
+            loadAnObstacleView.obstacleExportButton.setOnAction(obstacleExportButtonAction);
+            changeView(loadAnObstacleView);
+            fileView.reset();
+        }
+    };
 
     @FXML
     private void createObstacle(ActionEvent e) {
         createAnObstacleView.obstacleSaveButton
                         .setOnAction(obstacleSaveButtonAction(createAnObstacleView));
+        loadAnObstacleView.obstacleExportButton.setOnAction(obstacleExportButtonAction);
         changeView(createAnObstacleView);
     }
 
@@ -303,6 +272,7 @@ public class MainView extends GridPane implements Initializable {
             editAnObstacleView.loadCurrentObstacle(runwayView.currentObstacle);
             editAnObstacleView.obstacleSaveButton
                             .setOnAction(obstacleSaveButtonAction(editAnObstacleView));
+            loadAnObstacleView.obstacleExportButton.setOnAction(obstacleExportButtonAction);
             changeView(editAnObstacleView);
         }
     }
@@ -383,5 +353,9 @@ public class MainView extends GridPane implements Initializable {
                 returnToRunwayViewButton.setDisable(false);
             }
         }
+    }
+
+    public ScrollPane getScrollPane() {
+        return scrollPane;
     }
 }

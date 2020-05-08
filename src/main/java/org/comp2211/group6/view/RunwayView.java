@@ -163,6 +163,14 @@ public class RunwayView extends GridPane implements Initializable {
     public Calculator getCalculator() {
         return calculator;
     }
+    
+    public double getCurrentViewScale() {
+        return currentViewScale;
+    }
+    
+    public void setCurrentViewScale(double currentViewScale) {
+        this.currentViewScale = currentViewScale;
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

@@ -5,10 +5,13 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.BorderPane;
 import org.comp2211.group6.Model.Airport;
 import org.comp2211.group6.Model.ColourScheme;
 import org.comp2211.group6.Model.Obstacle;
@@ -24,6 +27,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.WritableImage;
 import javax.imageio.ImageIO;
+import javafx.scene.control.MenuItem;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
@@ -48,13 +52,13 @@ public class MainView extends GridPane implements Initializable {
     @FXML
     private LoadAnObstacleView loadAnObstacleView;
     @FXML
+    private AirportConfigView airportConfigView;
+    @FXML
     private FileView fileView;
     @FXML
     private FolderView folderView;
-
     @FXML
     public Scale u;
-
     @FXML
     private MenuItem returnToRunwayViewButton;
     @FXML
@@ -79,10 +83,13 @@ public class MainView extends GridPane implements Initializable {
 
     @FXML
     private VBox splashScreen;
-
-
     @FXML
-    private Label notificationLabel;
+    private BorderPane notificationPane;
+    @FXML
+    private ScrollPane scrollPane;
+
+    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
     /*
      * Properties
      */
@@ -191,9 +198,9 @@ public class MainView extends GridPane implements Initializable {
 
     @FXML
     private void editAirport(ActionEvent e) {
-        // TODO: Load the edit airport dialog
-        // TODO: Set the newly edited airport
-    }
+        this.returnToRunwayViewButton.setVisible(true);
+        changeView(airportConfigView);
+    };
 
     /*
      * listener for Save button in obstacle views. cater for different obstacle views(create, edit,
@@ -201,7 +208,6 @@ public class MainView extends GridPane implements Initializable {
      * 
      */
     private EventHandler<ActionEvent> obstacleSaveButtonAction(ObstacleView obstacleView) {
-        notificationLabel.setText(" ");
         EventHandler<ActionEvent> saveButtonHandler = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -222,7 +228,8 @@ public class MainView extends GridPane implements Initializable {
                 obstacleView.obstacleDistanceFromCentreLine.clear();
                 obstacleView.obstacleDistanceFromLeft.clear();
                 obstacleView.obstacleDistanceFromRight.clear();
-                notificationLabel.setText("Obstacle successfully saved");
+                runwayView.strList.add(df.format(System.currentTimeMillis())+": Obstacle "+ obstacles.get(obstacles.size()-1).getName() +" successfully saved");
+                runwayView.notificationList.setItems(runwayView.strList);
                 event.consume();
             }
         };
@@ -418,4 +425,7 @@ public class MainView extends GridPane implements Initializable {
         }
     }
 
+    public ScrollPane getScrollPane() {
+        return scrollPane;
+    }
 }

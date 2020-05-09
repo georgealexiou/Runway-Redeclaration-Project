@@ -1,6 +1,8 @@
 package org.comp2211.group6.Model;
 
 import java.util.Set;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -21,9 +23,10 @@ public class Airport {
     }
 
     public void addRunway(Runway runway) {
-        if (runway != null)
+        if (runway != null) {
             runways.add(runway);
-        else
+            runways = runways.stream().sorted().collect(Collectors.toList());
+        } else
             throw new IllegalArgumentException(
                             "Error. Invalid runway to be added to airport, cannot be null.");
     }

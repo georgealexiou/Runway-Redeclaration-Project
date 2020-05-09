@@ -40,6 +40,9 @@ public class Runway implements Comparable {
     }
 
     public void addRunway(LogicalRunway runway) throws Exception {
+        if (runway == null)
+            throw new IllegalArgumentException(
+                            "Error. Invalid logical runway to be added to runway, cannot be null.");
         if (logicalRunways.size() < 3) {
             logicalRunways.add(runway);
 
@@ -54,9 +57,6 @@ public class Runway implements Comparable {
                             "Error. Logical runway cannot be added to this runway, which can have three logical runways at most.");
 
 
-        if (runway == null)
-            throw new IllegalArgumentException(
-                            "Error. Invalid logical runway to be added to runway, cannot be null.");
     }
 
     public List<LogicalRunway> getLogicalRunways() {

@@ -5,7 +5,14 @@ import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
+import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.SVGPath;
 import org.comp2211.group6.Controller.Calculator;
 import org.comp2211.group6.Model.Airport;
 import org.comp2211.group6.Model.ColourScheme;
@@ -22,7 +29,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
-import jGPath;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.transform.Affine;
 import javafx.scene.transform.Transform;
@@ -170,6 +177,7 @@ public class RunwayView extends GridPane implements Initializable {
         canvasContainer.setHbarPolicy(ScrollBarPolicy.NEVER);
         canvasContainer.widthProperty().addListener(observable -> redraw());
         canvasContainer.heightProperty().addListener(observable -> redraw());
+
         // Add event handlers for panning and zooming
         runwayCanvas.addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
             public void handle(MouseEvent event) {
@@ -212,6 +220,7 @@ public class RunwayView extends GridPane implements Initializable {
 
         this.airport.addListener((e, origVal, newVal) -> {
             this.updateRunwayPicker(newVal.getRunways());
+            this.currentAirportName.setText(newVal.getName());
         });
         this.runway.addListener((e, origVal, newVal) -> {
             if (newVal != null) {

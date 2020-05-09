@@ -456,7 +456,8 @@ public class MainView extends GridPane implements Initializable {
         toggleViewButton.disableProperty().bind(currentView.isEqualTo(breakdownView));
         exportImageButton.disableProperty().bind(currentView.isEqualTo(breakdownView));
         returnToRunwayViewButton.disableProperty()
-                        .bind(currentAirport.isNull().or(currentView.isEqualTo(splashScreen)).or(currentView.isEqualTo(runwayView)));
+                        .bind(currentAirport.isNull().or(currentView.isEqualTo(splashScreen))
+                                        .or(currentView.isEqualTo(runwayView)));
 
         editAirportButton.disableProperty().bind(currentAirport.isNull());
         loadObstacleButton.disableProperty().bind(currentAirport.isNull());

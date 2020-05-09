@@ -120,24 +120,28 @@
                   <Label text="Zoom the view" />
                 </HBox>
               </VBox>
-              <VBox>
-                <HBox>
-                  <Rectangle fx:id="blastDistanceKey" height="${u.em*2}" width="${u.em*2}" x="0" y="0" />
-                  <Label text="Blast Distance" />
-                </HBox>
-                <HBox>
-                  <Rectangle fx:id="slopeCalcKey" height="${u.em*2}" width="${u.em*2}" x="0" y="0" />
-                  <Label text="Slope Calculation (h x 50)" />
-                </HBox>
-                <HBox>
-                  <Rectangle fx:id="stripEndKey" height="${u.em*2}" width="${u.em*2}" x="0" y="0" />
-                  <Label text="Strip End" />
-                </HBox>
-                <HBox>
-                  <Rectangle fx:id="resaKey" height="${u.em*2}" width="${u.em*2}" x="0" y="0" />
-                  <Label text="Runway End Safety Area" />
-                </HBox>
-              </VBox>
+              <HBox>
+                <VBox>
+                  <HBox>
+                    <Rectangle fx:id="blastDistanceKey" height="${u.em*2}" width="${u.em*2}" x="0" y="0" />
+                    <Label text="Blast Distance" />
+                  </HBox>
+                  <HBox>
+                    <Rectangle fx:id="slopeCalcKey" height="${u.em*2}" width="${u.em*2}" x="0" y="0" />
+                    <Label text="Slope Calculation (h x 50)" />
+                  </HBox>
+                  <HBox>
+                    <Rectangle fx:id="stripEndKey" height="${u.em*2}" width="${u.em*2}" x="0" y="0" />
+                    <Label text="Strip End" />
+                  </HBox>
+                </VBox>
+                <VBox>
+                  <HBox>
+                    <Rectangle fx:id="resaKey" height="${u.em*2}" width="${u.em*2}" x="0" y="0" />
+                    <Label text="Runway End Safety Area" />
+                  </HBox>
+                </VBox>
+              </HBox>
             </HBox>
           </VBox>
    <BorderPane GridPane.columnIndex="3" GridPane.rowIndex="3">

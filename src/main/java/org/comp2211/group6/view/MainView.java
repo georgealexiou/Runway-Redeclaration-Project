@@ -199,6 +199,7 @@ public class MainView extends GridPane implements Initializable {
     @FXML
     private void editAirport(ActionEvent e) {
         this.returnToRunwayViewButton.setVisible(true);
+        airportConfigView.loadAirport(currentAirport);
         changeView(airportConfigView);
     };
 

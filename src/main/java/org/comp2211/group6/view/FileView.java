@@ -1,5 +1,3 @@
-
-
 package org.comp2211.group6.view;
 
 import java.io.File;

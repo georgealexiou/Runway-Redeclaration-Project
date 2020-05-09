@@ -47,7 +47,7 @@ public class FolderView extends GridPane implements Initializable {
         filePath.set("No directory selected");
         validateButton.setText("Export");
     }
-    
+
     private static void loadFxml(URL fxmlFile, Object rootController) {
         FXMLLoader loader = new FXMLLoader(fxmlFile);
         loader.setController(rootController);
@@ -65,7 +65,7 @@ public class FolderView extends GridPane implements Initializable {
         pathField.textProperty().bind(filePath);
         validateButton.disableProperty()
                         .bind(pathField.textProperty().isEqualTo("No directory selected"));
-        
+
         filePath.set("No directory selected");
     }
 
@@ -90,5 +90,5 @@ public class FolderView extends GridPane implements Initializable {
             filePath.set(file.getAbsolutePath());
         }
     }
-    
+
 }

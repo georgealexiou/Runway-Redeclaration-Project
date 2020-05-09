@@ -64,7 +64,7 @@ public class SaveBreakdown extends GridPane implements Initializable {
         chooser = new DirectoryChooser();
         pathField.textProperty().bind(filePath);
         validateButton.disableProperty()
-                .bind(pathField.textProperty().isEqualTo("No directory selected"));
+                        .bind(pathField.textProperty().isEqualTo("No directory selected"));
 
         filePath.set("No directory selected");
     }

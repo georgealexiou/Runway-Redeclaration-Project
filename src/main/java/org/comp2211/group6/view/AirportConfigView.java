@@ -31,7 +31,7 @@ import javafx.util.StringConverter;
 public class AirportConfigView extends GridPane implements Initializable {
 
     /*
-    FXML Stuff
+     * FXML Stuff
      */
     @FXML
     private ResourceBundle resources;
@@ -74,7 +74,7 @@ public class AirportConfigView extends GridPane implements Initializable {
 
 
     /*
-    Other Parameters
+     * Other Parameters
      */
     private Airport airport;
 
@@ -85,29 +85,26 @@ public class AirportConfigView extends GridPane implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-       /*
-
-        setupBreakdownPicker(FXCollections.observableArrayList());
-        this.availableBreakdowns = new HashMap<LogicalRunway, String>();
-        this.breakdownDetails.setStyle("-fx-font-family: 'monospaced';");
-        this.currentLogicalRunway = null;
-        parameterColumn.setCellValueFactory(
-                new PropertyValueFactory<BreakdownComparison, String>("property"));
-        originalValueColumn.setCellValueFactory(
-                new PropertyValueFactory<BreakdownComparison, Double>("original"));
-        recalculatedValueColumn.setCellValueFactory(
-                new PropertyValueFactory<BreakdownComparison, Double>("recalculated"));
-        valuesTable.getColumns().get(0).prefWidthProperty()
-                .bind(valuesTable.widthProperty().multiply(0.33));
-        valuesTable.getColumns().get(1).prefWidthProperty()
-                .bind(valuesTable.widthProperty().multiply(0.33));
-        valuesTable.getColumns().get(2).prefWidthProperty()
-                .bind(valuesTable.widthProperty().multiply(0.33));
-        valuesTable.setFixedCellSize(25);
-        this.getRowConstraints().get(1).prefHeightProperty()
-                .bind(Bindings.size(valuesTable.getItems())
-                        .multiply(valuesTable.getFixedCellSize()).add(30));
-                        */
+        /*
+         * 
+         * setupBreakdownPicker(FXCollections.observableArrayList()); this.availableBreakdowns = new
+         * HashMap<LogicalRunway, String>();
+         * this.breakdownDetails.setStyle("-fx-font-family: 'monospaced';");
+         * this.currentLogicalRunway = null; parameterColumn.setCellValueFactory( new
+         * PropertyValueFactory<BreakdownComparison, String>("property"));
+         * originalValueColumn.setCellValueFactory( new PropertyValueFactory<BreakdownComparison,
+         * Double>("original")); recalculatedValueColumn.setCellValueFactory( new
+         * PropertyValueFactory<BreakdownComparison, Double>("recalculated"));
+         * valuesTable.getColumns().get(0).prefWidthProperty()
+         * .bind(valuesTable.widthProperty().multiply(0.33));
+         * valuesTable.getColumns().get(1).prefWidthProperty()
+         * .bind(valuesTable.widthProperty().multiply(0.33));
+         * valuesTable.getColumns().get(2).prefWidthProperty()
+         * .bind(valuesTable.widthProperty().multiply(0.33)); valuesTable.setFixedCellSize(25);
+         * this.getRowConstraints().get(1).prefHeightProperty()
+         * .bind(Bindings.size(valuesTable.getItems())
+         * .multiply(valuesTable.getFixedCellSize()).add(30));
+         */
 
     }
 

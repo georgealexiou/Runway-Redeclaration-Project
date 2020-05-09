@@ -23,7 +23,7 @@ public class Runway {
         this.name = name;
     }
 
-    public Runway (){}
+    public Runway() {}
 
     public Obstacle getObstacle() {
         return obstacle;
@@ -42,13 +42,12 @@ public class Runway {
             logicalRunways.add(runway);
 
             StringBuilder nameBuilder = new StringBuilder("");
-            for (Iterator<LogicalRunway> it = this.logicalRunways.iterator(); it.hasNext(); ) {
+            for (Iterator<LogicalRunway> it = this.logicalRunways.iterator(); it.hasNext();) {
                 LogicalRunway temp = it.next();
                 nameBuilder.append(temp.getIdentifier());
             }
             this.name = nameBuilder.toString();
-        }
-        else
+        } else
             throw new Exception(
                             "Error. Logical runway cannot be added to this runway, which can have three logical runways at most.");
 

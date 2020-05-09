@@ -138,15 +138,16 @@ public class MainView extends GridPane implements Initializable {
             }
         });
 
-        saveBreakdown.cancelButton.addEventHandler(ActionEvent.ANY, new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                saveBreakdown.filePath.set("No directory selected");
-                changeView(breakdownView);
-            }
-        });
+        saveBreakdown.cancelButton.addEventHandler(ActionEvent.ANY,
+                        new EventHandler<ActionEvent>() {
+                            @Override
+                            public void handle(ActionEvent event) {
+                                saveBreakdown.filePath.set("No directory selected");
+                                changeView(breakdownView);
+                            }
+                        });
     }
-    
+
 
     private void changeView(Node newView) {
         if (this.currentView != null) {
@@ -211,7 +212,6 @@ public class MainView extends GridPane implements Initializable {
 
     @FXML
     private void editAirport(ActionEvent e) {
-        this.returnToRunwayViewButton.setVisible(true);
         changeView(airportConfigView);
     };
 
@@ -241,7 +241,9 @@ public class MainView extends GridPane implements Initializable {
                 obstacleView.obstacleDistanceFromCentreLine.clear();
                 obstacleView.obstacleDistanceFromLeft.clear();
                 obstacleView.obstacleDistanceFromRight.clear();
-                runwayView.strList.add(df.format(System.currentTimeMillis())+": Obstacle "+ obstacles.get(obstacles.size()-1).getName() +" successfully saved");
+                runwayView.strList.add(df.format(System.currentTimeMillis()) + ": Obstacle "
+                                + obstacles.get(obstacles.size() - 1).getName()
+                                + " successfully saved");
                 runwayView.notificationList.setItems(runwayView.strList);
                 event.consume();
             }
@@ -304,7 +306,6 @@ public class MainView extends GridPane implements Initializable {
         if (runwayView.currentObstacle == null) {
             throw new NullPointerException("No obstacle can be edited.");
         } else {
-            this.returnToRunwayViewButton.setVisible(true);
             editAnObstacleView.loadCurrentObstacle(runwayView.currentObstacle);
             editAnObstacleView.obstacleSaveButton
                             .setOnAction(obstacleSaveButtonAction(editAnObstacleView));
@@ -315,7 +316,6 @@ public class MainView extends GridPane implements Initializable {
 
     @FXML
     private void viewCalculations(ActionEvent e) {
-        this.returnToRunwayViewButton.setVisible(true);
         Calculator calc = this.runwayView.getCalculator();
         if (calc.getAllBreakdowns().size() > 0) {
             this.breakdownView.setAvailableBreakdowns(calc.getAllBreakdowns());
@@ -337,91 +337,95 @@ public class MainView extends GridPane implements Initializable {
 
     @FXML
     private void returnToRunwayView(ActionEvent e) {
-        this.returnToRunwayViewButton.setVisible(false);
         changeView(runwayView);
     }
-    
-    private EventHandler<ActionEvent> imageExportValidateAction =
-            new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    final double currentScale = runwayView.getCurrentViewScale();
-                    runwayView.setCurrentViewScale(1);
-                    runwayView.redraw();
-                    
-                    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss");  
-                    LocalDateTime now = LocalDateTime.now();
-                    String currentTime = dtf.format(now);
-                    String viewName = runwayView.viewTitle.getText().replaceAll("\\s+","");
-                    
-                    FileChooser fileChooser = new FileChooser();
-                    fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PNG", "*.png"));
-                    String path = folderView.filePath.get();
-                    File file = new File(path + "\\" + viewName + "-" +currentTime + ".png");
-                    
-                    int width = (int) Math.round(runwayView.runwayCanvas.getWidth());
-                    int height = (int) Math.round(runwayView.runwayCanvas.getHeight());
-                    
-                    WritableImage image = new WritableImage(width, height);
-                    SnapshotParameters sp = new SnapshotParameters();
-                    try {
-                        ImageIO.write(SwingFXUtils.fromFXImage(runwayView.runwayCanvas.snapshot(sp, image), null), "png", file);
-                    } catch (IOException ex) {
-                        System.out.println("Failed to export runway view as an image.");
-                        ex.printStackTrace();
-                    }
-                    folderView.filePath.set("No directory selected");
-                    runwayView.setCurrentViewScale(currentScale);
-                    runwayView.redraw();
-                    changeView(runwayView);
-                    event.consume();
-                }
-            };
+
+    private EventHandler<ActionEvent> imageExportValidateAction = new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            final double currentScale = runwayView.getCurrentViewScale();
+            runwayView.setCurrentViewScale(1);
+            runwayView.redraw();
+
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss");
+            LocalDateTime now = LocalDateTime.now();
+            String currentTime = dtf.format(now);
+            String viewName = runwayView.viewTitle.getText().replaceAll("\\s+", "");
+
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PNG", "*.png"));
+            String path = folderView.filePath.get();
+            File file = new File(path + File.separator + viewName + "-" + currentTime + ".png");
+
+            int width = (int) Math.round(runwayView.runwayCanvas.getWidth());
+            int height = (int) Math.round(runwayView.runwayCanvas.getHeight());
+
+            WritableImage image = new WritableImage(width, height);
+            SnapshotParameters sp = new SnapshotParameters();
+            try {
+                ImageIO.write(SwingFXUtils.fromFXImage(runwayView.runwayCanvas.snapshot(sp, image),
+                                null), "png", file);
+            } catch (IOException ex) {
+                System.out.println("Failed to export runway view as an image.");
+                ex.printStackTrace();
+            }
+            folderView.filePath.set("No directory selected");
+            runwayView.setCurrentViewScale(currentScale);
+            runwayView.redraw();
+            changeView(runwayView);
+            event.consume();
+        }
+    };
 
     private EventHandler<ActionEvent> breakdownExportValidateAction =
-            new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    Calculator calc = runwayView.getCalculator();
-                    if (calc.getAllBreakdowns().size() > 0) {
-                        Map<LogicalRunway, String> breakdownMap = calc.getAllBreakdowns();
-                        String breakdowns = "";
-                        for (Map.Entry<LogicalRunway, String> entry : breakdownMap.entrySet()) {
-                            LogicalRunway key = entry.getKey();
-                            String value = entry.getValue();
-                            breakdowns = breakdowns +
-                                    "========================================";
-                            breakdowns = breakdowns + " " + key.getIdentifier() +
-                                                    " ========================================";
-                            breakdowns = breakdowns + "\n";
-                            breakdowns = breakdowns + value;
-                            breakdowns = breakdowns + "\n";
+                    new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent event) {
+                            Calculator calc = runwayView.getCalculator();
+                            if (calc.getAllBreakdowns().size() > 0) {
+                                Map<LogicalRunway, String> breakdownMap = calc.getAllBreakdowns();
+                                String breakdowns = "";
+                                for (Map.Entry<LogicalRunway, String> entry : breakdownMap
+                                                .entrySet()) {
+                                    LogicalRunway key = entry.getKey();
+                                    String value = entry.getValue();
+                                    breakdowns = breakdowns
+                                                    + "========================================";
+                                    breakdowns = breakdowns + " " + key.getIdentifier()
+                                                    + " ========================================";
+                                    breakdowns = breakdowns + "\n";
+                                    breakdowns = breakdowns + value;
+                                    breakdowns = breakdowns + "\n";
+                                }
+
+                                DateTimeFormatter dtf =
+                                                DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss");
+                                LocalDateTime now = LocalDateTime.now();
+                                String currentTime = dtf.format(now);
+
+                                String path = saveBreakdown.filePath.get();
+
+                                try (Writer writer = new BufferedWriter(new OutputStreamWriter(
+                                                new FileOutputStream(path + File.separator
+                                                                + "Calc_Breakdowns" + "-"
+                                                                + currentTime + ".txt"),
+                                                "utf-8"))) {
+                                    writer.write(breakdowns);
+                                } catch (UnsupportedEncodingException e) {
+                                    e.printStackTrace();
+                                } catch (FileNotFoundException e) {
+                                    e.printStackTrace();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+                            saveBreakdown.filePath.set("No directory selected");
+                            changeView(saveBreakdown);
+                            event.consume();
                         }
+                    };
 
-                        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss");
-                        LocalDateTime now = LocalDateTime.now();
-                        String currentTime = dtf.format(now);
-
-                        String path = saveBreakdown.filePath.get();
-
-                        try (Writer writer = new BufferedWriter(new OutputStreamWriter(
-                                new FileOutputStream(path + "\\" + "Calc_Breakdowns" + "-" + currentTime + ".txt"), "utf-8"))) {
-                            writer.write(breakdowns);
-                        } catch (UnsupportedEncodingException e) {
-                            e.printStackTrace();
-                        } catch (FileNotFoundException e) {
-                            e.printStackTrace();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    saveBreakdown.filePath.set("No directory selected");
-                    changeView(saveBreakdown);
-                    event.consume();
-                }
-            };
-    
     @FXML
     private void exportImage(ActionEvent e) {
         changeView(folderView);
@@ -473,13 +477,12 @@ public class MainView extends GridPane implements Initializable {
             if (this.currentView != splashScreen) {
                 loadAirportButton.setDisable(true);
                 createAirportButton.setDisable(true);
-            }
-            else {
+            } else {
                 loadAirportButton.setDisable(false);
                 createAirportButton.setDisable(false);
             }
 
-            if (this.currentView == breakdownView){
+            if (this.currentView == breakdownView) {
                 editAirportButton.setDisable(true);
                 loadObstacleButton.setDisable(true);
                 createObstacleButton.setDisable(true);
@@ -488,8 +491,7 @@ public class MainView extends GridPane implements Initializable {
                 exportBreakdownButton.setDisable(false);
                 toggleViewButton.setDisable(true);
                 exportImageButton.setDisable(true);
-            }
-            else {
+            } else {
                 // Hide every button
                 editAirportButton.setDisable(true);
                 loadObstacleButton.setDisable(true);
@@ -501,8 +503,7 @@ public class MainView extends GridPane implements Initializable {
                 exportImageButton.setDisable(true);
             }
             // Deal with runway view button
-            if (this.currentAirport == null || runwayView.currentObstacle == null
-                            || currentView == splashScreen) {
+            if (this.currentAirport == null || currentView == splashScreen) {
                 returnToRunwayViewButton.setDisable(true);
             } else {
                 returnToRunwayViewButton.setDisable(false);
@@ -513,4 +514,5 @@ public class MainView extends GridPane implements Initializable {
     public ScrollPane getScrollPane() {
         return scrollPane;
     }
+
 }

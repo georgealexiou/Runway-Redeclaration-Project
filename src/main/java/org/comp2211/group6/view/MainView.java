@@ -1,19 +1,20 @@
 package org.comp2211.group6.view;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import org.comp2211.group6.Model.Airport;
 import org.comp2211.group6.Model.ColourScheme;
+import org.comp2211.group6.Model.LogicalRunway;
 import org.comp2211.group6.Model.Obstacle;
 import org.comp2211.group6.Controller.Calculator;
 import javafx.event.ActionEvent;
@@ -58,6 +59,8 @@ public class MainView extends GridPane implements Initializable {
     @FXML
     private FolderView folderView;
     @FXML
+    private SaveBreakdown saveBreakdown;
+    @FXML
     public Scale u;
     @FXML
     private MenuItem returnToRunwayViewButton;
@@ -79,6 +82,8 @@ public class MainView extends GridPane implements Initializable {
     private MenuItem toggleViewButton;
     @FXML
     private MenuItem exportImageButton;
+    @FXML
+    private MenuItem exportBreakdownButton;
 
 
     @FXML
@@ -124,14 +129,22 @@ public class MainView extends GridPane implements Initializable {
                 }
             }
         });
-        
+
         folderView.cancelButton.addEventHandler(ActionEvent.ANY, new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 folderView.filePath.set("No directory selected");
                 changeView(runwayView);
             }
-        });        
+        });
+
+        saveBreakdown.cancelButton.addEventHandler(ActionEvent.ANY, new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                saveBreakdown.filePath.set("No directory selected");
+                changeView(breakdownView);
+            }
+        });
     }
     
 
@@ -302,6 +315,7 @@ public class MainView extends GridPane implements Initializable {
 
     @FXML
     private void viewCalculations(ActionEvent e) {
+        this.returnToRunwayViewButton.setVisible(true);
         Calculator calc = this.runwayView.getCalculator();
         if (calc.getAllBreakdowns().size() > 0) {
             this.breakdownView.setAvailableBreakdowns(calc.getAllBreakdowns());
@@ -363,11 +377,65 @@ public class MainView extends GridPane implements Initializable {
                     event.consume();
                 }
             };
+
+    private EventHandler<ActionEvent> breakdownExportValidateAction =
+            new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    Calculator calc = runwayView.getCalculator();
+                    if (calc.getAllBreakdowns().size() > 0) {
+                        Map<LogicalRunway, String> breakdownMap = calc.getAllBreakdowns();
+                        String breakdowns = "";
+                        for (Map.Entry<LogicalRunway, String> entry : breakdownMap.entrySet()) {
+                            LogicalRunway key = entry.getKey();
+                            String value = entry.getValue();
+                            breakdowns = breakdowns +
+                                    "========================================";
+                            breakdowns = breakdowns + " " + key.getIdentifier() +
+                                                    " ========================================";
+                            breakdowns = breakdowns + "\n";
+                            breakdowns = breakdowns + value;
+                            breakdowns = breakdowns + "\n";
+                        }
+
+                        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss");
+                        LocalDateTime now = LocalDateTime.now();
+                        String currentTime = dtf.format(now);
+
+                        String path = saveBreakdown.filePath.get();
+
+                        try (Writer writer = new BufferedWriter(new OutputStreamWriter(
+                                new FileOutputStream(path + "\\" + "Calc_Breakdowns" + "-" + currentTime + ".txt"), "utf-8"))) {
+                            writer.write(breakdowns);
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    saveBreakdown.filePath.set("No directory selected");
+                    changeView(saveBreakdown);
+                    event.consume();
+                }
+            };
     
     @FXML
     private void exportImage(ActionEvent e) {
         changeView(folderView);
         folderView.setValidator(imageExportValidateAction);
+    }
+
+    @FXML
+    private void exportBreakdown(ActionEvent e) {
+        changeView(saveBreakdown);
+        Calculator calc = this.runwayView.getCalculator();
+        if (calc.getAllBreakdowns().size() > 0) {
+            this.breakdownView.setAvailableBreakdowns(calc.getAllBreakdowns());
+        }
+        saveBreakdown.setValidator(breakdownExportValidateAction);
     }
 
     private void updateButtons() {
@@ -387,9 +455,11 @@ public class MainView extends GridPane implements Initializable {
                 if (runwayView.currentObstacle != null) {
                     editObstacleButton.setDisable(false);
                     viewCalculationsButton.setDisable(false);
+                    exportBreakdownButton.setDisable(false);
                 } else {
                     editObstacleButton.setDisable(true);
                     viewCalculationsButton.setDisable(true);
+                    exportBreakdownButton.setDisable(true);
                 }
             } else {
                 editAirportButton.setDisable(true);
@@ -403,18 +473,33 @@ public class MainView extends GridPane implements Initializable {
             if (this.currentView != splashScreen) {
                 loadAirportButton.setDisable(true);
                 createAirportButton.setDisable(true);
-            } else {
+            }
+            else {
                 loadAirportButton.setDisable(false);
                 createAirportButton.setDisable(false);
             }
-            // Hide every button
-            editAirportButton.setDisable(true);
-            loadObstacleButton.setDisable(true);
-            createObstacleButton.setDisable(true);
-            editObstacleButton.setDisable(true);
-            viewCalculationsButton.setDisable(true);
-            toggleViewButton.setDisable(true);
-            exportImageButton.setDisable(true);
+
+            if (this.currentView == breakdownView){
+                editAirportButton.setDisable(true);
+                loadObstacleButton.setDisable(true);
+                createObstacleButton.setDisable(true);
+                editObstacleButton.setDisable(true);
+                viewCalculationsButton.setDisable(true);
+                exportBreakdownButton.setDisable(false);
+                toggleViewButton.setDisable(true);
+                exportImageButton.setDisable(true);
+            }
+            else {
+                // Hide every button
+                editAirportButton.setDisable(true);
+                loadObstacleButton.setDisable(true);
+                createObstacleButton.setDisable(true);
+                editObstacleButton.setDisable(true);
+                viewCalculationsButton.setDisable(true);
+                exportBreakdownButton.setDisable(true);
+                toggleViewButton.setDisable(true);
+                exportImageButton.setDisable(true);
+            }
             // Deal with runway view button
             if (this.currentAirport == null || runwayView.currentObstacle == null
                             || currentView == splashScreen) {

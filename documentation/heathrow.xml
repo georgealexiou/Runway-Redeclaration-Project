@@ -22,4 +22,7 @@
              </logicalRunway>
 
     </runway>
+    <runway>
+        <name>Runway2</name>
+    </runway>
 </airport>

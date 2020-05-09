@@ -1,7 +1,7 @@
 package org.comp2211.group6.Model;
 
-import java.util.Set;
-import java.util.HashSet;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Airport {
 
@@ -32,6 +32,21 @@ public class Airport {
 
     public Set<Runway> getRunways() {
         return runways;
+    }
+
+    public ArrayList<String> getRunwayNames(){
+        return (ArrayList<String>) runways.stream().map(Runway::getName).collect(Collectors.toList());
+    }
+
+    public Runway getRunwayFromName (String name){
+        Iterator iter = runways.iterator();
+        while (iter.hasNext()){
+            Runway runway = (Runway) iter.next();
+            if(runway.getName().equals(name)){
+                return runway;
+            }
+        }
+        return null;
     }
 
     public String getName() {

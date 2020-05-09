@@ -3,19 +3,20 @@ package org.comp2211.group6.Model;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
  * A runway can have three logical runways at most, for example, 09L, 09C, 27R.
  */
-public class Runway {
+public class Runway implements Comparable {
 
     /**
      * Private Properties
      */
-    private final String name;
-    private Set<LogicalRunway> logicalRunways = new HashSet<LogicalRunway>();
+    private String name;
+    private List<LogicalRunway> logicalRunways = new ArrayList<LogicalRunway>();
     private Obstacle obstacle;
     private String identifier;
 
@@ -26,6 +27,8 @@ public class Runway {
         this.name = name;
         this.identifier = "";
     }
+
+    public Runway() {}
 
     public Obstacle getObstacle() {
         return obstacle;
@@ -42,8 +45,7 @@ public class Runway {
     public void addRunway(LogicalRunway runway) throws Exception {
         if (runway == null)
             throw new IllegalArgumentException(
-                    "Error. Invalid logical runway to be added to runway, cannot be null.");
-
+                            "Error. Invalid logical runway to be added to runway, cannot be null.");
         if (logicalRunways.size() < 3) {
             logicalRunways.add(runway);
 
@@ -53,15 +55,12 @@ public class Runway {
                 identifierBuilder.append(temp.getIdentifier());
             }
             this.identifier = identifierBuilder.toString();
-        }
-
-        else
+        } else
             throw new Exception(
-                            "Error. Logical runway cannot be added to this runway, which can have three logical runways at most.");
-
+                    "Error. Logical runway cannot be added to this runway, which can have three logical runways at most.");
     }
 
-    public Set<LogicalRunway> getLogicalRunways() {
+    public List<LogicalRunway> getLogicalRunways() {
         return logicalRunways;
     }
 
@@ -83,4 +82,9 @@ public class Runway {
     public String getIdentifier() {
         return identifier;
     }
+    @Override
+    public int compareTo(Object obj) {
+        return this.getName().compareTo(((Runway) obj).getName());
+    }
+
 }

@@ -20,7 +20,7 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 
-public class FolderView extends GridPane implements Initializable {
+public class SaveBreakdown extends GridPane implements Initializable {
 
     /*
      * View Components
@@ -41,9 +41,9 @@ public class FolderView extends GridPane implements Initializable {
 
     public SimpleStringProperty filePath = new SimpleStringProperty();
 
-    public FolderView() {
+    public SaveBreakdown() {
         loadFxml(getClass().getResource("/file_view.fxml"), this);
-        title.setText("Choose a directory to save the image of runway view");
+        title.setText("Choose a directory to save the calculations breakdown");
         filePath.set("No directory selected");
         validateButton.setText("Export");
     }

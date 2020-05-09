@@ -1,7 +1,9 @@
 package org.comp2211.group6.Model;
 
-import java.util.*;
 import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.*;
 
 public class Airport {
 
@@ -9,7 +11,7 @@ public class Airport {
      * Private Properties
      */
     private final String name;
-    private Set<Runway> runways = new HashSet<Runway>();
+    private List<Runway> runways = new ArrayList<Runway>();
 
     /**
      * Public Methods
@@ -19,9 +21,10 @@ public class Airport {
     }
 
     public void addRunway(Runway runway) {
-        if (runway != null)
+        if (runway != null) {
             runways.add(runway);
-        else
+            runways = runways.stream().sorted().collect(Collectors.toList());
+        } else
             throw new IllegalArgumentException(
                             "Error. Invalid runway to be added to airport, cannot be null.");
     }
@@ -30,7 +33,7 @@ public class Airport {
         runways.remove(runway);
     }
 
-    public Set<Runway> getRunways() {
+    public List<Runway> getRunways() {
         return runways;
     }
 

@@ -3,9 +3,11 @@ package org.comp2211.group6;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import org.comp2211.group6.Model.LogicalRunway;
 import org.comp2211.group6.Model.Obstacle;
@@ -135,9 +137,9 @@ public class RunwayTest {
         assertTrue("Runway should contain logical runway: ",
                         runway.getLogicalRunways().contains(logical3));
 
-        Set<LogicalRunway> logicalRunways =
-                        new HashSet<LogicalRunway>(Arrays.asList(logical1, logical2, logical3));
-        assertEquals("addRunway() Test Failed.", logicalRunways, runway.getLogicalRunways());
+        List<LogicalRunway> logicalRunways =
+                        new ArrayList<LogicalRunway>(Arrays.asList(logical1, logical2, logical3));
+        assertTrue("addRunway() Test Failed.", logicalRunways.equals(runway.getLogicalRunways()));
 
         if (logicalEx != null)
             runway.addRunway(logicalEx);

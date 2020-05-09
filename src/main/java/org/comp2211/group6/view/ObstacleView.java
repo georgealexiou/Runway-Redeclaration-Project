@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import org.comp2211.group6.Model.Obstacle;
 import javafx.beans.binding.BooleanBinding;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,7 +21,7 @@ public abstract class ObstacleView extends GridPane implements Initializable {
      * DATA
      */
 
-    protected Obstacle newObstacle;
+    protected SimpleObjectProperty<Obstacle> currentObstacle = new SimpleObjectProperty<Obstacle>();
     BooleanBinding disableBindings;
 
     /*

@@ -2,7 +2,6 @@ package org.comp2211.group6.view;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-import org.comp2211.group6.Model.Obstacle;
 
 public class EditAnObstacleView extends ObstacleView {
 
@@ -34,22 +33,18 @@ public class EditAnObstacleView extends ObstacleView {
                                                                                         .textProperty()
                                                                                         .isEmpty()))))));
         obstacleSaveButton.disableProperty().bind(disableBindings);
-    }
 
-    /*
-     * Fetch data of the current obstacle(selected item of Obstacle ComboBox) and fill in TextFields
-     */
-    public void loadCurrentObstacle(Obstacle currentObstacle) {
-        this.obstacleName.setText(currentObstacle.getName());
-        this.obstacleDescription.setText(currentObstacle.getDescription());
-        this.obstacleLength.setText(String.valueOf(currentObstacle.getLength()));
-        this.obstacleWidth.setText(String.valueOf(currentObstacle.getWidth()));
-        this.obstacleHeight.setText(String.valueOf(currentObstacle.getHeight()));
-        this.obstacleDistanceFromCentreLine
-                        .setText(String.valueOf(currentObstacle.getDistanceToCentreLine()));
-        this.obstacleDistanceFromLeft
-                        .setText(String.valueOf(currentObstacle.getDistanceFromLeft()));
-        this.obstacleDistanceFromRight
-                        .setText(String.valueOf(currentObstacle.getDistanceFromRight()));
+        currentObstacle.addListener((e, origVal, newVal) -> {
+            this.obstacleName.setText(newVal.getName());
+            this.obstacleDescription.setText(newVal.getDescription());
+            this.obstacleLength.setText(String.valueOf(newVal.getLength()));
+            this.obstacleWidth.setText(String.valueOf(newVal.getWidth()));
+            this.obstacleHeight.setText(String.valueOf(newVal.getHeight()));
+            this.obstacleDistanceFromCentreLine
+                            .setText(String.valueOf(newVal.getDistanceToCentreLine()));
+            this.obstacleDistanceFromLeft.setText(String.valueOf(newVal.getDistanceFromLeft()));
+            this.obstacleDistanceFromRight.setText(String.valueOf(newVal.getDistanceFromRight()));
+
+        });
     }
 }

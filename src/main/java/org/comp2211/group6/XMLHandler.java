@@ -64,7 +64,7 @@ public class XMLHandler {
             airportNameElem.appendChild(dom.createTextNode(airport.getName()));
             rootEle.appendChild(airportNameElem);
 
-            Set<Runway> runways = airport.getRunways();
+            List<Runway> runways = airport.getRunways();
 
             for (Runway runway : runways) {
                 Element runwayElem = dom.createElement("runway");

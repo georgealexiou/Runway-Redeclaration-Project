@@ -6,16 +6,15 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
-import java.util.stream.Collectors;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import org.comp2211.group6.Model.Airport;
 import org.comp2211.group6.Model.ColourScheme;
 import org.comp2211.group6.Model.LogicalRunway;
 import org.comp2211.group6.Model.Obstacle;
+import org.comp2211.group6.Model.Runway;
 import org.comp2211.group6.Controller.Calculator;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -24,15 +23,16 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.SnapshotParameters;
-import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.WritableImage;
 import javax.imageio.ImageIO;
-import javafx.scene.control.MenuItem;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import org.comp2211.group6.XMLHandler;
+import javafx.beans.property.SimpleListProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.FXCollections;
 import javafx.embed.swing.SwingFXUtils;
 
 public class MainView extends GridPane implements Initializable {
@@ -40,7 +40,7 @@ public class MainView extends GridPane implements Initializable {
     /*
      * FXML Components
      */
-    private Node currentView;
+    private SimpleObjectProperty<Node> currentView = new SimpleObjectProperty<Node>();
 
     @FXML
     private RunwayView runwayView;
@@ -98,8 +98,15 @@ public class MainView extends GridPane implements Initializable {
     /*
      * Properties
      */
-    private Airport currentAirport;
-    private List<Obstacle> obstacles = new ArrayList<Obstacle>();
+    private SimpleListProperty<Obstacle> obstacles = new SimpleListProperty<Obstacle>(
+                    FXCollections.observableArrayList(new ArrayList<Obstacle>()));
+    private SimpleObjectProperty<Airport> currentAirport = new SimpleObjectProperty<Airport>();
+    private SimpleObjectProperty<Runway> currentRunway = new SimpleObjectProperty<Runway>();
+    private SimpleObjectProperty<LogicalRunway> currentLogicalRunway =
+                    new SimpleObjectProperty<LogicalRunway>();
+    private SimpleObjectProperty<Obstacle> currentObstacle = new SimpleObjectProperty<Obstacle>();
+    private SimpleObjectProperty<Calculator> currentCalculator =
+                    new SimpleObjectProperty<Calculator>();
     private ColourScheme colourScheme = ColourScheme.getInstance();
 
     public MainView() {
@@ -113,6 +120,7 @@ public class MainView extends GridPane implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         changeView(splashScreen);
     }
 
@@ -146,47 +154,49 @@ public class MainView extends GridPane implements Initializable {
                                 changeView(breakdownView);
                             }
                         });
+
+        // Bind the properties to the relevant views
+        this.runwayView.airport.bindBidirectional(currentAirport);
+        this.runwayView.runway.bindBidirectional(currentRunway);
+        this.runwayView.currentObstacle.bindBidirectional(currentObstacle);
+        this.runwayView.currentLogicalRunway.bindBidirectional(currentLogicalRunway);
+        this.runwayView.allObstacles.bind(obstacles);
+        this.runwayView.calculator.bindBidirectional(currentCalculator);
+        this.breakdownView.calculator.bindBidirectional(currentCalculator);
+        this.breakdownView.currentLogicalRunway.bindBidirectional(currentLogicalRunway);
+        this.breakdownView.currentRunway.bindBidirectional(currentRunway);
+
+        // Handler updates
+        currentAirport.addListener((e, origVal, newVal) -> {
+            if (newVal != null) {
+                this.currentRunway.set(
+                                newVal.getRunways().stream().sorted().findFirst().orElse(null));
+                this.currentLogicalRunway.set(this.currentRunway.get().getLogicalRunways().stream()
+                                .sorted().findFirst().orElse(null));
+                this.currentObstacle.set(null);
+                // Change the view and update buttons
+                changeView(runwayView);
+                setupButtons();
+            }
+        });
+
+        // Button disable bindings
+        setupButtons();
     }
 
 
     private void changeView(Node newView) {
-        if (this.currentView != null) {
-            this.currentView.setVisible(false);
+        if (this.currentView.get() != null) {
+            this.currentView.get().setVisible(false);
         }
-        this.currentView = newView;
-        this.currentView.setVisible(true);
-        updateAirportFields();
+        this.currentView.set(newView);
+        this.currentView.get().setVisible(true);
     }
 
     @FXML
     private void invertColourScheme() {
         colourScheme.invertColourScheme();
     }
-
-    /*
-     * Set the airport currently displayed
-     */
-    private void setAirport(Airport airport) {
-        this.currentAirport = airport;
-        runwayView.setRunway(airport.getRunways().stream().findFirst().orElse(null));
-        changeView(runwayView);
-        updateButtons();
-    }
-
-    /*
-     * Updates the fields in the side panel
-     */
-    private void updateAirportFields() {
-        if (this.currentAirport != null) {
-            this.runwayView.currentAirportName.setText(this.currentAirport.getName());
-            this.runwayView.updateRunwayPicker(
-                            currentAirport.getRunways().stream().collect(Collectors.toList()));
-            this.runwayView.updateObstaclePicker(obstacles);
-        }
-        updateButtons();
-    }
-
-
 
     @FXML
     private void loadAirport(ActionEvent e) {
@@ -199,7 +209,7 @@ public class MainView extends GridPane implements Initializable {
         public void handle(ActionEvent event) {
             XMLHandler handler = new XMLHandler();
             Airport airport = handler.readAirportXML(fileView.filePath.get());
-            setAirport(airport);
+            currentAirport.set(airport);
             fileView.reset();
         }
     };
@@ -224,12 +234,13 @@ public class MainView extends GridPane implements Initializable {
         EventHandler<ActionEvent> saveButtonHandler = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                obstacles.add(obstacleView.getNewObstacle());
+                Obstacle newObstacle = obstacleView.getNewObstacle();
+                obstacles.add(newObstacle);
                 // If the current obstacle view is NOT the Create view, remove the original obstacle
                 // from the list.
                 if (!(obstacleView instanceof CreateAnObstacleView)) {
-                    obstacles.remove(runwayView.currentObstacle);
-                    runwayView.setObstacle(obstacleView.getNewObstacle());
+                    obstacles.remove(runwayView.currentObstacle.get());
+                    currentObstacle.set(newObstacle);
                 }
                 changeView(runwayView);
 
@@ -242,8 +253,7 @@ public class MainView extends GridPane implements Initializable {
                 obstacleView.obstacleDistanceFromLeft.clear();
                 obstacleView.obstacleDistanceFromRight.clear();
                 runwayView.strList.add(df.format(System.currentTimeMillis()) + ": Obstacle "
-                                + obstacles.get(obstacles.size() - 1).getName()
-                                + " successfully saved");
+                                + newObstacle.getName() + " successfully saved");
                 runwayView.notificationList.setItems(runwayView.strList);
                 event.consume();
             }
@@ -268,7 +278,7 @@ public class MainView extends GridPane implements Initializable {
                         public void handle(ActionEvent event) {
                             XMLHandler xml = new XMLHandler();
                             xml.saveObstacleToXML(fileView.filePath.get(),
-                                            runwayView.currentObstacle);
+                                            runwayView.currentObstacle.get());
                             event.consume();
                         }
                     };
@@ -306,7 +316,6 @@ public class MainView extends GridPane implements Initializable {
         if (runwayView.currentObstacle == null) {
             throw new NullPointerException("No obstacle can be edited.");
         } else {
-            editAnObstacleView.loadCurrentObstacle(runwayView.currentObstacle);
             editAnObstacleView.obstacleSaveButton
                             .setOnAction(obstacleSaveButtonAction(editAnObstacleView));
             loadAnObstacleView.obstacleExportButton.setOnAction(obstacleExportButtonAction);
@@ -316,22 +325,14 @@ public class MainView extends GridPane implements Initializable {
 
     @FXML
     private void viewCalculations(ActionEvent e) {
-        Calculator calc = this.runwayView.getCalculator();
-        if (calc.getAllBreakdowns().size() > 0) {
-            this.breakdownView.setAvailableBreakdowns(calc.getAllBreakdowns());
+        if (this.currentCalculator.get().getAllBreakdowns().size() > 0)
             changeView(breakdownView);
-        } else {
-            return;
-        }
     }
 
     @FXML
     private void toggleView(ActionEvent e) {
         // If the view is not a visualisation then do nothing - shouldn't be able to reach here as
         // the button will be unavailable
-        if (this.currentView != runwayView) {
-            return;
-        }
         runwayView.toggleRunwayView();
     }
 
@@ -381,9 +382,9 @@ public class MainView extends GridPane implements Initializable {
                     new EventHandler<ActionEvent>() {
                         @Override
                         public void handle(ActionEvent event) {
-                            Calculator calc = runwayView.getCalculator();
-                            if (calc.getAllBreakdowns().size() > 0) {
-                                Map<LogicalRunway, String> breakdownMap = calc.getAllBreakdowns();
+                            if (currentCalculator.get().getAllBreakdowns().size() > 0) {
+                                Map<LogicalRunway, String> breakdownMap =
+                                                currentCalculator.get().getAllBreakdowns();
                                 String breakdowns = "";
                                 for (Map.Entry<LogicalRunway, String> entry : breakdownMap
                                                 .entrySet()) {
@@ -434,81 +435,38 @@ public class MainView extends GridPane implements Initializable {
 
     @FXML
     private void exportBreakdown(ActionEvent e) {
-        changeView(saveBreakdown);
-        Calculator calc = this.runwayView.getCalculator();
-        if (calc.getAllBreakdowns().size() > 0) {
-            this.breakdownView.setAvailableBreakdowns(calc.getAllBreakdowns());
+        if (currentCalculator.get().getAllBreakdowns().size() > 0) {
+            saveBreakdown.setValidator(breakdownExportValidateAction);
+            changeView(saveBreakdown);
         }
-        saveBreakdown.setValidator(breakdownExportValidateAction);
     }
 
-    private void updateButtons() {
-        if (currentView == runwayView) {
-            // Load and Create Airport always available here
-            loadAirportButton.setDisable(false);
-            createAirportButton.setDisable(false);
-            exportImageButton.setDisable(false);
-            // Buttons you can press if an airport is loaded
-            if (this.currentAirport != null) {
-                editAirportButton.setDisable(false);
-                loadObstacleButton.setDisable(false);
-                createObstacleButton.setDisable(false);
-                toggleViewButton.setDisable(false);
-                exportImageButton.setDisable(false);
-                // Buttons you can press if an obstacle is also loaded
-                if (runwayView.currentObstacle != null) {
-                    editObstacleButton.setDisable(false);
-                    viewCalculationsButton.setDisable(false);
-                    exportBreakdownButton.setDisable(false);
-                } else {
-                    editObstacleButton.setDisable(true);
-                    viewCalculationsButton.setDisable(true);
-                    exportBreakdownButton.setDisable(true);
-                }
-            } else {
-                editAirportButton.setDisable(true);
-                loadObstacleButton.setDisable(true);
-                createObstacleButton.setDisable(true);
-                toggleViewButton.setDisable(true);
-                exportImageButton.setDisable(true);
-            }
-        } else {
-            // Deal with splash screen button
-            if (this.currentView != splashScreen) {
-                loadAirportButton.setDisable(true);
-                createAirportButton.setDisable(true);
-            } else {
-                loadAirportButton.setDisable(false);
-                createAirportButton.setDisable(false);
-            }
+    private void setupButtons() {
+        loadAirportButton.disableProperty().bind(currentView.isNotEqualTo(runwayView)
+                        .and(currentView.isNotEqualTo(splashScreen)));
+        createAirportButton.disableProperty().bind(currentView.isNotEqualTo(runwayView)
+                        .and(currentView.isNotEqualTo(splashScreen)));
+        exportImageButton.disableProperty().bind(currentView.isNotEqualTo(runwayView));
+        editAirportButton.disableProperty().bind(currentView.isEqualTo(breakdownView));
+        loadObstacleButton.disableProperty().bind(currentView.isEqualTo(breakdownView));
+        createObstacleButton.disableProperty().bind(currentView.isEqualTo(breakdownView));
+        editObstacleButton.disableProperty().bind(currentView.isEqualTo(breakdownView));
+        viewCalculationsButton.disableProperty().bind(currentView.isEqualTo(breakdownView));
+        exportBreakdownButton.disableProperty().bind(currentView.isEqualTo(breakdownView));
+        toggleViewButton.disableProperty().bind(currentView.isEqualTo(breakdownView));
+        exportImageButton.disableProperty().bind(currentView.isEqualTo(breakdownView));
+        returnToRunwayViewButton.disableProperty()
+                        .bind(currentAirport.isNull().or(currentView.isEqualTo(splashScreen)).or(currentView.isEqualTo(runwayView)));
 
-            if (this.currentView == breakdownView) {
-                editAirportButton.setDisable(true);
-                loadObstacleButton.setDisable(true);
-                createObstacleButton.setDisable(true);
-                editObstacleButton.setDisable(true);
-                viewCalculationsButton.setDisable(true);
-                exportBreakdownButton.setDisable(false);
-                toggleViewButton.setDisable(true);
-                exportImageButton.setDisable(true);
-            } else {
-                // Hide every button
-                editAirportButton.setDisable(true);
-                loadObstacleButton.setDisable(true);
-                createObstacleButton.setDisable(true);
-                editObstacleButton.setDisable(true);
-                viewCalculationsButton.setDisable(true);
-                exportBreakdownButton.setDisable(true);
-                toggleViewButton.setDisable(true);
-                exportImageButton.setDisable(true);
-            }
-            // Deal with runway view button
-            if (this.currentAirport == null || currentView == splashScreen) {
-                returnToRunwayViewButton.setDisable(true);
-            } else {
-                returnToRunwayViewButton.setDisable(false);
-            }
-        }
+        editAirportButton.disableProperty().bind(currentAirport.isNull());
+        loadObstacleButton.disableProperty().bind(currentAirport.isNull());
+        createObstacleButton.disableProperty().bind(currentAirport.isNull());
+        toggleViewButton.disableProperty().bind(currentAirport.isNull());
+        exportImageButton.disableProperty().bind(currentAirport.isNull());
+        editObstacleButton.disableProperty().bind(currentObstacle.isNull());
+        viewCalculationsButton.disableProperty().bind(currentObstacle.isNull());
+        exportBreakdownButton.disableProperty().bind(currentObstacle.isNull());
+
     }
 
     public ScrollPane getScrollPane() {

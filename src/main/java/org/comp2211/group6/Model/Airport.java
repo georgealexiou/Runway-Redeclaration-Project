@@ -1,7 +1,9 @@
 package org.comp2211.group6.Model;
 
 import java.util.Set;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 public class Airport {
 
@@ -9,7 +11,7 @@ public class Airport {
      * Private Properties
      */
     private final String name;
-    private Set<Runway> runways = new HashSet<Runway>();
+    private List<Runway> runways = new ArrayList<Runway>();
 
     /**
      * Public Methods
@@ -30,7 +32,7 @@ public class Airport {
         runways.remove(runway);
     }
 
-    public Set<Runway> getRunways() {
+    public List<Runway> getRunways() {
         return runways;
     }
 

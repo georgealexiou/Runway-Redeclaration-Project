@@ -1,19 +1,21 @@
 package org.comp2211.group6.Model;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 /**
  * A runway can have three logical runways at most, for example, 09L, 09C, 27R.
  */
-public class Runway {
+public class Runway implements Comparable {
 
     /**
      * Private Properties
      */
     private String name;
-    private Set<LogicalRunway> logicalRunways = new HashSet<LogicalRunway>();
+    private List<LogicalRunway> logicalRunways = new ArrayList<LogicalRunway>();
     private Obstacle obstacle;
 
     /**
@@ -57,8 +59,13 @@ public class Runway {
                             "Error. Invalid logical runway to be added to runway, cannot be null.");
     }
 
-    public Set<LogicalRunway> getLogicalRunways() {
+    public List<LogicalRunway> getLogicalRunways() {
         return logicalRunways;
+    }
+
+    @Override
+    public int compareTo(Object obj) {
+        return this.getName().compareTo(((Runway) obj).getName());
     }
 
 }

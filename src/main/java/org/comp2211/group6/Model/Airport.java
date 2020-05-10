@@ -33,6 +33,17 @@ public class Airport {
         runways.remove(runway);
     }
 
+    public Runway getRunway(String identifier){
+        Iterator<Runway> iter = runways.iterator();
+        while(iter.hasNext()){
+            Runway runway = iter.next();
+            if(runway.getIdentifier().equals(identifier))
+                return runway;
+        }
+
+        return null;
+    }
+
     public List<Runway> getRunways() {
         return runways;
     }
@@ -50,6 +61,27 @@ public class Airport {
             }
         }
         return null;
+    }
+
+    public Airport getNewInstance(String name){
+        if(name == null){
+            Airport airport = new Airport(this.name);
+            Iterator<Runway> iter = runways.iterator();
+            while (iter.hasNext()){
+                airport.addRunway(iter.next());
+            }
+
+            return airport;
+
+        } else {
+            Airport airport = new Airport(name);
+            Iterator<Runway> iter = runways.iterator();
+            while (iter.hasNext()){
+                airport.addRunway(iter.next());
+            }
+            return airport;
+        }
+
     }
 
     public String getName() {

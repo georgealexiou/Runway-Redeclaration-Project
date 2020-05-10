@@ -92,4 +92,5 @@ public class LogicalRunway implements Comparable {
                         : (this.getHeading() == ((LogicalRunway) obj).getHeading() ? 0 : 1));
     }
 
+
 }

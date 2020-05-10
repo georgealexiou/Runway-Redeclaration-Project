@@ -256,8 +256,23 @@ public class MainView extends GridPane implements Initializable {
     private void editAirport(ActionEvent e) {
         this.returnToRunwayViewButton.setVisible(true);
         airportConfigView.loadAirport(currentAirport.get());
+        airportConfigView.save.setOnAction(airportSaveButtonClicked(airportConfigView));
         changeView(airportConfigView);
     };
+
+    private EventHandler<ActionEvent> airportSaveButtonClicked(AirportConfigView airportConfigView) {
+        EventHandler<ActionEvent> saveButtonHandler = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                currentAirport.set(airportConfigView.getAirport().getNewInstance(airportConfigView.newName));
+                changeView(runwayView);
+                notifyUpdate("Airport", "Updated");
+                event.consume();
+            }
+        };
+
+        return saveButtonHandler;
+    }
 
     /*
      * listener for Save button in obstacle views. cater for different obstacle views(create, edit,

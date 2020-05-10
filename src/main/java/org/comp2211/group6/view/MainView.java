@@ -238,7 +238,7 @@ public class MainView extends GridPane implements Initializable {
         EventHandler<ActionEvent> saveButtonHandler = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                currentAirport.set(airportConfigView.getAirport());
+                currentAirport.set(airportConfigView.getAirport().getNewInstance());
                 changeView(runwayView);
                 event.consume();
             }

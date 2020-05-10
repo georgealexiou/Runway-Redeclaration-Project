@@ -229,11 +229,13 @@ public class RunwayView extends GridPane implements Initializable {
                 this.currentLogicalRunway.set(newVal.getLogicalRunways().stream().sorted()
                                 .findFirst().orElse(null));
                 this.redrawRunway();
+                runwayPicker.getSelectionModel().select(newVal);
             }
         });
         this.currentLogicalRunway.addListener((e, origVal, newVal) -> {
             if (newVal != null) {
                 this.redrawRunway();
+                logicalRunwayPicker.getSelectionModel().select(newVal);
             }
         });
         this.allObstacles.addListener((e, origVal, newVal) -> {
@@ -247,6 +249,7 @@ public class RunwayView extends GridPane implements Initializable {
                 Calculator calc = new Calculator(this.runway.get());
                 calc.recalculateRunwayParameters();
                 this.calculator.set(calc);
+                obstaclePicker.getSelectionModel().select(newVal);
             }
             this.redrawRunway();
         });

@@ -24,12 +24,12 @@
     <Scale fx:id="u" em="12.0" />
   </fx:define>
           <columnConstraints>
-              <ColumnConstraints halignment="LEFT" maxWidth="Infinity" minWidth="${u.em*15}" prefWidth="${u.em*15}">
+              <ColumnConstraints halignment="LEFT" maxWidth="Infinity" minWidth="${u.em*15}" prefWidth="${u.em*15}" hgrow="SOMETIMES">
               </ColumnConstraints>
               <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="Infinity" minWidth="${u.em*30}" prefWidth="${u.em*40}">
               </ColumnConstraints>
-      <ColumnConstraints halignment="RIGHT" maxWidth="Infinity" minWidth="10.0" prefWidth="100.0" />
-              <ColumnConstraints halignment="RIGHT" maxWidth="Infinity" minWidth="${u.em*15}" prefWidth="${u.em*15}">
+      <ColumnConstraints halignment="RIGHT" maxWidth="Infinity" minWidth="10.0" prefWidth="100.0" hgrow="SOMETIMES"></ColumnConstraints>
+              <ColumnConstraints halignment="RIGHT" maxWidth="Infinity" minWidth="${u.em*15}" prefWidth="${u.em*15}" hgrow="SOMETIMES">
               </ColumnConstraints>
           </columnConstraints>
           <rowConstraints>
@@ -144,19 +144,12 @@
               </HBox>
             </HBox>
           </VBox>
-   <BorderPane GridPane.columnIndex="3" GridPane.rowIndex="3">
-      <top>
-         <Label text="Notifications" BorderPane.alignment="CENTER">
-            <font>
-               <Font name="System Bold" size="16.0" />
-            </font></Label>
-      </top>
-      <center>
-         <ScrollPane BorderPane.alignment="CENTER">
-            <content>
-               <ListView fx:id="notificationList" />
-            </content>
-         </ScrollPane>
-      </center>
-   </BorderPane>
+          <VBox alignment="CENTER" GridPane.columnIndex="3" GridPane.columnSpan="1" GridPane.rowIndex="3">
+            <Label text="Notifications" BorderPane.alignment="CENTER">
+              <font>
+                <Font name="System Bold" size="16.0" />
+              </font>
+            </Label>
+            <ListView fx:id="notificationList" />
+          </VBox>
 </fx:root>

@@ -83,20 +83,28 @@ public class BreakdownView extends GridPane implements Initializable {
                         .bind(Bindings.size(valuesTable.getItems())
                                         .multiply(valuesTable.getFixedCellSize()).add(30));
         this.calculator.addListener((e, origVal, newVal) -> {
-            this.availableBreakdowns.clear();
-            this.availableBreakdowns.putAll(newVal.getAllBreakdowns());
-            this.breakdownDetails.setText(this.availableBreakdowns.get(currentLogicalRunway.get()));
+            if (newVal != null) {
+                this.availableBreakdowns.clear();
+                this.availableBreakdowns.putAll(newVal.getAllBreakdowns());
+                this.breakdownDetails
+                                .setText(this.availableBreakdowns.get(currentLogicalRunway.get()));
+            }
         });
         this.currentLogicalRunway.addListener((e, origVal, newVal) -> {
-            List<BreakdownComparison> comparisons = new ArrayList<BreakdownComparison>();
-            RunwayParameters original = newVal.getParameters();
-            RunwayParameters recalc = newVal.getRecalculatedParameters();
-            comparisons.add(new BreakdownComparison("TORA", original.getTORA(), recalc.getTORA()));
-            comparisons.add(new BreakdownComparison("TODA", original.getTODA(), recalc.getTODA()));
-            comparisons.add(new BreakdownComparison("ASDA", original.getASDA(), recalc.getASDA()));
-            comparisons.add(new BreakdownComparison("LDA", original.getLDA(), recalc.getLDA()));
-            this.breakdownDetails.setText(this.availableBreakdowns.get(newVal));
-            valuesTable.getItems().setAll(comparisons);
+            if (newVal != null) {
+                List<BreakdownComparison> comparisons = new ArrayList<BreakdownComparison>();
+                RunwayParameters original = newVal.getParameters();
+                RunwayParameters recalc = newVal.getRecalculatedParameters();
+                comparisons.add(new BreakdownComparison("TORA", original.getTORA(),
+                                recalc.getTORA()));
+                comparisons.add(new BreakdownComparison("TODA", original.getTODA(),
+                                recalc.getTODA()));
+                comparisons.add(new BreakdownComparison("ASDA", original.getASDA(),
+                                recalc.getASDA()));
+                comparisons.add(new BreakdownComparison("LDA", original.getLDA(), recalc.getLDA()));
+                this.breakdownDetails.setText(this.availableBreakdowns.get(newVal));
+                valuesTable.getItems().setAll(comparisons);
+            }
         });
         this.currentRunway.addListener((e, origVal, newVal) -> {
             if (newVal != null) {

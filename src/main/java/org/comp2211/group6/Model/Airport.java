@@ -63,6 +63,16 @@ public class Airport {
         return null;
     }
 
+    public Airport getNewInstance(){
+        Airport airport = new Airport(name);
+        Iterator<Runway> iter = runways.iterator();
+        while (iter.hasNext()){
+            airport.addRunway(iter.next());
+        }
+
+        return airport;
+    }
+
     public String getName() {
         return name;
     }

@@ -54,10 +54,10 @@ public class AirportConfigView extends GridPane implements Initializable {
     private ButtonBar optionsBar;
 
     @FXML
-    private Button save;
+    protected Button save;
 
     @FXML
-    private Button export;
+    protected Button export;
 
     @FXML
     private GridPane nameGrid;
@@ -121,11 +121,6 @@ public class AirportConfigView extends GridPane implements Initializable {
 
     }
 
-    @FXML
-    void saveClicked(MouseEvent event) {
-
-    }
-
 
     /*
     Logical Runway Buttons
@@ -142,7 +137,19 @@ public class AirportConfigView extends GridPane implements Initializable {
 
     @FXML
     void deleteLogicalRunwayClicked(MouseEvent event) {
+        if(currentLogicalRunway == null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "No logical runway selected", ButtonType.OK);
+            alert.showAndWait();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Delete " + currentRunway.getIdentifier() + " ?", ButtonType.YES, ButtonType.NO);
+            alert.showAndWait();
 
+            if (alert.getResult() == ButtonType.YES) {
+                airport.getRunway(currentRunway.getIdentifier()).getLogicalRunways().remove(currentLogicalRunway);
+                isChanged = true;
+                load();
+            }
+        }
     }
 
     /*
@@ -160,6 +167,19 @@ public class AirportConfigView extends GridPane implements Initializable {
 
     @FXML
     void deleteRunwayClicked(MouseEvent event) {
+        if(currentRunway == null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "No runway selected", ButtonType.OK);
+            alert.showAndWait();
+        }else{
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Delete " +currentRunway.getIdentifier() + " ?", ButtonType.YES, ButtonType.NO);
+            alert.showAndWait();
+
+            if (alert.getResult() == ButtonType.YES) {
+                airport.getRunways().remove(currentRunway);
+                isChanged = true;
+                load();
+            }
+        }
 
     }
 
@@ -167,7 +187,8 @@ public class AirportConfigView extends GridPane implements Initializable {
     /*
     Other Parameters
      */
-    private Airport airport;
+    public Airport airport;
+    private boolean isChanged;
 
     private Runway currentRunway;
 
@@ -177,42 +198,51 @@ public class AirportConfigView extends GridPane implements Initializable {
     /*
     Method used to load an airport into the view
      */
-    public void loadAirport(Airport airport){
-        this.airport = airport;
-        airportName.setText(airport.getName());
-
-        ObservableList runwayObservable = FXCollections.observableArrayList();
-        runwayObservable.addAll(airport.getRunwayNames());
-        selectRunway.setItems(runwayObservable);
-        selectRunway.valueProperty().addListener((e, oldVal, newVal) -> {
-            setRunway((String) newVal);
-        });
-        //selectRunway.getSelectionModel().selectFirst();
+    public void loadAirport(Airport airport) {
+        try {
+            this.airport = airport;
+            isChanged = false;
+            load();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
     /*
     Method used when changing runways
      */
     public void setRunway(String runwayID){
-        currentRunway = airport.getRunwayFromName(runwayID);
-        runwayName.setText(currentRunway.getName());
+        deleteRunway.setDisable(true);
 
-        ObservableList logicalRunwayObservable = FXCollections.observableArrayList();
+        if(airport.getRunwayFromName(runwayID) != null) {
+            currentRunway = airport.getRunwayFromName(runwayID);
+            runwayName.setText(currentRunway.getName());
+            deleteRunway.setDisable(false);
 
-        logicalRunwayObservable.addAll(currentRunway.getLogicalRunwayNames());
-        selectLogicalRunway.setItems(logicalRunwayObservable);
-        selectLogicalRunway.valueProperty().addListener((e, oldVal, newVal) -> {
-            setLogicalRunway((String) newVal);
-        });
-        //selectLogicalRunway.getSelectionModel().selectFirst();
-        if (currentRunway.getLogicalRunways().isEmpty()){
-            logicalRunwayName.setText("");
-            displacedThreshold.setText("");
-            tora.setText("");
-            toda.setText("");
-            toda.setText("");
-            toda.setText("");
+            if (currentRunway.getLogicalRunways().size() < 3)
+                addLogicalRunway.setDisable(false);
+
+            ObservableList logicalRunwayObservable = FXCollections.observableArrayList();
+
+            logicalRunwayObservable.addAll(currentRunway.getLogicalRunwayNames());
+            selectLogicalRunway.setItems(logicalRunwayObservable);
+            selectLogicalRunway.valueProperty().addListener((e, oldVal, newVal) -> {
+                deleteLogicalRunway.setDisable(false);
+                setLogicalRunway((String) newVal);
+            });
+
+            if (currentRunway.getLogicalRunways().isEmpty()){
+                logicalRunwayName.clear();
+                displacedThreshold.clear();
+                tora.clear();
+                toda.clear();
+                asda.clear();
+                lda.clear();
+            }
         }
+
+
+
 
     }
 
@@ -222,22 +252,62 @@ public class AirportConfigView extends GridPane implements Initializable {
         displacedThreshold.setText(currentLogicalRunway.getDisplacedThreshold() + "");
         tora.setText(currentLogicalRunway.getParameters().getTORA() + "");
         toda.setText(currentLogicalRunway.getParameters().getTODA() + "");
-        toda.setText(currentLogicalRunway.getParameters().getASDA() + "");
-        toda.setText(currentLogicalRunway.getParameters().getLDA() + "");
+        asda.setText(currentLogicalRunway.getParameters().getASDA() + "");
+        lda.setText(currentLogicalRunway.getParameters().getLDA() + "");
 
     }
 
+    private void load(){
+        currentRunway = null;
+        currentLogicalRunway = null;
 
+        airportName.setText(airport.getName());
+        runwayName.setText("");
+
+        ObservableList runwayObservable = FXCollections.observableArrayList();
+        runwayObservable.addAll(airport.getRunwayNames());
+        selectRunway.setItems(runwayObservable);
+
+        selectLogicalRunway.getItems().clear();
+        logicalRunwayName.clear();
+        displacedThreshold.clear();
+        tora.clear();
+        toda.clear();
+        asda.clear();
+        lda.clear();
+
+        selectRunway.valueProperty().addListener((e, oldVal, newVal) -> {
+            setRunway((String) newVal);
+        });
+
+        deleteRunway.setDisable(true);
+        if(airport.getRunways().size() < 3)
+            addRunway.setDisable(false);
+
+        if(isChanged){
+            save.setDisable(false);
+        }
+
+    }
 
     public AirportConfigView() {
         loadFxml(getClass().getResource("/airport_config.fxml"), this);
     }
 
+    public Airport getAirport(){
+        return airport;
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         save.setDisable(true);
+
         saveRunway.setDisable(true);
+        addRunway.setDisable(true);
+        deleteRunway.setDisable(true);
+
         saveLogicalRunway.setDisable(true);
+        addLogicalRunway.setDisable(true);
         deleteLogicalRunway.setDisable(true);
 
     }

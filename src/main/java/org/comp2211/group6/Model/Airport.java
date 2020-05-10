@@ -33,6 +33,17 @@ public class Airport {
         runways.remove(runway);
     }
 
+    public Runway getRunway(String identifier){
+        Iterator<Runway> iter = runways.iterator();
+        while(iter.hasNext()){
+            Runway runway = iter.next();
+            if(runway.getIdentifier().equals(identifier))
+                return runway;
+        }
+
+        return null;
+    }
+
     public List<Runway> getRunways() {
         return runways;
     }

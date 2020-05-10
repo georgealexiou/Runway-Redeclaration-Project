@@ -42,8 +42,8 @@
             </Text>
             <ButtonBar fx:id="optionsBar" prefHeight="60.0" prefWidth="662.0" GridPane.columnIndex="1">
               <buttons>
-                  <Button fx:id="save" mnemonicParsing="false" onMouseClicked="#saveClicked" text="Save" />
-                <Button fx:id="export" mnemonicParsing="false" onMouseClicked="#exportClicked" text="Export" />
+                  <Button fx:id="save" mnemonicParsing="false" text="Save" />
+                <Button fx:id="export" mnemonicParsing="false"  text="Export" />
               </buttons>
             </ButtonBar>
          </children>

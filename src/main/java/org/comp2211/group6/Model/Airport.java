@@ -63,14 +63,25 @@ public class Airport {
         return null;
     }
 
-    public Airport getNewInstance(){
-        Airport airport = new Airport(name);
-        Iterator<Runway> iter = runways.iterator();
-        while (iter.hasNext()){
-            airport.addRunway(iter.next());
+    public Airport getNewInstance(String name){
+        if(name == null){
+            Airport airport = new Airport(this.name);
+            Iterator<Runway> iter = runways.iterator();
+            while (iter.hasNext()){
+                airport.addRunway(iter.next());
+            }
+
+            return airport;
+
+        } else {
+            Airport airport = new Airport(name);
+            Iterator<Runway> iter = runways.iterator();
+            while (iter.hasNext()){
+                airport.addRunway(iter.next());
+            }
+            return airport;
         }
 
-        return airport;
     }
 
     public String getName() {

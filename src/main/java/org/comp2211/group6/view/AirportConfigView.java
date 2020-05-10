@@ -308,6 +308,7 @@ public class AirportConfigView extends GridPane implements Initializable {
     private LogicalRunway currentLogicalRunway;
     private boolean newLogical;
     private boolean newRunway;
+    public String newName;
 
     /*
     Method used to load an airport into the view
@@ -327,6 +328,11 @@ public class AirportConfigView extends GridPane implements Initializable {
         currentLogicalRunway = null;
 
         airportName.setText(airport.getName());
+        airportName.textProperty().addListener((e, oldVal, newVal) -> {
+            newName = airportName.getText();
+            save.setDisable(false);
+            isChanged = true;
+        });
         runwayName.clear();
 
         ObservableList runwayObservable = FXCollections.observableArrayList();

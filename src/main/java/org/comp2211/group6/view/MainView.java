@@ -61,8 +61,6 @@ public class MainView extends GridPane implements Initializable {
     @FXML
     private FolderView folderView;
     @FXML
-    private ObstacleView obstacleView;
-    @FXML
     private SaveBreakdown saveBreakdown;
     @FXML
     public Scale u;
@@ -260,11 +258,13 @@ public class MainView extends GridPane implements Initializable {
         changeView(airportConfigView);
     };
 
-    private EventHandler<ActionEvent> airportSaveButtonClicked(AirportConfigView airportConfigView) {
+    private EventHandler<ActionEvent> airportSaveButtonClicked(
+                    AirportConfigView airportConfigView) {
         EventHandler<ActionEvent> saveButtonHandler = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                currentAirport.set(airportConfigView.getAirport().getNewInstance(airportConfigView.newName));
+                currentAirport.set(airportConfigView.getAirport()
+                                .getNewInstance(airportConfigView.newName));
                 changeView(runwayView);
                 notifyUpdate("Airport", "Updated");
                 event.consume();
@@ -287,7 +287,7 @@ public class MainView extends GridPane implements Initializable {
                 obstacles.add(newObstacle);
                 // If the current obstacle view is NOT the Create view, remove the original obstacle
                 // from the list.
-                if (obstacleView instanceof EditAnObstacleView) {
+                if (obstacleView == editAnObstacleView) {
                     obstacles.remove(runwayView.currentObstacle.get());
                     currentObstacle.set(newObstacle);
                 }

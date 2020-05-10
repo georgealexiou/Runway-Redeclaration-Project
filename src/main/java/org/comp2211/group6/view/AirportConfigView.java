@@ -124,7 +124,7 @@ public class AirportConfigView extends GridPane implements Initializable {
 
 
     /*
-    Logical Runway Buttons
+     * Logical Runway Buttons
      */
     @FXML
     void addLogicalRunwayClicked(MouseEvent event) {
@@ -145,12 +145,14 @@ public class AirportConfigView extends GridPane implements Initializable {
         try {
             saveLogicalRunway.setDisable(true);
 
-            if(!newLogical) {
+            if (!newLogical) {
 
                 if (logicalRunwayName.getText().length() != 3)
-                    throw new Exception("Invalid name for logical runway. Must be of the form <0-36><L/R/C>");
+                    throw new Exception(
+                                    "Invalid name for logical runway. Must be of the form <0-36><L/R/C>");
 
-                airport.getRunwayFromName(currentRunway.getName()).getLogicalRunways().remove(currentLogicalRunway);
+                airport.getRunwayFromName(currentRunway.getName()).getLogicalRunways()
+                                .remove(currentLogicalRunway);
 
                 StringBuilder sb = new StringBuilder();
                 sb.append(logicalRunwayName.getText().charAt(0));
@@ -167,15 +169,17 @@ public class AirportConfigView extends GridPane implements Initializable {
                 runwayParameters.setASDA(Double.parseDouble(asda.getText()));
                 runwayParameters.setLDA(Double.parseDouble(lda.getText()));
 
-                LogicalRunway logicalRunway = new LogicalRunway(heading, displacedThreshold1, position, runwayParameters);
+                LogicalRunway logicalRunway = new LogicalRunway(heading, displacedThreshold1,
+                                position, runwayParameters);
                 airport.getRunwayFromName(currentRunway.getName()).addRunway(logicalRunway);
                 isChanged = true;
                 load();
             }
 
-            if (newLogical){
+            if (newLogical) {
                 if (logicalRunwayName.getText().length() != 3)
-                    throw new Exception("Invalid name for logical runway. Must be of the form <0-36><L/R/C>");
+                    throw new Exception(
+                                    "Invalid name for logical runway. Must be of the form <0-36><L/R/C>");
 
                 StringBuilder sb = new StringBuilder();
                 sb.append(logicalRunwayName.getText().charAt(0));
@@ -192,15 +196,17 @@ public class AirportConfigView extends GridPane implements Initializable {
                 runwayParameters.setASDA(Double.parseDouble(asda.getText()));
                 runwayParameters.setLDA(Double.parseDouble(lda.getText()));
 
-                LogicalRunway logicalRunway = new LogicalRunway(heading, displacedThreshold1, position, runwayParameters);
+                LogicalRunway logicalRunway = new LogicalRunway(heading, displacedThreshold1,
+                                position, runwayParameters);
                 airport.getRunwayFromName(currentRunway.getName()).addRunway(logicalRunway);
                 isChanged = true;
                 newLogical = false;
                 load();
             }
 
-        }catch (Exception e){
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Error: " + e.getMessage(), ButtonType.OK);
+        } catch (Exception e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Error: " + e.getMessage(),
+                            ButtonType.OK);
             alert.showAndWait();
         }
 
@@ -208,15 +214,19 @@ public class AirportConfigView extends GridPane implements Initializable {
 
     @FXML
     void deleteLogicalRunwayClicked(MouseEvent event) {
-        if(currentLogicalRunway == null) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "No logical runway selected", ButtonType.OK);
+        if (currentLogicalRunway == null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "No logical runway selected",
+                            ButtonType.OK);
             alert.showAndWait();
         } else {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Delete " + currentRunway.getIdentifier() + " ?", ButtonType.YES, ButtonType.NO);
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
+                            "Delete " + currentRunway.getIdentifier() + " ?", ButtonType.YES,
+                            ButtonType.NO);
             alert.showAndWait();
 
             if (alert.getResult() == ButtonType.YES) {
-                airport.getRunway(currentRunway.getIdentifier()).getLogicalRunways().remove(currentLogicalRunway);
+                airport.getRunway(currentRunway.getIdentifier()).getLogicalRunways()
+                                .remove(currentLogicalRunway);
                 isChanged = true;
                 load();
             }
@@ -224,7 +234,7 @@ public class AirportConfigView extends GridPane implements Initializable {
     }
 
     /*
-    Runway Buttons
+     * Runway Buttons
      */
     @FXML
     void addRunwayClicked(MouseEvent event) {
@@ -243,11 +253,11 @@ public class AirportConfigView extends GridPane implements Initializable {
 
     @FXML
     void saveRunwayClicked(MouseEvent event) {
-        try{
-            if(!newRunway){
+        try {
+            if (!newRunway) {
 
                 airport.getRunways().remove(currentRunway);
-                if (runwayName.getText().isEmpty()){
+                if (runwayName.getText().isEmpty()) {
                     throw new Exception("Please input a runway name");
                 }
 
@@ -256,8 +266,8 @@ public class AirportConfigView extends GridPane implements Initializable {
                 load();
             }
 
-            if(newRunway){
-                if (runwayName.getText().isEmpty()){
+            if (newRunway) {
+                if (runwayName.getText().isEmpty()) {
                     throw new Exception("Please input a runway name");
                 }
 
@@ -268,8 +278,9 @@ public class AirportConfigView extends GridPane implements Initializable {
 
 
 
-        }catch (Exception e){
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Error: " + e.getMessage(), ButtonType.OK);
+        } catch (Exception e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Error: " + e.getMessage(),
+                            ButtonType.OK);
             alert.showAndWait();
         }
 
@@ -279,11 +290,13 @@ public class AirportConfigView extends GridPane implements Initializable {
 
     @FXML
     void deleteRunwayClicked(MouseEvent event) {
-        if(currentRunway == null) {
+        if (currentRunway == null) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "No runway selected", ButtonType.OK);
             alert.showAndWait();
-        }else{
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Delete " +currentRunway.getIdentifier() + " ?", ButtonType.YES, ButtonType.NO);
+        } else {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
+                            "Delete " + currentRunway.getIdentifier() + " ?", ButtonType.YES,
+                            ButtonType.NO);
             alert.showAndWait();
 
             if (alert.getResult() == ButtonType.YES) {
@@ -297,7 +310,7 @@ public class AirportConfigView extends GridPane implements Initializable {
 
 
     /*
-    Other Parameters
+     * Other Parameters
      */
     public Airport airport;
     private boolean isChanged;
@@ -311,19 +324,19 @@ public class AirportConfigView extends GridPane implements Initializable {
     public String newName;
 
     /*
-    Method used to load an airport into the view
+     * Method used to load an airport into the view
      */
     public void loadAirport(Airport airport) {
         try {
             this.airport = airport;
             isChanged = false;
             load();
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private void load(){
+    private void load() {
         currentRunway = null;
         currentLogicalRunway = null;
 
@@ -355,10 +368,10 @@ public class AirportConfigView extends GridPane implements Initializable {
         });
 
         deleteRunway.setDisable(true);
-        if(airport.getRunways().size() < 3)
+        if (airport.getRunways().size() < 3)
             addRunway.setDisable(false);
 
-        if(isChanged){
+        if (isChanged) {
             save.setDisable(false);
         }
 
@@ -368,12 +381,12 @@ public class AirportConfigView extends GridPane implements Initializable {
     }
 
     /*
-    Method used when changing runways
+     * Method used when changing runways
      */
-    public void setRunway(String runwayID){
+    public void setRunway(String runwayID) {
         deleteRunway.setDisable(true);
 
-        if(airport.getRunwayFromName(runwayID) != null) {
+        if (airport.getRunwayFromName(runwayID) != null) {
             currentRunway = airport.getRunwayFromName(runwayID);
             runwayName.setText(currentRunway.getName());
             runwayName.textProperty().addListener((e, oldVal, newVal) -> {
@@ -400,7 +413,7 @@ public class AirportConfigView extends GridPane implements Initializable {
             if (currentRunway.getLogicalRunways().size() < 3)
                 addLogicalRunway.setDisable(false);
 
-            if (currentRunway.getLogicalRunways().isEmpty()){
+            if (currentRunway.getLogicalRunways().isEmpty()) {
                 logicalRunwayName.clear();
                 displacedThreshold.clear();
                 tora.clear();
@@ -409,13 +422,9 @@ public class AirportConfigView extends GridPane implements Initializable {
                 lda.clear();
             }
         }
-
-
-
-
     }
 
-    public void setLogicalRunway(String logicalRunwayID){
+    public void setLogicalRunway(String logicalRunwayID) {
         currentLogicalRunway = currentRunway.getLogicalRunwayFromName(logicalRunwayID);
         logicalRunwayName.setText(currentLogicalRunway.getIdentifier());
         displacedThreshold.setText(currentLogicalRunway.getDisplacedThreshold() + "");
@@ -423,7 +432,6 @@ public class AirportConfigView extends GridPane implements Initializable {
         toda.setText(currentLogicalRunway.getParameters().getTODA() + "");
         asda.setText(currentLogicalRunway.getParameters().getASDA() + "");
         lda.setText(currentLogicalRunway.getParameters().getLDA() + "");
-
         ChangeListener<String> listener = ((observable, oldValue, newValue) -> {
             saveLogicalRunway.setDisable(false);
         });
@@ -434,16 +442,13 @@ public class AirportConfigView extends GridPane implements Initializable {
         toda.textProperty().addListener(listener);
         asda.textProperty().addListener(listener);
         lda.textProperty().addListener(listener);
-
     }
-
-
 
     public AirportConfigView() {
         loadFxml(getClass().getResource("/airport_config.fxml"), this);
     }
 
-    public Airport getAirport(){
+    public Airport getAirport() {
         return airport;
     }
 

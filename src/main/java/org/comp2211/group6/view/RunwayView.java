@@ -466,22 +466,19 @@ public class RunwayView extends GridPane implements Initializable {
         this.totalLength = 0;
         this.obstacleLeft = 0;
         double addToObstaceLeft = 0;
-        Iterator<LogicalRunway> lrs = this.runway.get().getLogicalRunways().iterator();
-        while (lrs.hasNext()) {
-            LogicalRunway lr = lrs.next();
-            double clearway = calculateClearway(lr);
-            double stopway = calculateClearway(lr);
-            if (lr.getHeading() <= 18) { // On left so set right stopway and clearway
-                this.rightClearway = clearway > this.rightClearway ? clearway : this.rightClearway;
-                this.rightStopway = stopway > this.rightStopway ? stopway : this.rightStopway;
-                addToObstaceLeft = lr.getDisplacedThreshold();
-            } else {
-                this.leftClearway = clearway > this.leftStopway ? clearway : this.leftClearway;
-                this.leftStopway = stopway > this.leftStopway ? stopway : this.leftStopway;
-            }
-            if (lr.getParameters().getTORA() > this.runwayLength) {
-                this.runwayLength = lr.getParameters().getTORA();
-            }
+        LogicalRunway lr = currentLogicalRunway.get();
+        double clearway = calculateClearway(lr);
+        double stopway = calculateClearway(lr);
+        if (lr.getHeading() <= 18) { // On left so set right stopway and clearway
+            this.rightClearway = clearway > this.rightClearway ? clearway : this.rightClearway;
+            this.rightStopway = stopway > this.rightStopway ? stopway : this.rightStopway;
+            addToObstaceLeft = lr.getDisplacedThreshold();
+        } else {
+            this.leftClearway = clearway > this.leftStopway ? clearway : this.leftClearway;
+            this.leftStopway = stopway > this.leftStopway ? stopway : this.leftStopway;
+        }
+        if (lr.getParameters().getTORA() > this.runwayLength) {
+            this.runwayLength = lr.getParameters().getTORA();
         }
         this.leftOffset =
                         padding + Math.max(stripEnd, Math.max(this.leftClearway, this.leftStopway));
@@ -530,32 +527,50 @@ public class RunwayView extends GridPane implements Initializable {
 
     private void drawTopDownObstacle(GraphicsContext gc) {
         gc.setFill(colours.getObstacleColour());
-        double startX = scale(obstacleLeft + currentObstacle.get().distanceFromLeftThreshold,
-                        runwayCanvas.getWidth());
+        double x;
+        if (currentLogicalRunway.get().getHeading() <= 18) {
+            x = scale(leftOffset, runwayCanvas.getWidth());
+            x = x + scale(currentLogicalRunway.get().getDisplacedThreshold()
+                            + currentObstacle.get().distanceFromLeftThreshold,
+                            runwayCanvas.getWidth());
+        } else {
+            x = scale(leftOffset + runwayLength, runwayCanvas.getWidth());
+            x = x - scale(currentObstacle.get().distanceFromRightThreshold,
+                            runwayCanvas.getWidth());
+        }
         double y = runwayCanvas.getHeight() / 2 - currentObstacle.get().distanceToCentreLine
                         - currentObstacle.get().getWidth() / 2;
-        gc.fillRect(startX - 5, y, 10, currentObstacle.get().getWidth());
-        drawArrow(gc, startX, runwayCanvas.getHeight() / 2 + (runwayArrowPadding) * 8, startX,
-                        y + 5, colours.getTextColour());
+        gc.fillRect(x - 5, y, 10, currentObstacle.get().getWidth());
+        drawArrow(gc, x, runwayCanvas.getHeight() / 2 + (runwayArrowPadding) * 8, x, y + 5,
+                        colours.getTextColour());
         gc.setTextAlign(TextAlignment.CENTER);
-        gc.fillText(currentObstacle.get().getName(), startX,
+        gc.fillText(currentObstacle.get().getName(), x,
                         runwayCanvas.getHeight() / 2 + (runwayArrowPadding) * 8 + 10);
     }
 
     private void drawSideOnObstacle(GraphicsContext gc) {
         gc.setFill(colours.getObstacleColour());
-        double startX = scale(obstacleLeft + currentObstacle.get().distanceFromLeftThreshold,
-                        runwayCanvas.getWidth());
+        double x;
+        if (currentLogicalRunway.get().getHeading() <= 18) {
+            x = scale(leftOffset, runwayCanvas.getWidth());
+            x = x + scale(currentLogicalRunway.get().getDisplacedThreshold()
+                            + currentObstacle.get().distanceFromLeftThreshold,
+                            runwayCanvas.getWidth());
+        } else {
+            x = scale(leftOffset + runwayLength, runwayCanvas.getWidth());
+            x = x - scale(currentObstacle.get().distanceFromRightThreshold,
+                            runwayCanvas.getWidth());
+        }
         double y = runwayCanvas.getHeight() / 2 - runwayWidth / 2;
-        double xs[] = {startX - 5, startX, startX + 5};
+        double xs[] = {x - 5, x, x + 5};
         double ys[] = {y, y - 2 * currentObstacle.get().getHeight(), y};
         gc.fillPolygon(xs, ys, 3);
         gc.setFill(colours.getTextColour());
         gc.setStroke(colours.getTextColour());
-        gc.strokeLine(startX, runwayCanvas.getHeight() / 2 + (runwayArrowPadding) * 8, startX,
+        gc.strokeLine(x, runwayCanvas.getHeight() / 2 + (runwayArrowPadding) * 8, x,
                         y - 2 * currentObstacle.get().getHeight() + 5);
         gc.setTextAlign(TextAlignment.CENTER);
-        gc.fillText(currentObstacle.get().getName(), startX,
+        gc.fillText(currentObstacle.get().getName(), x,
                         runwayCanvas.getHeight() / 2 + (runwayArrowPadding) * 8 + 10);
     }
 
@@ -720,10 +735,11 @@ public class RunwayView extends GridPane implements Initializable {
                 endX = startX + (mult * scale(asda, runwayCanvas.getWidth()));
                 drawDistanceArrow(gc, startX, endX, (runwayArrowPadding) * pos++, original,
                                 colours.getTextColour(), asdaLabel);
-                startX += scale(currentLogicalRunway.get().getDisplacedThreshold() * mult,
-                                runwayCanvas.getWidth());
-                endX = startX + (mult * scale(lda, runwayCanvas.getWidth()));
-                drawDistanceArrow(gc, startX, endX, (runwayArrowPadding) * pos, original,
+                double ldaStartX = startX
+                                + scale(currentLogicalRunway.get().getDisplacedThreshold() * mult,
+                                                runwayCanvas.getWidth());
+                endX = ldaStartX + (mult * scale(lda, runwayCanvas.getWidth()));
+                drawDistanceArrow(gc, ldaStartX, endX, (runwayArrowPadding) * pos, original,
                                 colours.getTextColour(), ldaLabel);
                 // Draw the strip end and resa for the landing component
                 double landingStartX = endX;
@@ -780,9 +796,8 @@ public class RunwayView extends GridPane implements Initializable {
                 startX = endX - scale(mult * tora, runwayCanvas.getWidth());
                 drawDistanceArrow(gc, startX, endX, (runwayArrowPadding) * pos++, original,
                                 colours.getTextColour(), toraLabel);
-                endX = originalStartx + scale(
-                                (mult * runwayLength
-                                                + calculateClearway(currentLogicalRunway.get())),
+                endX = originalStartx + scale((mult
+                                * (runwayLength + calculateClearway(currentLogicalRunway.get()))),
                                 runwayCanvas.getWidth());
                 startX = endX - scale(mult * toda, runwayCanvas.getWidth());
                 drawDistanceArrow(gc, startX, endX, (runwayArrowPadding) * pos++, original,

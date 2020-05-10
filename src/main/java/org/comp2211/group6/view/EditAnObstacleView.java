@@ -35,15 +35,19 @@ public class EditAnObstacleView extends ObstacleView {
         obstacleSaveButton.disableProperty().bind(disableBindings);
 
         currentObstacle.addListener((e, origVal, newVal) -> {
-            this.obstacleName.setText(newVal.getName());
-            this.obstacleDescription.setText(newVal.getDescription());
-            this.obstacleLength.setText(String.valueOf(newVal.getLength()));
-            this.obstacleWidth.setText(String.valueOf(newVal.getWidth()));
-            this.obstacleHeight.setText(String.valueOf(newVal.getHeight()));
-            this.obstacleDistanceFromCentreLine
-                            .setText(String.valueOf(newVal.getDistanceToCentreLine()));
-            this.obstacleDistanceFromLeft.setText(String.valueOf(newVal.getDistanceFromLeft()));
-            this.obstacleDistanceFromRight.setText(String.valueOf(newVal.getDistanceFromRight()));
+            if (newVal != null) {
+                this.obstacleName.setText(newVal.getName());
+                this.obstacleDescription.setText(newVal.getDescription());
+                this.obstacleLength.setText(String.valueOf(newVal.getLength()));
+                this.obstacleWidth.setText(String.valueOf(newVal.getWidth()));
+                this.obstacleHeight.setText(String.valueOf(newVal.getHeight()));
+                this.obstacleDistanceFromCentreLine
+                                .setText(String.valueOf(newVal.getDistanceToCentreLine()));
+                this.obstacleDistanceFromLeft.setText(String.valueOf(newVal.getDistanceFromLeft()));
+                this.obstacleDistanceFromRight
+                                .setText(String.valueOf(newVal.getDistanceFromRight()));
+            }
+
 
         });
     }

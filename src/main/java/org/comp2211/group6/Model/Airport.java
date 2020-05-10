@@ -33,11 +33,11 @@ public class Airport {
         runways.remove(runway);
     }
 
-    public Runway getRunway(String identifier){
+    public Runway getRunway(String identifier) {
         Iterator<Runway> iter = runways.iterator();
-        while(iter.hasNext()){
+        while (iter.hasNext()) {
             Runway runway = iter.next();
-            if(runway.getIdentifier().equals(identifier))
+            if (runway.getIdentifier().equals(identifier))
                 return runway;
         }
 
@@ -48,26 +48,27 @@ public class Airport {
         return runways;
     }
 
-    public ArrayList<String> getRunwayNames(){
-        return (ArrayList<String>) runways.stream().map(Runway::getName).collect(Collectors.toList());
+    public ArrayList<String> getRunwayNames() {
+        return (ArrayList<String>) runways.stream().map(Runway::getName)
+                        .collect(Collectors.toList());
     }
 
-    public Runway getRunwayFromName (String name){
+    public Runway getRunwayFromName(String name) {
         Iterator iter = runways.iterator();
-        while (iter.hasNext()){
+        while (iter.hasNext()) {
             Runway runway = (Runway) iter.next();
-            if(runway.getName().equals(name)){
+            if (runway.getName().equals(name)) {
                 return runway;
             }
         }
         return null;
     }
 
-    public Airport getNewInstance(String name){
-        if(name == null){
+    public Airport getNewInstance(String name) {
+        if (name == null) {
             Airport airport = new Airport(this.name);
             Iterator<Runway> iter = runways.iterator();
-            while (iter.hasNext()){
+            while (iter.hasNext()) {
                 airport.addRunway(iter.next());
             }
 
@@ -76,7 +77,7 @@ public class Airport {
         } else {
             Airport airport = new Airport(name);
             Iterator<Runway> iter = runways.iterator();
-            while (iter.hasNext()){
+            while (iter.hasNext()) {
                 airport.addRunway(iter.next());
             }
             return airport;

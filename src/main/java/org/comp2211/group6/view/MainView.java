@@ -438,7 +438,7 @@ public class MainView extends GridPane implements Initializable {
                 }
 
                 saveBreakdown.filePath.set("No directory selected");
-                changeView(saveBreakdown);
+                changeView(runwayView);
                 event.consume();
             }
         };

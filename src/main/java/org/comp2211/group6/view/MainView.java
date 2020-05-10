@@ -8,6 +8,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.ResourceBundle;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.ListChangeListener;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import org.comp2211.group6.Model.Airport;
@@ -259,7 +262,6 @@ public class MainView extends GridPane implements Initializable {
                 obstacleView.obstacleDistanceFromRight.clear();
                 event.consume();
 
-                notifyUpdate("Obstacle", "saved");
             }
         };
 
@@ -325,6 +327,7 @@ public class MainView extends GridPane implements Initializable {
             .setOnAction(obstacleSaveButtonAction(createAnObstacleView));
         loadAnObstacleView.obstacleExportButton.setOnAction(obstacleExportButtonAction);
         changeView(createAnObstacleView);
+        notifyUpdate("Obstacle", "created");
     }
 
     @FXML
@@ -336,6 +339,7 @@ public class MainView extends GridPane implements Initializable {
                 .setOnAction(obstacleSaveButtonAction(editAnObstacleView));
             loadAnObstacleView.obstacleExportButton.setOnAction(obstacleExportButtonAction);
             changeView(editAnObstacleView);
+            notifyUpdate("Obstacle", "edited");
         }
     }
 
@@ -440,6 +444,7 @@ public class MainView extends GridPane implements Initializable {
                 saveBreakdown.filePath.set("No directory selected");
                 changeView(runwayView);
                 event.consume();
+                notifyUpdate("Calculations","exported");
             }
         };
 

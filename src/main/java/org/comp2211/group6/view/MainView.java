@@ -59,6 +59,8 @@ public class MainView extends GridPane implements Initializable {
     @FXML
     private FolderView folderView;
     @FXML
+    private ObstacleView obstacleView;
+    @FXML
     private SaveBreakdown saveBreakdown;
     @FXML
     public Scale u;
@@ -93,20 +95,19 @@ public class MainView extends GridPane implements Initializable {
     @FXML
     private ScrollPane scrollPane;
 
-    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     /*
      * Properties
      */
     private SimpleListProperty<Obstacle> obstacles = new SimpleListProperty<Obstacle>(
-                    FXCollections.observableArrayList(new ArrayList<Obstacle>()));
+        FXCollections.observableArrayList(new ArrayList<Obstacle>()));
     private SimpleObjectProperty<Airport> currentAirport = new SimpleObjectProperty<Airport>();
     private SimpleObjectProperty<Runway> currentRunway = new SimpleObjectProperty<Runway>();
     private SimpleObjectProperty<LogicalRunway> currentLogicalRunway =
-                    new SimpleObjectProperty<LogicalRunway>();
+        new SimpleObjectProperty<LogicalRunway>();
     private SimpleObjectProperty<Obstacle> currentObstacle = new SimpleObjectProperty<Obstacle>();
     private SimpleObjectProperty<Calculator> currentCalculator =
-                    new SimpleObjectProperty<Calculator>();
+        new SimpleObjectProperty<Calculator>();
     private ColourScheme colourScheme = ColourScheme.getInstance();
 
     public MainView() {
@@ -147,13 +148,13 @@ public class MainView extends GridPane implements Initializable {
         });
 
         saveBreakdown.cancelButton.addEventHandler(ActionEvent.ANY,
-                        new EventHandler<ActionEvent>() {
-                            @Override
-                            public void handle(ActionEvent event) {
-                                saveBreakdown.filePath.set("No directory selected");
-                                changeView(breakdownView);
-                            }
-                        });
+            new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    saveBreakdown.filePath.set("No directory selected");
+                    changeView(breakdownView);
+                }
+            });
 
         // Bind the properties to the relevant views
         this.runwayView.airport.bindBidirectional(currentAirport);
@@ -170,15 +171,16 @@ public class MainView extends GridPane implements Initializable {
         currentAirport.addListener((e, origVal, newVal) -> {
             if (newVal != null) {
                 this.currentRunway.set(
-                                newVal.getRunways().stream().sorted().findFirst().orElse(null));
+                    newVal.getRunways().stream().sorted().findFirst().orElse(null));
                 this.currentLogicalRunway.set(this.currentRunway.get().getLogicalRunways().stream()
-                                .sorted().findFirst().orElse(null));
+                    .sorted().findFirst().orElse(null));
                 this.currentObstacle.set(null);
                 // Change the view and update buttons
                 changeView(runwayView);
                 setupButtons();
             }
         });
+
 
         // Button disable bindings
         setupButtons();
@@ -211,6 +213,7 @@ public class MainView extends GridPane implements Initializable {
             Airport airport = handler.readAirportXML(fileView.filePath.get());
             currentAirport.set(airport);
             fileView.reset();
+            notifyUpdate("Airport", "loaded");
         }
     };
 
@@ -230,7 +233,7 @@ public class MainView extends GridPane implements Initializable {
     /*
      * listener for Save button in obstacle views. cater for different obstacle views(create, edit,
      * load)
-     * 
+     *
      */
     private EventHandler<ActionEvent> obstacleSaveButtonAction(ObstacleView obstacleView) {
         EventHandler<ActionEvent> saveButtonHandler = new EventHandler<ActionEvent>() {
@@ -254,15 +257,23 @@ public class MainView extends GridPane implements Initializable {
                 obstacleView.obstacleDistanceFromCentreLine.clear();
                 obstacleView.obstacleDistanceFromLeft.clear();
                 obstacleView.obstacleDistanceFromRight.clear();
-                runwayView.strList.add(df.format(System.currentTimeMillis()) + ": Obstacle "
-                                + newObstacle.getName() + " successfully saved");
-                runwayView.notificationList.setItems(runwayView.strList);
                 event.consume();
+
+                notifyUpdate("Obstacle", "saved");
             }
         };
 
         return saveButtonHandler;
     }
+
+    private void notifyUpdate(String type,String action){
+        StringBuffer message = new StringBuffer();
+        message.append(type).append(" ").append("successfully ").append(action);
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        runwayView.strList.add(df.format(System.currentTimeMillis())+": "+message.toString());
+        runwayView.notificationList.setItems(runwayView.strList);
+    }
+
 
     private EventHandler<ActionEvent> obstacleExportButtonAction = new EventHandler<ActionEvent>() {
         @Override
@@ -275,15 +286,17 @@ public class MainView extends GridPane implements Initializable {
         }
     };
     private EventHandler<ActionEvent> obstacleExportValidateAction =
-                    new EventHandler<ActionEvent>() {
-                        @Override
-                        public void handle(ActionEvent event) {
-                            XMLHandler xml = new XMLHandler();
-                            xml.saveObstacleToXML(fileView.filePath.get(),
-                                            runwayView.currentObstacle.get());
-                            event.consume();
-                        }
-                    };
+        new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                XMLHandler xml = new XMLHandler();
+                xml.saveObstacleToXML(fileView.filePath.get(),
+                    runwayView.currentObstacle.get());
+                changeView(runwayView);
+                event.consume();
+                notifyUpdate("Obstacle", "exported");
+            }
+        };
 
     @FXML
     private void loadObstacle(ActionEvent e) {
@@ -298,17 +311,18 @@ public class MainView extends GridPane implements Initializable {
             XMLHandler xml = new XMLHandler();
             loadAnObstacleView.loadPredefinedObstacle(xml.readObstacleXML(fileView.filePath.get()));
             loadAnObstacleView.obstacleSaveButton
-                            .setOnAction(obstacleSaveButtonAction(loadAnObstacleView));
+                .setOnAction(obstacleSaveButtonAction(loadAnObstacleView));
             loadAnObstacleView.obstacleExportButton.setOnAction(obstacleExportButtonAction);
             changeView(loadAnObstacleView);
             fileView.reset();
+            notifyUpdate("Obstacle", "loaded");
         }
     };
 
     @FXML
     private void createObstacle(ActionEvent e) {
         createAnObstacleView.obstacleSaveButton
-                        .setOnAction(obstacleSaveButtonAction(createAnObstacleView));
+            .setOnAction(obstacleSaveButtonAction(createAnObstacleView));
         loadAnObstacleView.obstacleExportButton.setOnAction(obstacleExportButtonAction);
         changeView(createAnObstacleView);
     }
@@ -319,7 +333,7 @@ public class MainView extends GridPane implements Initializable {
             throw new NullPointerException("No obstacle can be edited.");
         } else {
             editAnObstacleView.obstacleSaveButton
-                            .setOnAction(obstacleSaveButtonAction(editAnObstacleView));
+                .setOnAction(obstacleSaveButtonAction(editAnObstacleView));
             loadAnObstacleView.obstacleExportButton.setOnAction(obstacleExportButtonAction);
             changeView(editAnObstacleView);
         }
@@ -367,7 +381,7 @@ public class MainView extends GridPane implements Initializable {
             SnapshotParameters sp = new SnapshotParameters();
             try {
                 ImageIO.write(SwingFXUtils.fromFXImage(runwayView.runwayCanvas.snapshot(sp, image),
-                                null), "png", file);
+                    null), "png", file);
             } catch (IOException ex) {
                 System.out.println("Failed to export runway view as an image.");
                 ex.printStackTrace();
@@ -381,53 +395,53 @@ public class MainView extends GridPane implements Initializable {
     };
 
     private EventHandler<ActionEvent> breakdownExportValidateAction =
-                    new EventHandler<ActionEvent>() {
-                        @Override
-                        public void handle(ActionEvent event) {
-                            if (currentCalculator.get().getAllBreakdowns().size() > 0) {
-                                Map<LogicalRunway, String> breakdownMap =
-                                                currentCalculator.get().getAllBreakdowns();
-                                String breakdowns = "";
-                                for (Map.Entry<LogicalRunway, String> entry : breakdownMap
-                                                .entrySet()) {
-                                    LogicalRunway key = entry.getKey();
-                                    String value = entry.getValue();
-                                    breakdowns = breakdowns
-                                                    + "========================================";
-                                    breakdowns = breakdowns + " " + key.getIdentifier()
-                                                    + " ========================================";
-                                    breakdowns = breakdowns + "\n";
-                                    breakdowns = breakdowns + value;
-                                    breakdowns = breakdowns + "\n";
-                                }
+        new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if (currentCalculator.get().getAllBreakdowns().size() > 0) {
+                    Map<LogicalRunway, String> breakdownMap =
+                        currentCalculator.get().getAllBreakdowns();
+                    String breakdowns = "";
+                    for (Map.Entry<LogicalRunway, String> entry : breakdownMap
+                        .entrySet()) {
+                        LogicalRunway key = entry.getKey();
+                        String value = entry.getValue();
+                        breakdowns = breakdowns
+                            + "========================================";
+                        breakdowns = breakdowns + " " + key.getIdentifier()
+                            + " ========================================";
+                        breakdowns = breakdowns + "\n";
+                        breakdowns = breakdowns + value;
+                        breakdowns = breakdowns + "\n";
+                    }
 
-                                DateTimeFormatter dtf =
-                                                DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss");
-                                LocalDateTime now = LocalDateTime.now();
-                                String currentTime = dtf.format(now);
+                    DateTimeFormatter dtf =
+                        DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss");
+                    LocalDateTime now = LocalDateTime.now();
+                    String currentTime = dtf.format(now);
 
-                                String path = saveBreakdown.filePath.get();
+                    String path = saveBreakdown.filePath.get();
 
-                                try (Writer writer = new BufferedWriter(new OutputStreamWriter(
-                                                new FileOutputStream(path + File.separator
-                                                                + "Calc_Breakdowns" + "-"
-                                                                + currentTime + ".txt"),
-                                                "utf-8"))) {
-                                    writer.write(breakdowns);
-                                } catch (UnsupportedEncodingException e) {
-                                    e.printStackTrace();
-                                } catch (FileNotFoundException e) {
-                                    e.printStackTrace();
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-                            }
+                    try (Writer writer = new BufferedWriter(new OutputStreamWriter(
+                        new FileOutputStream(path + File.separator
+                            + "Calc_Breakdowns" + "-"
+                            + currentTime + ".txt"),
+                        "utf-8"))) {
+                        writer.write(breakdowns);
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
 
-                            saveBreakdown.filePath.set("No directory selected");
-                            changeView(saveBreakdown);
-                            event.consume();
-                        }
-                    };
+                saveBreakdown.filePath.set("No directory selected");
+                changeView(saveBreakdown);
+                event.consume();
+            }
+        };
 
     @FXML
     private void exportImage(ActionEvent e) {
@@ -445,9 +459,9 @@ public class MainView extends GridPane implements Initializable {
 
     private void setupButtons() {
         loadAirportButton.disableProperty().bind(currentView.isNotEqualTo(runwayView)
-                        .and(currentView.isNotEqualTo(splashScreen)));
+            .and(currentView.isNotEqualTo(splashScreen)));
         createAirportButton.disableProperty().bind(currentView.isNotEqualTo(runwayView)
-                        .and(currentView.isNotEqualTo(splashScreen)));
+            .and(currentView.isNotEqualTo(splashScreen)));
         exportImageButton.disableProperty().bind(currentView.isNotEqualTo(runwayView));
         editAirportButton.disableProperty().bind(currentView.isEqualTo(breakdownView));
         loadObstacleButton.disableProperty().bind(currentView.isEqualTo(breakdownView));
@@ -458,8 +472,8 @@ public class MainView extends GridPane implements Initializable {
         toggleViewButton.disableProperty().bind(currentView.isEqualTo(breakdownView));
         exportImageButton.disableProperty().bind(currentView.isEqualTo(breakdownView));
         returnToRunwayViewButton.disableProperty()
-                        .bind(currentAirport.isNull().or(currentView.isEqualTo(splashScreen))
-                                        .or(currentView.isEqualTo(runwayView)));
+            .bind(currentAirport.isNull().or(currentView.isEqualTo(splashScreen))
+                .or(currentView.isEqualTo(runwayView)));
 
         editAirportButton.disableProperty().bind(currentAirport.isNull());
         loadObstacleButton.disableProperty().bind(currentAirport.isNull());
@@ -470,10 +484,6 @@ public class MainView extends GridPane implements Initializable {
         viewCalculationsButton.disableProperty().bind(currentObstacle.isNull());
         exportBreakdownButton.disableProperty().bind(currentObstacle.isNull());
 
-    }
-
-    public ScrollPane getScrollPane() {
-        return scrollPane;
     }
 
 }

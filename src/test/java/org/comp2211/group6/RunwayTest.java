@@ -36,6 +36,7 @@ public class RunwayTest {
                     "Error. Logical runway cannot be added to this runway, which can have three logical runways at most.";
     private static String errorMsg2 =
                     "Error. Invalid logical runway to be added to runway, cannot be null.";
+    private static String errorMsg3 = "Invalid name for logical runway - must be unique";
 
     public RunwayTest(String name, Obstacle obstacle, LogicalRunway logical1,
                     LogicalRunway logical2, LogicalRunway logical3, LogicalRunway logicalEx,
@@ -60,7 +61,7 @@ public class RunwayTest {
                                         new LogicalRunway(9, 111, 'L', params),
                                         new LogicalRunway(27, 111, 'R', params),
                                         new LogicalRunway(9, 111, 'C', params),
-                                        new LogicalRunway(27, 111, 'C', params), errorMsg1},
+                                        new LogicalRunway(27, 111, 'C', params), errorMsg3},
                         {"Runway1", new Obstacle("Obs1", "A350", 566, 267, 2356, 256, 168, 444),
                                         new LogicalRunway(9, 111, 'L', params),
                                         new LogicalRunway(27, 111, 'R', params),

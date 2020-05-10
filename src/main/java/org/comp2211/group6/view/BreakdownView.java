@@ -116,7 +116,6 @@ public class BreakdownView extends GridPane implements Initializable {
     private void setupBreakdownPicker(ObservableList<LogicalRunway> data) {
         // Update the values
         breakdownPicker.setItems(data);
-        breakdownPicker.getSelectionModel().selectFirst();
         // Re-create the event listener and string coverter
         breakdownPicker.valueProperty().addListener((obs, oldVal, newVal) -> {
             this.currentLogicalRunway.set(newVal);
@@ -136,8 +135,8 @@ public class BreakdownView extends GridPane implements Initializable {
                                 .orElse(null);
             }
         });
-        // Update the current logical runway
-        currentLogicalRunway.set(breakdownPicker.getValue());
+
+        breakdownPicker.getSelectionModel().selectFirst();
     }
 
     private static void loadFxml(URL fxmlFile, Object rootController) {

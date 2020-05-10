@@ -52,8 +52,8 @@ public class Runway implements Comparable {
             String name = iterator.next();
             int head = Integer.parseInt(name.charAt(0) + name.charAt(1) + "");
             char pos = name.charAt(2);
-            if (head == runway.getHeading() || pos == runway.getPosition())
-                throw new Exception("Invalid name for logical runway");
+            if (pos == runway.getPosition())
+                throw new Exception("Invalid name for logical runway - must be unique");
         }
 
         if (logicalRunways.size() < 3) {

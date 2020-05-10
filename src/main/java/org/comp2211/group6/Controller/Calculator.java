@@ -4,10 +4,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
+import org.comp2211.group6.Model.Breakdown;
 import org.comp2211.group6.Model.LogicalRunway;
 import org.comp2211.group6.Model.Obstacle;
 import org.comp2211.group6.Model.Runway;
+import org.comp2211.group6.Model.RunwayParameters;
 
 
 
@@ -52,6 +53,7 @@ public class Calculator {
                         || Math.abs(obstacle.distanceToCentreLine) > CentreLine) {
             while (iterator.hasNext()) {
                 LogicalRunway logicalRunway = iterator.next();
+                logicalRunway.setRecalculatedParameters(new RunwayParameters());
                 logicalRunway.getRecalculatedParameters()
                                 .setTORA(logicalRunway.getParameters().getTORA());
                 logicalRunway.getRecalculatedParameters()
@@ -77,6 +79,8 @@ public class Calculator {
      * @param logicalRunway The logical runway whose parameters are going to be recalculated
      */
     private void recalculate(LogicalRunway logicalRunway) {
+        logicalRunway.setRecalculatedParameters(new RunwayParameters());
+        logicalRunway.breakdown = new Breakdown();
         if (logicalRunway.getHeading() <= 18) {
             if (obstacle.getDistanceFromLeft() < obstacle.getDistanceFromRight()) { // left side
                 landingOver(logicalRunway, obstacle.getDistanceFromLeft());
@@ -132,6 +136,7 @@ public class Calculator {
         logicalRunway.breakdown.setResa(RESA);
         logicalRunway.breakdown.setStripEnd(StripEnd);
         logicalRunway.breakdown.setThresholdDistance(thresholdDistance);
+        logicalRunway.breakdown.setDirection(true);
     }
 
     /**
@@ -163,7 +168,6 @@ public class Calculator {
         logicalRunway.breakdown.setThresholdDistance(thresholdDistance);
         logicalRunway.breakdown.setStopway(stopway);
         logicalRunway.breakdown.setClearway(clearway);
-
         logicalRunway.breakdown.setDirection(false);
     }
 
@@ -184,10 +188,10 @@ public class Calculator {
         logicalRunway.getRecalculatedParameters().setTORA(RTORA);
         logicalRunway.getRecalculatedParameters().setASDA(RASDA);
         logicalRunway.getRecalculatedParameters().setTODA(RTODA);
-
         logicalRunway.breakdown.setObstacleHeight(obstacle.getHeight());
         logicalRunway.breakdown.setSlopeCalculation(obstacle.getHeight() * 50);
         logicalRunway.breakdown.setStripEnd(StripEnd);
+        logicalRunway.breakdown.setDirection(true);
     }
 
     public Map<LogicalRunway, String> getAllBreakdowns() {

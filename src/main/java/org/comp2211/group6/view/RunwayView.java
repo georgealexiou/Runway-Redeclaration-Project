@@ -224,6 +224,7 @@ public class RunwayView extends GridPane implements Initializable {
         });
         this.runway.addListener((e, origVal, newVal) -> {
             if (newVal != null) {
+                newVal.setObstacle(null);
                 this.setupLogicalRunwayPicker(
                                 FXCollections.observableArrayList(newVal.getLogicalRunways()));
                 this.currentLogicalRunway.set(newVal.getLogicalRunways().stream().sorted()
@@ -234,22 +235,27 @@ public class RunwayView extends GridPane implements Initializable {
         });
         this.currentLogicalRunway.addListener((e, origVal, newVal) -> {
             if (newVal != null) {
-                this.redrawRunway();
                 logicalRunwayPicker.getSelectionModel().select(newVal);
+                this.redrawRunway();
             }
         });
         this.allObstacles.addListener((e, origVal, newVal) -> {
             if (newVal.size() > 0) {
                 updateObstaclePicker(newVal);
+            } else {
+                obstaclePicker.setPromptText("No Obstacles Loaded");
             }
         });
         this.currentObstacle.addListener((e, origVal, newVal) -> {
             if (newVal != null) {
                 this.runway.get().setObstacle(newVal);
-                Calculator calc = new Calculator(this.runway.get());
-                calc.recalculateRunwayParameters();
-                this.calculator.set(calc);
+                this.calculator.set(new Calculator(this.runway.get()));
+                this.calculator.get().recalculateRunwayParameters();
                 obstaclePicker.getSelectionModel().select(newVal);
+            } else {
+                this.calculator.set(null);
+                this.runway.get().setObstacle(null);
+                obstaclePicker.getSelectionModel().clearSelection();
             }
             this.redrawRunway();
         });
@@ -262,9 +268,7 @@ public class RunwayView extends GridPane implements Initializable {
      */
     private void setupLogicalRunwayPicker(ObservableList<LogicalRunway> data) {
         // Update the values
-        currentLogicalRunway.set(null);
         logicalRunwayPicker.setItems(data);
-        logicalRunwayPicker.getSelectionModel().selectFirst();
         // Re-create the event listener and string coverter
         logicalRunwayPicker.valueProperty().addListener((obs, oldVal, newVal) -> {
             this.currentLogicalRunway.set(newVal);
@@ -284,17 +288,16 @@ public class RunwayView extends GridPane implements Initializable {
                                 .orElse(null);
             }
         });
-        // Update the current logical runway
-        currentLogicalRunway.set(logicalRunwayPicker.getValue());
+
+        logicalRunwayPicker.getSelectionModel().selectFirst();
     }
 
     public void updateRunwayPicker(List<Runway> runways) {
         runwayPicker.setItems(FXCollections.observableArrayList(runways));
-        runwayPicker.getSelectionModel().selectFirst();
         runwayPicker.valueProperty().addListener((e, oldVal, newVal) -> {
             runway.set(newVal);
             // Clear current obstacle
-            obstaclePicker.getSelectionModel().clearSelection();
+            currentObstacle.set(null);
         });
         runwayPicker.setConverter(new StringConverter<Runway>() {
             @Override
@@ -311,13 +314,19 @@ public class RunwayView extends GridPane implements Initializable {
             }
         });
 
+        runwayPicker.getSelectionModel().selectFirst();
     }
 
     public void updateObstaclePicker(List<Obstacle> obstacles) {
+        obstaclePicker.setPromptText("No Obstacle Selected");
         obstaclePicker.setItems(FXCollections.observableArrayList(obstacles));
-        obstaclePicker.getSelectionModel().selectFirst();
+        if (!obstacles.contains(currentObstacle.get())) {
+            obstaclePicker.getSelectionModel().clearSelection();
+        }
         obstaclePicker.valueProperty().addListener((e, oldVal, newVal) -> {
-            this.currentObstacle.set(newVal);
+            if (newVal != null) {
+                this.currentObstacle.set(newVal);
+            }
         });
         obstaclePicker.setConverter(new StringConverter<Obstacle>() {
             @Override
@@ -578,20 +587,25 @@ public class RunwayView extends GridPane implements Initializable {
      * @param over Is this a landing over or towards situation
      */
     private void drawSlope(GraphicsContext gc) {
-        boolean over = this.currentLogicalRunway.get().breakdown.getDirection();
+        boolean towards = this.currentLogicalRunway.get().breakdown.getDirection();
         double startY, endY, startX, endX;
-        if (over) {
-            startY = runwayCanvas.getHeight() / 2 - runwayWidth / 2;
-            endY = startY - 2 * currentObstacle.get().getHeight();
-            endX = scale(obstacleLeft + currentObstacle.get().distanceFromLeftThreshold,
+        if (currentLogicalRunway.get().getHeading() <= 18) {
+            startX = scale(leftOffset + currentLogicalRunway.get().getDisplacedThreshold()
+                            + currentObstacle.get().distanceFromLeftThreshold,
+                            runwayCanvas.getWidth());
+            endX = startX + scale(50 * currentObstacle.get().getHeight(), runwayCanvas.getWidth());
+        } else {
+            endX = scale(leftOffset + runwayLength
+                            - currentObstacle.get().distanceFromRightThreshold,
                             runwayCanvas.getWidth());
             startX = endX + scale(50 * currentObstacle.get().getHeight(), runwayCanvas.getWidth());
+        }
+        if (towards) {
+            startY = runwayCanvas.getHeight() / 2 - runwayWidth / 2;
+            endY = startY - 2 * currentObstacle.get().getHeight();
         } else {
             endY = runwayCanvas.getHeight() / 2 - runwayWidth / 2;
             startY = endY - 2 * currentObstacle.get().getHeight();
-            startX = scale(obstacleLeft + currentObstacle.get().distanceFromLeftThreshold,
-                            runwayCanvas.getWidth());
-            endX = startX + scale(50 * currentObstacle.get().getHeight(), runwayCanvas.getWidth());
         }
         drawArrow(gc, startX, startY, endX, endY, this.colours.getSlopeCalculationColour());
     }

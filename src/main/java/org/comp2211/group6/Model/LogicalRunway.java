@@ -12,7 +12,7 @@ public class LogicalRunway implements Comparable {
     private RunwayParameters originalParameters;
     private RunwayParameters recalculatedParameters;
 
-    public final Breakdown breakdown;
+    public Breakdown breakdown;
 
     /*
      *

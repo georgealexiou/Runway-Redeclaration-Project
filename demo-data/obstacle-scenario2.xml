@@ -5,6 +5,6 @@
     <width>15</width>
     <height>25</height>
     <distanceToCentreLine>-20</distanceToCentreLine>
-    <distanceFromLeftThreshold>-2853</distanceFromLeftThreshold>
+    <distanceFromLeftThreshold>2853</distanceFromLeftThreshold>
     <distanceFromRightThreshold>500</distanceFromRightThreshold>
 </obstacle>

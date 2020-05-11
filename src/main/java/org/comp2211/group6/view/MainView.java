@@ -35,6 +35,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import org.comp2211.group6.XMLHandler;
+
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -246,7 +247,6 @@ public class MainView extends GridPane implements Initializable {
             	currentAirport.set(airport);
             }else {
             	notifyUpdate("Airport", "loaded", false);
-            	currentAirport.set(airport);
             }
             fileView.reset();
             changeView(runwayView);
@@ -622,7 +622,7 @@ public class MainView extends GridPane implements Initializable {
     }
 
     private void setupButtons() {
-        loadAirportButton.disableProperty().bind(currentView.isNotEqualTo(runwayView)
+    	loadAirportButton.disableProperty().bind(currentView.isNotEqualTo(runwayView)
                         .and(currentView.isNotEqualTo(splashScreen)));
         createAirportButton.disableProperty().bind(currentView.isNotEqualTo(runwayView)
                         .and(currentView.isNotEqualTo(splashScreen)));

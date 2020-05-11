@@ -109,6 +109,14 @@ public class RunwayView extends GridPane implements Initializable {
     @FXML
     private Rectangle resaKey;
     @FXML
+    private Rectangle stopwayKey;
+    @FXML
+    private Rectangle clearwayKey;
+    @FXML
+    private Rectangle dtKey;
+    @FXML
+    private Rectangle currentThresholdKey;
+    @FXML
     protected ListView notificationList;
 
     protected ObservableList<String> strList = FXCollections.observableArrayList();
@@ -214,9 +222,16 @@ public class RunwayView extends GridPane implements Initializable {
             }
         });
         blastDistanceKey.fillProperty().bind(this.colours.getBlastDistanceColourProperty());
+        slopeCalcKey.fillProperty().bind(this.colours.getSlopeCalculationColourProperty());
         stripEndKey.fillProperty().bind(this.colours.getStripEndColourProperty());
         resaKey.fillProperty().bind(this.colours.getResaColourProperty());
+        stopwayKey.fillProperty().bind(this.colours.getStopwayColourProperty());
+        clearwayKey.fillProperty().bind(this.colours.getClearwayColourProperty());
+        dtKey.fillProperty().bind(this.colours.getDisplacedThresholdColourProperty());
+        currentThresholdKey.fillProperty()
+                        .bind(this.colours.getHighlightedThresholdBackgroundColourProperty());
         runwayDirectionArrow.fillProperty().bind(colours.getTextColourProperty());
+
 
         this.airport.addListener((e, origVal, newVal) -> {
             this.updateRunwayPicker(newVal.getRunways());

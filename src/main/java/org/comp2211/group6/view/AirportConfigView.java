@@ -137,6 +137,7 @@ public class AirportConfigView extends GridPane implements Initializable {
         newLogical = true;
         saveLogicalRunway.setDisable(false);
         selectLogicalRunway.getSelectionModel().clearSelection();
+        setEditableLogicalRunway(false);
 
     }
 
@@ -238,6 +239,7 @@ public class AirportConfigView extends GridPane implements Initializable {
      */
     @FXML
     void addRunwayClicked(MouseEvent event) {
+        System.out.println("DSDS");
         runwayName.clear();
         logicalRunwayName.clear();
         displacedThreshold.clear();
@@ -246,13 +248,16 @@ public class AirportConfigView extends GridPane implements Initializable {
         asda.clear();
         lda.clear();
         newRunway = true;
-        saveRunway.setDisable(false);
         selectRunway.getSelectionModel().clearSelection();
+        setEditableRunway(true);
         selectLogicalRunway.getSelectionModel().clearSelection();
+        setEditableLogicalRunway(false);
+        saveRunway.setDisable(false);
     }
 
     @FXML
     void saveRunwayClicked(MouseEvent event) {
+        setEditableRunway(false);
         try {
             if (!newRunway) {
 
@@ -274,16 +279,19 @@ public class AirportConfigView extends GridPane implements Initializable {
                 Runway runway = new Runway(runwayName.getText());
                 airport.getRunways().add(runway);
                 newRunway = false;
+                load();
             }
 
 
 
         } catch (Exception e) {
+            setEditableRunway(true);
             Alert alert = new Alert(Alert.AlertType.ERROR, "Error: " + e.getMessage(),
                             ButtonType.OK);
             alert.showAndWait();
         }
 
+        save.setDisable(false);
         load();
     }
 
@@ -322,6 +330,7 @@ public class AirportConfigView extends GridPane implements Initializable {
     private boolean newLogical;
     private boolean newRunway;
     public String newName;
+    public boolean newAirport = false;
 
     /*
      * Method used to load an airport into the view
@@ -336,14 +345,34 @@ public class AirportConfigView extends GridPane implements Initializable {
         }
     }
 
+    public void newAirport() {
+        try {
+            this.airport = new Airport("");
+            isChanged = false;
+            newAirport = true;
+            load();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private void load() {
+        setEditableRunway(false);
+        setEditableLogicalRunway(false);
         currentRunway = null;
         currentLogicalRunway = null;
 
-        airportName.setText(airport.getName());
+        if(newName != null)
+            airportName.setText(newName);
+        else if (newAirport)
+            airportName.clear();
+        else
+            airportName.setText(airport.getName());
+
         airportName.textProperty().addListener((e, oldVal, newVal) -> {
             newName = airportName.getText();
             save.setDisable(false);
+            System.out.println(newName);
             isChanged = true;
         });
         runwayName.clear();
@@ -363,6 +392,8 @@ public class AirportConfigView extends GridPane implements Initializable {
         selectRunway.valueProperty().addListener((e, oldVal, newVal) -> {
             saveRunway.setDisable(true);
             saveLogicalRunway.setDisable(true);
+            setEditableRunway(true);
+
             newLogical = false;
             setRunway((String) newVal);
         });
@@ -393,10 +424,11 @@ public class AirportConfigView extends GridPane implements Initializable {
                 saveRunway.setDisable(false);
             });
 
-            deleteRunway.setDisable(false);
 
             if (currentRunway.getLogicalRunways().size() < 3)
                 addLogicalRunway.setDisable(false);
+
+            deleteRunway.setDisable(false);
 
             ObservableList logicalRunwayObservable = FXCollections.observableArrayList();
 
@@ -406,12 +438,10 @@ public class AirportConfigView extends GridPane implements Initializable {
                 deleteLogicalRunway.setDisable(false);
                 saveLogicalRunway.setDisable(true);
                 saveRunway.setDisable(true);
+                setEditableLogicalRunway(true);
                 newLogical = false;
                 setLogicalRunway((String) newVal);
             });
-
-            if (currentRunway.getLogicalRunways().size() < 3)
-                addLogicalRunway.setDisable(false);
 
             if (currentRunway.getLogicalRunways().isEmpty()) {
                 logicalRunwayName.clear();
@@ -444,6 +474,19 @@ public class AirportConfigView extends GridPane implements Initializable {
         lda.textProperty().addListener(listener);
     }
 
+    private void setEditableRunway(boolean editable){
+        runwayName.setEditable(editable);
+    }
+
+    private void setEditableLogicalRunway(boolean editable){
+        logicalRunwayName.setEditable(editable);
+        displacedThreshold.setEditable(editable);
+        tora.setEditable(editable);
+        toda.setEditable(editable);
+        asda.setEditable(editable);
+        lda.setEditable(editable);
+    }
+
     public AirportConfigView() {
         loadFxml(getClass().getResource("/airport_config.fxml"), this);
     }
@@ -464,7 +507,36 @@ public class AirportConfigView extends GridPane implements Initializable {
         addLogicalRunway.setDisable(true);
         deleteLogicalRunway.setDisable(true);
 
+        setEditableRunway(false);
+        setEditableLogicalRunway(false);
     }
+    public void reset(){
+        airport = null;
+        isChanged = false;
+        newAirport = false;
+        logicalRunways = null;
+        currentLogicalRunway = null;
+        newLogical = false;
+        newRunway = false;
+        newName = null;
+        newAirport = false;
+
+        save.setDisable(true);
+
+        saveRunway.setDisable(true);
+        addRunway.setDisable(true);
+        deleteRunway.setDisable(true);
+
+        saveLogicalRunway.setDisable(true);
+        addLogicalRunway.setDisable(true);
+        deleteLogicalRunway.setDisable(true);
+
+        setEditableRunway(false);
+        setEditableLogicalRunway(false);
+        load();
+    }
+
+
 
     private static void loadFxml(URL fxmlFile, Object rootController) {
         FXMLLoader loader = new FXMLLoader(fxmlFile);

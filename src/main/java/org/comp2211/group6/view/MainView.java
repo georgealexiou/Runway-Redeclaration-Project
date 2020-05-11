@@ -8,6 +8,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.ResourceBundle;
+
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.BorderPane;
@@ -246,8 +248,10 @@ public class MainView extends GridPane implements Initializable {
 
     @FXML
     private void createAirport(ActionEvent e) {
-        // TODO: Load the create airport dialog
-        // TODO: Set the newly created airport
+        this.returnToRunwayViewButton.setVisible(true);
+        airportConfigView.newAirport();
+        airportConfigView.save.setOnAction(airportSaveButtonClicked(airportConfigView));
+        changeView(airportConfigView);
     }
 
     @FXML
@@ -263,10 +267,27 @@ public class MainView extends GridPane implements Initializable {
         EventHandler<ActionEvent> saveButtonHandler = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                currentAirport.set(airportConfigView.getAirport()
-                                .getNewInstance(airportConfigView.newName));
-                changeView(runwayView);
-                notifyUpdate("Airport", "Updated");
+
+                airportConfigView.save.setDisable(true);
+                if (airportConfigView.newAirport && airportConfigView.newName == null) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR, "Please input an airport name", ButtonType.OK);
+                    alert.showAndWait();
+
+                } else if (airportConfigView.newAirport && airportConfigView.newName != null) {
+                    currentAirport.set(airportConfigView.getAirport()
+                            .getNewInstance(airportConfigView.newName));
+                    changeView(runwayView);
+                    notifyUpdate("Airport", "Updated");
+                    airportConfigView.airport = null;
+
+                } else if (!airportConfigView.newAirport){
+                    currentAirport.set(airportConfigView.getAirport()
+                            .getNewInstance(airportConfigView.newName));
+                    changeView(runwayView);
+                    notifyUpdate("Airport", "Updated");
+                    airportConfigView.airport = null;
+                }
+                airportConfigView.reset();
                 event.consume();
             }
         };

@@ -29,6 +29,7 @@ public class Airport {
                             "Error. Invalid runway to be added to airport, cannot be null.");
     }
 
+
     public void removeRunway(Runway runway) {
         runways.remove(runway);
     }
@@ -88,4 +89,5 @@ public class Airport {
     public String getName() {
         return name;
     }
+
 }

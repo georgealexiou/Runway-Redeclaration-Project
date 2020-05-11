@@ -1,10 +1,14 @@
 package org.comp2211.group6;
 
+import javax.xml.XMLConstants;
 import javax.xml.parsers.*;
 import javax.xml.transform.*;
 import javax.xml.transform.dom.*;
 import javax.xml.transform.stream.*;
-
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import javax.xml.validation.Validator;
+import javax.xml.validation.ValidatorHandler;
 import org.xml.sax.*;
 import org.w3c.dom.*;
 import org.comp2211.group6.Model.*;
@@ -15,6 +19,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+
 
 /**
  * Class responsible for reading and writing XML files based on airport and obstacle data. Class
@@ -40,6 +45,8 @@ import java.util.Set;
  * This structure can store multiple obstacles as if they are part of a list.
  */
 public class XMLHandler {
+
+    public String errorMessage;
 
     /**
      *
@@ -226,10 +233,15 @@ public class XMLHandler {
 
         try {
             DocumentBuilder db = dbf.newDocumentBuilder();
-
             File xmlFile = new File(xml);
-
             dom = db.parse(xmlFile);
+
+            SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+            Source schemaFile = new StreamSource(
+                            new File(getClass().getResource("/schemas/airport.xsd").toURI()));
+            Schema schema = factory.newSchema(schemaFile);
+            Validator validator = schema.newValidator();
+            validator.validate(new DOMSource(dom));
 
             // Normalize the XML Structure.
             dom.getDocumentElement().normalize();
@@ -308,12 +320,17 @@ public class XMLHandler {
 
         } catch (ParserConfigurationException pce) {
             System.out.println(pce.getMessage());
+            airport = null;
         } catch (SAXException se) {
             System.out.println(se.getMessage());
+            errorMessage = se.getMessage();
+            airport = null;
         } catch (IOException ioe) {
             System.err.println(ioe.getMessage());
+            airport = null;
         } catch (Exception e) {
             e.printStackTrace();
+            airport = null;
         }
 
         return airport;
@@ -339,8 +356,14 @@ public class XMLHandler {
             DocumentBuilder db = dbf.newDocumentBuilder();
 
             File xmlFile = new File(xml);
-
             dom = db.parse(xmlFile);
+
+            SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+            Source schemaFile = new StreamSource(
+                            new File(getClass().getResource("/schemas/obstacle.xsd").toURI()));
+            Schema schema = factory.newSchema(schemaFile);
+            Validator validator = schema.newValidator();
+            validator.validate(new DOMSource(dom));
 
             // Normalize the XML Structure.
             dom.getDocumentElement().normalize();
@@ -350,10 +373,6 @@ public class XMLHandler {
             String name = obstacleElement.getElementsByTagName("name").item(0).getTextContent();
             String description = obstacleElement.getElementsByTagName("description").item(0)
                             .getTextContent();
-            Double length = Double.parseDouble(obstacleElement.getElementsByTagName("length")
-                            .item(0).getTextContent());
-            Double width = Double.parseDouble(
-                            obstacleElement.getElementsByTagName("width").item(0).getTextContent());
             Double height = Double.parseDouble(obstacleElement.getElementsByTagName("height")
                             .item(0).getTextContent());
             Double distanceToCentreLine = Double.parseDouble(obstacleElement
@@ -372,12 +391,17 @@ public class XMLHandler {
 
         } catch (ParserConfigurationException pce) {
             System.out.println(pce.getMessage());
+            obstacle = null;
         } catch (SAXException se) {
             System.out.println(se.getMessage());
+            errorMessage = se.getMessage();
+            obstacle = null;
         } catch (IOException ioe) {
             System.err.println(ioe.getMessage());
+            obstacle = null;
         } catch (Exception e) {
             e.printStackTrace();
+            obstacle = null;
         }
 
         return obstacle;

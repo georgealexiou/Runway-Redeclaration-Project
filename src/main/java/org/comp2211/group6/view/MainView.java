@@ -207,8 +207,8 @@ public class MainView extends GridPane implements Initializable {
         currentCalculator.addListener((e, origVal, newVal) -> {
             if (newVal != null) {
                 notifyUpdate("Calculations", "performed for current obstacle", true);
-            }else {
-            	notifyUpdate("Calculations", "performed for current obstacle", false);
+            } else {
+                notifyUpdate("Calculations", "performed for current obstacle", false);
             }
         });
 
@@ -233,6 +233,8 @@ public class MainView extends GridPane implements Initializable {
 
     @FXML
     private void loadAirport(ActionEvent e) {
+        fileView.setLoading(true);
+        fileView.setTitle("Choose an Airport to Load");
         fileView.setValidator(airportLoadHandler);
         changeView(fileView);
     }
@@ -242,14 +244,20 @@ public class MainView extends GridPane implements Initializable {
         public void handle(ActionEvent event) {
             XMLHandler handler = new XMLHandler();
             Airport airport = handler.readAirportXML(fileView.filePath.get());
-            if(airport != null) {
-            	notifyUpdate("Airport", "loaded", true);
-            	currentAirport.set(airport);
-            }else {
-            	notifyUpdate("Airport", "loaded", false);
+            if (airport != null) {
+                notifyUpdate("Airport", "loaded", true);
+                currentAirport.set(airport);
+                changeView(runwayView);
+            } else {
+                notifyUpdate("Airport", "loaded", false);
+                Alert alert = new Alert(AlertType.ERROR);
+                alert.setHeaderText("Failed to Load Airport");
+                if (handler.errorMessage != null) {
+                    alert.setContentText(handler.errorMessage);
+                }
+                alert.showAndWait();
+                fileView.reset();
             }
-            fileView.reset();
-            changeView(runwayView);
         }
     };
 
@@ -270,13 +278,13 @@ public class MainView extends GridPane implements Initializable {
     };
 
     private EventHandler<ActionEvent> airportExportButtonClicked(
-            AirportConfigView airportConfigView) {
+                    AirportConfigView airportConfigView) {
         EventHandler<ActionEvent> exportButtonHandler = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
-                        "Save airport " + airportConfigView.airport.getName() + "?", ButtonType.YES,
-                        ButtonType.NO);
+                                "Save airport " + airportConfigView.airport.getName() + "?",
+                                ButtonType.YES, ButtonType.NO);
                 alert.showAndWait();
 
                 if (alert.getResult() == ButtonType.YES) {
@@ -284,19 +292,19 @@ public class MainView extends GridPane implements Initializable {
                     airportConfigView.save.setDisable(true);
                     if (airportConfigView.newAirport && airportConfigView.newName == null) {
                         alert = new Alert(Alert.AlertType.ERROR, "Please input an airport name",
-                                ButtonType.OK);
+                                        ButtonType.OK);
                         alert.showAndWait();
 
                     } else if (airportConfigView.newAirport && airportConfigView.newName != null) {
                         currentAirport.set(airportConfigView.getAirport()
-                                .getNewInstance(airportConfigView.newName));
+                                        .getNewInstance(airportConfigView.newName));
                         changeView(runwayView);
                         notifyUpdate("Airport", "Updated", true);
                         airportConfigView.airport = null;
 
                     } else if (!airportConfigView.newAirport) {
                         currentAirport.set(airportConfigView.getAirport()
-                                .getNewInstance(airportConfigView.newName));
+                                        .getNewInstance(airportConfigView.newName));
                         changeView(runwayView);
                         notifyUpdate("Airport", "Updated", true);
                         airportConfigView.airport = null;
@@ -317,12 +325,12 @@ public class MainView extends GridPane implements Initializable {
             @Override
             public void handle(ActionEvent event) {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
-                        "Save airport " + airportConfigView.airport.getName() + "?", ButtonType.YES,
-                        ButtonType.NO);
+                                "Save airport " + airportConfigView.airport.getName() + "?",
+                                ButtonType.YES, ButtonType.NO);
                 alert.showAndWait();
 
                 if (alert.getResult() == ButtonType.YES) {
-                    try{
+                    try {
                         airportConfigView.save.setDisable(true);
                         if (airportConfigView.newAirport && airportConfigView.newName == null)
                             throw new Exception("Please add a name to the runway");
@@ -332,17 +340,18 @@ public class MainView extends GridPane implements Initializable {
 
                         Iterator<Runway> iter = airportConfigView.airport.getRunways().iterator();
                         boolean logicalRunwayError = false;
-                        while (iter.hasNext()){
-                            if(iter.next().getLogicalRunways().size() == 0)
+                        while (iter.hasNext()) {
+                            if (iter.next().getLogicalRunways().size() == 0)
                                 logicalRunwayError = true;
                         }
 
-                        if(logicalRunwayError)
-                            throw new Exception("One or more runways does not contain a logical runway");
+                        if (logicalRunwayError)
+                            throw new Exception(
+                                            "One or more runways does not contain a logical runway");
 
                         if (airportConfigView.newAirport && airportConfigView.newName != null) {
                             currentAirport.set(airportConfigView.getAirport()
-                                    .getNewInstance(airportConfigView.newName));
+                                            .getNewInstance(airportConfigView.newName));
                             changeView(runwayView);
                             notifyUpdate("Airport", "Updated", true);
                             airportConfigView.airport = null;
@@ -350,16 +359,16 @@ public class MainView extends GridPane implements Initializable {
 
                         if (!airportConfigView.newAirport) {
                             currentAirport.set(airportConfigView.getAirport()
-                                    .getNewInstance(airportConfigView.newName));
+                                            .getNewInstance(airportConfigView.newName));
                             changeView(runwayView);
                             notifyUpdate("Airport", "Updated", true);
                             airportConfigView.airport = null;
                             airportConfigView.reset();
                         }
 
-                    } catch(Exception e){
+                    } catch (Exception e) {
                         alert = new Alert(Alert.AlertType.ERROR, "Error: " + e.getMessage(),
-                                ButtonType.OK);
+                                        ButtonType.OK);
                         alert.showAndWait();
                     }
                 }
@@ -397,10 +406,10 @@ public class MainView extends GridPane implements Initializable {
 
     private void notifyUpdate(String type, String action, boolean result) {
         StringBuffer message = new StringBuffer();
-        if(result) {
-        	message.append(type).append(" ").append("successfully ").append(action);
-        }else {
-        	message.append("FAILED: ").append(type).append(" ").append("NOT ").append(action);
+        if (result) {
+            message.append(type).append(" ").append("successfully ").append(action);
+        } else {
+            message.append("FAILED: ").append(type).append(" ").append("NOT ").append(action);
         }
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         runwayView.strList.add(df.format(System.currentTimeMillis()) + " - " + message.toString());
@@ -438,6 +447,7 @@ public class MainView extends GridPane implements Initializable {
 
     @FXML
     private void loadObstacle(ActionEvent e) {
+        fileView.setLoading(true);
         fileView.setTitle("Choose an obstacle to load");
         fileView.setValidator(loadObstacleHandler);
         changeView(fileView);
@@ -448,14 +458,20 @@ public class MainView extends GridPane implements Initializable {
         public void handle(ActionEvent event) {
             XMLHandler xml = new XMLHandler();
             Obstacle obstacle = xml.readObstacleXML(fileView.filePath.get());
-            if(obstacle != null) {
-            	obstacles.add(obstacle);
+            if (obstacle != null) {
+                obstacles.add(obstacle);
                 notifyUpdate("Obstacle", "loaded to system", true);
-            }else {
-            	notifyUpdate("Obstacle", "loaded to system", false);
+                changeView(runwayView);
+            } else {
+                fileView.reset();
+                Alert alert = new Alert(AlertType.ERROR);
+                alert.setHeaderText("Failed to Load Obstacle");
+                if (xml.errorMessage != null) {
+                    alert.setContentText(xml.errorMessage);
+                }
+                alert.showAndWait();
+                notifyUpdate("Obstacle", "loaded to system", false);
             }
-            fileView.reset();
-            changeView(runwayView);
         }
     };
 
@@ -563,7 +579,8 @@ public class MainView extends GridPane implements Initializable {
                                                 + "\n" + "\n";
                                 breakdowns = breakdowns + "Airport: " + airportUsed + "\n";
                                 breakdowns = breakdowns + "Runway: " + runwayUsed;
-                                breakdowns = breakdowns + ", Identifier: " + runwayIdentifier + "\n";
+                                breakdowns = breakdowns + ", Identifier: " + runwayIdentifier
+                                                + "\n";
 
                                 for (Map.Entry<LogicalRunway, String> entry : breakdownMap
                                                 .entrySet()) {
@@ -622,7 +639,7 @@ public class MainView extends GridPane implements Initializable {
     }
 
     private void setupButtons() {
-    	loadAirportButton.disableProperty().bind(currentView.isNotEqualTo(runwayView)
+        loadAirportButton.disableProperty().bind(currentView.isNotEqualTo(runwayView)
                         .and(currentView.isNotEqualTo(splashScreen)));
         createAirportButton.disableProperty().bind(currentView.isNotEqualTo(runwayView)
                         .and(currentView.isNotEqualTo(splashScreen)));

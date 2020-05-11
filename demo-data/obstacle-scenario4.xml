@@ -1,8 +1,6 @@
 <obstacle>
     <name>Scenario 4 Obstacle</name>
     <description>Heathrow Scenario 4 Incident</description>
-    <length>20</length>
-    <width>15</width>
     <height>20</height>
     <distanceToCentreLine>20</distanceToCentreLine>
     <distanceFromLeftThreshold>3546</distanceFromLeftThreshold>

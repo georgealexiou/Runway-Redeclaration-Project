@@ -375,7 +375,7 @@ public class AirportConfigView extends GridPane implements Initializable {
         runwayName.clear();
 
         ObservableList runwayObservable = FXCollections.observableArrayList();
-        if(airport != null) {
+        if (airport != null) {
             runwayObservable.addAll(airport.getRunwayNames());
             selectRunway.setItems(runwayObservable);
         }
@@ -397,7 +397,7 @@ public class AirportConfigView extends GridPane implements Initializable {
         });
 
         deleteRunway.setDisable(true);
-        if(airport != null) {
+        if (airport != null) {
             if (airport.getRunways().size() < 3)
                 addRunway.setDisable(false);
         }

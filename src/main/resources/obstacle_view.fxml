@@ -15,8 +15,8 @@
 		<ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
 	</columnConstraints>
 	<rowConstraints>
-		<RowConstraints minHeight="40.0" percentHeight="30" vgrow="ALWAYS" />
-		<RowConstraints maxHeight="386.3333282470703" minHeight="20.0" percentHeight="80" vgrow="ALWAYS" />
+		<RowConstraints minHeight="40.0" percentHeight="10" vgrow="NEVER" />
+		<RowConstraints minHeight="20.0" percentHeight="90" vgrow="ALWAYS" />
 	</rowConstraints>
 	<padding>
 		<Insets bottom="10.0" left="40.0" right="40.0" />
@@ -54,72 +54,57 @@
 		</GridPane>
 		<GridPane hgap="50.0" prefHeight="100.0" prefWidth="100.0" vgap="5.0" GridPane.rowIndex="1">
 			<columnConstraints>
-				<ColumnConstraints hgrow="ALWAYS" maxWidth="265.3333435058594" minWidth="164.0" percentWidth="35" />
-				<ColumnConstraints hgrow="ALWAYS" maxWidth="449.0" minWidth="20.0" percentWidth="65" />
+				<ColumnConstraints hgrow="NEVER" minWidth="250" percentWidth="35" />
+				<ColumnConstraints hgrow="ALWAYS" minWidth="250" percentWidth="65" />
 			</columnConstraints>
 			<rowConstraints>
-            	<RowConstraints maxHeight="179.66665649414062" minHeight="71.0" percentHeight="19" vgrow="ALWAYS" />
-            <RowConstraints maxHeight="171.83334350585938" minHeight="10.0" percentHeight="13.5" prefHeight="30.0" vgrow="ALWAYS" />
-            <RowConstraints maxHeight="171.83334350585938" minHeight="10.0" percentHeight="13.5" prefHeight="30.0" vgrow="ALWAYS" />
-				<RowConstraints maxHeight="171.83334350585938" minHeight="10.0" percentHeight="13.5" vgrow="ALWAYS" />
-				<RowConstraints maxHeight="120.0" minHeight="10.0" percentHeight="13.5" vgrow="ALWAYS" />
-				<RowConstraints maxHeight="81.33331298828125" minHeight="10.0" percentHeight="13.5" vgrow="ALWAYS" />
-				<RowConstraints maxHeight="58.333343505859375" minHeight="10.0" percentHeight="13.5" vgrow="ALWAYS" />
+        <RowConstraints maxHeight="50" minHeight="50" vgrow="NEVER"/>
+        <RowConstraints maxHeight="50" minHeight="50" vgrow="NEVER"/>
+        <RowConstraints maxHeight="50" minHeight="50" vgrow="NEVER"/>
+        <RowConstraints maxHeight="50" minHeight="50" vgrow="NEVER"/>
+        <RowConstraints maxHeight="50" minHeight="50" vgrow="NEVER"/>
+        <RowConstraints maxHeight="50" minHeight="50" vgrow="NEVER"/>
 			</rowConstraints>
 			<padding>
 				<Insets right="10.0" />
 			</padding>
 			<children>
-				<VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0">
-					<children>
-						<Label minHeight="20.0" minWidth="95.0" text="Obstacle Name">
-							<font>
-								<Font size="14.0" />
-							</font>
-						</Label>
-						<TextField fx:id="obstacleName" minWidth="10.0" />
-					</children>
-               <GridPane.margin>
-                  <Insets />
-               </GridPane.margin>
-				</VBox>
-				<VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0" GridPane.columnIndex="1">
-					<children>
-						<Label minHeight="20.0" minWidth="130.0" text="Obstacle Description">
-							<font>
-								<Font size="14.0" />
-							</font>
-						</Label>
-						<TextField fx:id="obstacleDescription" />
-					</children>
-               <GridPane.margin>
-                  <Insets />
-               </GridPane.margin>
-				</VBox>
-				<Label text="Obstacle Height" GridPane.rowIndex="3">
+        <Label text="Obstacle Name" GridPane.rowIndex="0">
+          <font>
+            <Font size="14.0" />
+          </font>
+        </Label>
+        <TextField fx:id="obstacleName" minWidth="10.0" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+        <Label text="Obstacle Description" GridPane.rowIndex="1">
+          <font>
+            <Font size="14.0" />
+          </font>
+        </Label>
+        <TextField fx:id="obstacleDescription" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+				<Label text="Obstacle Height" GridPane.rowIndex="2">
 					<font>
 						<Font size="14.0" />
 					</font>
 				</Label>
-				<TextField fx:id="obstacleHeight" minWidth="10.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-				<Label text="Distance from Centre Line" GridPane.rowIndex="4">
+				<TextField fx:id="obstacleHeight" minWidth="10.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+				<Label text="Distance from Centre Line" GridPane.rowIndex="3">
 					<font>
 						<Font size="14.0" />
 					</font>
 				</Label>
-				<TextField fx:id="obstacleDistanceFromCentreLine" minWidth="10.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-				<Label text="Distance from Left" GridPane.rowIndex="5">
+				<TextField fx:id="obstacleDistanceFromCentreLine" minWidth="10.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+				<Label text="Distance from Left" GridPane.rowIndex="4">
 					<font>
 						<Font size="14.0" />
 					</font>
 				</Label>
-				<TextField fx:id="obstacleDistanceFromLeft" minWidth="10.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-				<Label text="Distance from Right" GridPane.rowIndex="6">
+				<TextField fx:id="obstacleDistanceFromLeft" minWidth="10.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+				<Label text="Distance from Right" GridPane.rowIndex="5">
 					<font>
 						<Font size="14.0" />
 					</font>
 				</Label>
-				<TextField fx:id="obstacleDistanceFromRight" minWidth="10.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+				<TextField fx:id="obstacleDistanceFromRight" minWidth="10.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
 			</children>
 		</GridPane>
 	</children>

@@ -374,10 +374,7 @@ public class MainView extends GridPane implements Initializable {
                 Obstacle newObstacle = obstacleView.getNewObstacle();
                 obstacles.add(newObstacle);
                 // If the obstacle has been edited remove it and add the edited obstacle
-                if (obstacleView == editAnObstacleView) {
-                    obstacles.remove(runwayView.currentObstacle.get());
-                    currentObstacle.set(newObstacle);
-                }
+                currentObstacle.set(newObstacle);
                 createAnObstacleView.clearFields();
                 changeView(runwayView);
                 event.consume();
@@ -529,7 +526,27 @@ public class MainView extends GridPane implements Initializable {
                             if (currentCalculator.get().getAllBreakdowns().size() > 0) {
                                 Map<LogicalRunway, String> breakdownMap =
                                                 currentCalculator.get().getAllBreakdowns();
-                                String breakdowns = "";
+
+                                String obstacleUsed = currentObstacle.get().getName();
+                                String distfromL = Double.toString(
+                                                currentObstacle.get().distanceFromLeftThreshold);
+                                String distfromR = Double.toString(
+                                                currentObstacle.get().distanceFromRightThreshold);
+                                String distfromC = Double.toString(
+                                                currentObstacle.get().distanceToCentreLine);
+                                String airportUsed = currentAirport.get().getName();
+                                String runwayUsed = currentRunway.get().getName();
+
+                                String breakdowns = "Obstacle: " + obstacleUsed + "\n";
+                                breakdowns = breakdowns + "Distance From Left Threshold: "
+                                                + distfromL + "\n";
+                                breakdowns = breakdowns + "Distance From Right Threshold: "
+                                                + distfromR + "\n";
+                                breakdowns = breakdowns + "Distance From Centre Line: " + distfromC
+                                                + "\n" + "\n";
+                                breakdowns = breakdowns + "Airport: " + airportUsed + "\n";
+                                breakdowns = breakdowns + "Runway: " + runwayUsed + "\n";
+
                                 for (Map.Entry<LogicalRunway, String> entry : breakdownMap
                                                 .entrySet()) {
                                     LogicalRunway key = entry.getKey();

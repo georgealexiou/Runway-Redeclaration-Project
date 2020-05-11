@@ -185,27 +185,29 @@ public class MainView extends GridPane implements Initializable {
 
         currentRunway.addListener((e, origVal, newVal) -> {
             if (newVal != null) {
-                notifyUpdate("Runway", "changed to " + newVal.getIdentifier());
+                notifyUpdate("Runway", "changed to " + newVal.getIdentifier(), true);
             }
         });
 
         currentLogicalRunway.addListener((e, origVal, newVal) -> {
             if (newVal != null) {
-                notifyUpdate("Logical Runway", "changed to " + newVal.getIdentifier());
+                notifyUpdate("Logical Runway", "changed to " + newVal.getIdentifier(), true);
             }
         });
 
         currentObstacle.addListener((e, origVal, newVal) -> {
             if (newVal != null) {
-                notifyUpdate("Obstacle", "changed to " + newVal.getName());
+                notifyUpdate("Obstacle", "changed to " + newVal.getName(), true);
             } else {
-                notifyUpdate("Obstacle", "cleared");
+                notifyUpdate("Obstacle", "cleared", false);
             }
         });
 
         currentCalculator.addListener((e, origVal, newVal) -> {
             if (newVal != null) {
-                notifyUpdate("Calculations", "performed for current obstacle");
+                notifyUpdate("Calculations", "performed for current obstacle", true);
+            }else {
+            	notifyUpdate("Calculations", "performed for current obstacle", false);
             }
         });
 
@@ -239,9 +241,14 @@ public class MainView extends GridPane implements Initializable {
         public void handle(ActionEvent event) {
             XMLHandler handler = new XMLHandler();
             Airport airport = handler.readAirportXML(fileView.filePath.get());
-            notifyUpdate("Airport", "loaded");
-            currentAirport.set(airport);
+            if(airport != null) {
+            	notifyUpdate("Airport", "loaded", true);
+            	currentAirport.set(airport);
+            }else {
+            	notifyUpdate("Airport", "loaded", false);
+            }
             fileView.reset();
+            changeView(runwayView);
         }
     };
 
@@ -300,7 +307,7 @@ public class MainView extends GridPane implements Initializable {
                             currentAirport.set(airportConfigView.getAirport()
                                     .getNewInstance(airportConfigView.newName));
                             changeView(runwayView);
-                            notifyUpdate("Airport", "Updated");
+                            notifyUpdate("Airport", "Updated", true);
                             airportConfigView.airport = null;
 
                             export(airportConfigView.airport);
@@ -311,7 +318,7 @@ public class MainView extends GridPane implements Initializable {
                             currentAirport.set(airportConfigView.getAirport()
                                     .getNewInstance(airportConfigView.newName));
                             changeView(runwayView);
-                            notifyUpdate("Airport", "Updated");
+                            notifyUpdate("Airport", "Updated", true);
                             airportConfigView.airport = null;
                             airportConfigView.reset();
 
@@ -327,6 +334,7 @@ public class MainView extends GridPane implements Initializable {
                 event.consume();
             }
         };
+
         return exportButtonHandler;
     }
 
@@ -373,7 +381,7 @@ public class MainView extends GridPane implements Initializable {
                             currentAirport.set(airportConfigView.getAirport()
                                     .getNewInstance(airportConfigView.newName));
                             changeView(runwayView);
-                            notifyUpdate("Airport", "Updated");
+                            notifyUpdate("Airport", "Updated", true);
                             airportConfigView.airport = null;
                         }
 
@@ -381,7 +389,7 @@ public class MainView extends GridPane implements Initializable {
                             currentAirport.set(airportConfigView.getAirport()
                                     .getNewInstance(airportConfigView.newName));
                             changeView(runwayView);
-                            notifyUpdate("Airport", "Updated");
+                            notifyUpdate("Airport", "Updated", true);
                             airportConfigView.airport = null;
                             airportConfigView.reset();
                         }
@@ -416,7 +424,7 @@ public class MainView extends GridPane implements Initializable {
                 changeView(runwayView);
                 event.consume();
 
-                notifyUpdate("Obstacle", "saved");
+                notifyUpdate("Obstacle", "saved", true);
 
             }
         };
@@ -424,9 +432,13 @@ public class MainView extends GridPane implements Initializable {
         return saveButtonHandler;
     }
 
-    private void notifyUpdate(String type, String action) {
+    private void notifyUpdate(String type, String action, boolean result) {
         StringBuffer message = new StringBuffer();
-        message.append(type).append(" ").append("successfully ").append(action);
+        if(result) {
+        	message.append(type).append(" ").append("successfully ").append(action);
+        }else {
+        	message.append("FAILED: ").append(type).append(" ").append("NOT ").append(action);
+        }
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         runwayView.strList.add(df.format(System.currentTimeMillis()) + " - " + message.toString());
         runwayView.notificationList.setItems(runwayView.strList);
@@ -455,7 +467,7 @@ public class MainView extends GridPane implements Initializable {
                         public void handle(ActionEvent event) {
                             XMLHandler xml = new XMLHandler();
                             xml.saveObstacleToXML(fileView.filePath.get(), currentObstacle.get());
-                            notifyUpdate("Obstacle", "exported");
+                            notifyUpdate("Obstacle", "exported", true);
                             changeView(runwayView);
                             event.consume();
                         }
@@ -473,8 +485,12 @@ public class MainView extends GridPane implements Initializable {
         public void handle(ActionEvent event) {
             XMLHandler xml = new XMLHandler();
             Obstacle obstacle = xml.readObstacleXML(fileView.filePath.get());
-            obstacles.add(obstacle);
-            notifyUpdate("Obstacle", "loaded to system");
+            if(obstacle != null) {
+            	obstacles.add(obstacle);
+                notifyUpdate("Obstacle", "loaded to system", true);
+            }else {
+            	notifyUpdate("Obstacle", "loaded to system", false);
+            }
             fileView.reset();
             changeView(runwayView);
         }
@@ -573,6 +589,7 @@ public class MainView extends GridPane implements Initializable {
                                                 currentObstacle.get().distanceToCentreLine);
                                 String airportUsed = currentAirport.get().getName();
                                 String runwayUsed = currentRunway.get().getName();
+                                String runwayIdentifier = currentRunway.get().getIdentifier();
 
                                 String breakdowns = "Obstacle: " + obstacleUsed + "\n";
                                 breakdowns = breakdowns + "Distance From Left Threshold: "
@@ -582,7 +599,8 @@ public class MainView extends GridPane implements Initializable {
                                 breakdowns = breakdowns + "Distance From Centre Line: " + distfromC
                                                 + "\n" + "\n";
                                 breakdowns = breakdowns + "Airport: " + airportUsed + "\n";
-                                breakdowns = breakdowns + "Runway: " + runwayUsed + "\n";
+                                breakdowns = breakdowns + "Runway: " + runwayUsed;
+                                breakdowns = breakdowns + ", Identifier: " + runwayIdentifier + "\n";
 
                                 for (Map.Entry<LogicalRunway, String> entry : breakdownMap
                                                 .entrySet()) {
@@ -622,7 +640,7 @@ public class MainView extends GridPane implements Initializable {
                             saveBreakdown.filePath.set("No directory selected");
                             changeView(runwayView);
                             event.consume();
-                            notifyUpdate("Calculations", "exported");
+                            notifyUpdate("Calculations", "exported", true);
                         }
                     };
 
@@ -641,7 +659,7 @@ public class MainView extends GridPane implements Initializable {
     }
 
     private void setupButtons() {
-        loadAirportButton.disableProperty().bind(currentView.isNotEqualTo(runwayView)
+    	loadAirportButton.disableProperty().bind(currentView.isNotEqualTo(runwayView)
                         .and(currentView.isNotEqualTo(splashScreen)));
         createAirportButton.disableProperty().bind(currentView.isNotEqualTo(runwayView)
                         .and(currentView.isNotEqualTo(splashScreen)));

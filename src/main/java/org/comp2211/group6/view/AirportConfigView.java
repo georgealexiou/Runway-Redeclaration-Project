@@ -287,6 +287,7 @@ public class AirportConfigView extends GridPane implements Initializable {
         }
 
         save.setDisable(false);
+        export.setDisable(false);
         load();
     }
 
@@ -369,6 +370,7 @@ public class AirportConfigView extends GridPane implements Initializable {
         airportName.textProperty().addListener((e, oldVal, newVal) -> {
             newName = airportName.getText();
             save.setDisable(false);
+            export.setDisable(false);
             System.out.println(newName);
             isChanged = true;
         });
@@ -404,6 +406,7 @@ public class AirportConfigView extends GridPane implements Initializable {
 
         if (isChanged) {
             save.setDisable(false);
+            export.setDisable(false);
         }
 
         saveRunway.setDisable(true);
@@ -498,6 +501,7 @@ public class AirportConfigView extends GridPane implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         save.setDisable(true);
+        export.setDisable(false);
 
         saveRunway.setDisable(true);
         addRunway.setDisable(true);
@@ -523,6 +527,7 @@ public class AirportConfigView extends GridPane implements Initializable {
         newAirport = false;
 
         save.setDisable(true);
+        export.setDisable(false);
 
         saveRunway.setDisable(true);
         addRunway.setDisable(true);

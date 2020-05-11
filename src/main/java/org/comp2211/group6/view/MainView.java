@@ -458,7 +458,21 @@ public class MainView extends GridPane implements Initializable {
                             if (currentCalculator.get().getAllBreakdowns().size() > 0) {
                                 Map<LogicalRunway, String> breakdownMap =
                                                 currentCalculator.get().getAllBreakdowns();
-                                String breakdowns = "";
+
+                                String obstacleUsed = currentObstacle.get().getName();
+                                String distfromL = Double.toString(currentObstacle.get().distanceFromLeftThreshold);
+                                String distfromR = Double.toString(currentObstacle.get().distanceFromRightThreshold);
+                                String distfromC =  Double.toString(currentObstacle.get().distanceToCentreLine);
+                                String airportUsed = currentAirport.get().getName();
+                                String runwayUsed = currentRunway.get().getName();
+
+                                String breakdowns = "Obstacle: " + obstacleUsed + "\n";
+                                breakdowns = breakdowns + "Distance From Left Threshold: " + distfromL + "\n";
+                                breakdowns = breakdowns + "Distance From Right Threshold: " + distfromR + "\n";
+                                breakdowns = breakdowns + "Distance From Centre Line: " + distfromC + "\n" + "\n";
+                                breakdowns = breakdowns + "Airport: " + airportUsed + "\n";
+                                breakdowns = breakdowns + "Runway: " + runwayUsed + "\n";
+
                                 for (Map.Entry<LogicalRunway, String> entry : breakdownMap
                                                 .entrySet()) {
                                     LogicalRunway key = entry.getKey();

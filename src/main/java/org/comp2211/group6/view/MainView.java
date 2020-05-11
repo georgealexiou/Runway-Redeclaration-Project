@@ -306,10 +306,7 @@ public class MainView extends GridPane implements Initializable {
                 Obstacle newObstacle = obstacleView.getNewObstacle();
                 obstacles.add(newObstacle);
                 // If the obstacle has been edited remove it and add the edited obstacle
-                if (obstacleView == editAnObstacleView) {
-                    obstacles.remove(runwayView.currentObstacle.get());
-                    currentObstacle.set(newObstacle);
-                }
+                currentObstacle.set(newObstacle);
                 createAnObstacleView.clearFields();
                 changeView(runwayView);
                 event.consume();

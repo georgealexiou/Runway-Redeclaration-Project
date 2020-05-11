@@ -55,8 +55,6 @@ public class MainView extends GridPane implements Initializable {
     @FXML
     private CreateAnObstacleView createAnObstacleView;
     @FXML
-    private LoadAnObstacleView loadAnObstacleView;
-    @FXML
     private AirportConfigView airportConfigView;
     @FXML
     private FileView fileView;
@@ -270,19 +268,20 @@ public class MainView extends GridPane implements Initializable {
 
                 airportConfigView.save.setDisable(true);
                 if (airportConfigView.newAirport && airportConfigView.newName == null) {
-                    Alert alert = new Alert(Alert.AlertType.ERROR, "Please input an airport name", ButtonType.OK);
+                    Alert alert = new Alert(Alert.AlertType.ERROR, "Please input an airport name",
+                                    ButtonType.OK);
                     alert.showAndWait();
 
                 } else if (airportConfigView.newAirport && airportConfigView.newName != null) {
                     currentAirport.set(airportConfigView.getAirport()
-                            .getNewInstance(airportConfigView.newName));
+                                    .getNewInstance(airportConfigView.newName));
                     changeView(runwayView);
                     notifyUpdate("Airport", "Updated");
                     airportConfigView.airport = null;
 
-                } else if (!airportConfigView.newAirport){
+                } else if (!airportConfigView.newAirport) {
                     currentAirport.set(airportConfigView.getAirport()
-                            .getNewInstance(airportConfigView.newName));
+                                    .getNewInstance(airportConfigView.newName));
                     changeView(runwayView);
                     notifyUpdate("Airport", "Updated");
                     airportConfigView.airport = null;
@@ -306,22 +305,13 @@ public class MainView extends GridPane implements Initializable {
             public void handle(ActionEvent event) {
                 Obstacle newObstacle = obstacleView.getNewObstacle();
                 obstacles.add(newObstacle);
-                // If the current obstacle view is NOT the Create view, remove the original obstacle
-                // from the list.
+                // If the obstacle has been edited remove it and add the edited obstacle
                 if (obstacleView == editAnObstacleView) {
                     obstacles.remove(runwayView.currentObstacle.get());
                     currentObstacle.set(newObstacle);
                 }
+                createAnObstacleView.clearFields();
                 changeView(runwayView);
-
-                obstacleView.obstacleName.clear();
-                obstacleView.obstacleDescription.clear();
-                obstacleView.obstacleLength.clear();
-                obstacleView.obstacleWidth.clear();
-                obstacleView.obstacleHeight.clear();
-                obstacleView.obstacleDistanceFromCentreLine.clear();
-                obstacleView.obstacleDistanceFromLeft.clear();
-                obstacleView.obstacleDistanceFromRight.clear();
                 event.consume();
 
                 notifyUpdate("Obstacle", "saved");
@@ -344,6 +334,12 @@ public class MainView extends GridPane implements Initializable {
     private EventHandler<ActionEvent> obstacleExportButtonAction = new EventHandler<ActionEvent>() {
         @Override
         public void handle(ActionEvent event) {
+            // Save the obstacle for the current simulation
+            if (currentView.get() == createAnObstacleView) {
+                obstacleSaveButtonAction(createAnObstacleView).handle(event);
+            } else {
+                obstacleSaveButtonAction(editAnObstacleView).handle(event);
+            }
             fileView.setTitle("Choose a location to export the obstacle");
             fileView.setLoading(false);
             fileView.setValidator(obstacleExportValidateAction);
@@ -356,8 +352,7 @@ public class MainView extends GridPane implements Initializable {
                         @Override
                         public void handle(ActionEvent event) {
                             XMLHandler xml = new XMLHandler();
-                            xml.saveObstacleToXML(fileView.filePath.get(),
-                                            runwayView.currentObstacle.get());
+                            xml.saveObstacleToXML(fileView.filePath.get(), currentObstacle.get());
                             notifyUpdate("Obstacle", "exported");
                             changeView(runwayView);
                             event.consume();
@@ -375,12 +370,11 @@ public class MainView extends GridPane implements Initializable {
         @Override
         public void handle(ActionEvent event) {
             XMLHandler xml = new XMLHandler();
-            loadAnObstacleView.loadPredefinedObstacle(xml.readObstacleXML(fileView.filePath.get()));
-            loadAnObstacleView.obstacleSaveButton
-                            .setOnAction(obstacleSaveButtonAction(loadAnObstacleView));
-            loadAnObstacleView.obstacleExportButton.setOnAction(obstacleExportButtonAction);
-            changeView(loadAnObstacleView);
+            Obstacle obstacle = xml.readObstacleXML(fileView.filePath.get());
+            obstacles.add(obstacle);
+            notifyUpdate("Obstacle", "loaded to system");
             fileView.reset();
+            changeView(runwayView);
         }
     };
 
@@ -388,7 +382,7 @@ public class MainView extends GridPane implements Initializable {
     private void createObstacle(ActionEvent e) {
         createAnObstacleView.obstacleSaveButton
                         .setOnAction(obstacleSaveButtonAction(createAnObstacleView));
-        loadAnObstacleView.obstacleExportButton.setOnAction(obstacleExportButtonAction);
+        createAnObstacleView.obstacleExportButton.setOnAction(obstacleExportButtonAction);
         changeView(createAnObstacleView);
     }
 
@@ -400,7 +394,7 @@ public class MainView extends GridPane implements Initializable {
         } else {
             editAnObstacleView.obstacleSaveButton
                             .setOnAction(obstacleSaveButtonAction(editAnObstacleView));
-            loadAnObstacleView.obstacleExportButton.setOnAction(obstacleExportButtonAction);
+            editAnObstacleView.obstacleExportButton.setOnAction(obstacleExportButtonAction);
             changeView(editAnObstacleView);
         }
     }

@@ -547,9 +547,8 @@ public class RunwayView extends GridPane implements Initializable {
             x = x - scale(currentObstacle.get().distanceFromRightThreshold,
                             runwayCanvas.getWidth());
         }
-        double y = runwayCanvas.getHeight() / 2 - currentObstacle.get().distanceToCentreLine
-                        - currentObstacle.get().getWidth() / 2;
-        gc.fillRect(x - 5, y, 10, currentObstacle.get().getWidth());
+        double y = runwayCanvas.getHeight() / 2 - currentObstacle.get().distanceToCentreLine - 5;
+        gc.fillRect(x - 5, y, 10, 10);
         drawArrow(gc, x, runwayCanvas.getHeight() / 2 + (runwayArrowPadding) * 8, x, y + 5,
                         colours.getTextColour());
         gc.setTextAlign(TextAlignment.CENTER);

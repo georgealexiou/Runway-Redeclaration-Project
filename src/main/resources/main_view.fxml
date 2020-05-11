@@ -15,7 +15,6 @@
 <?import org.comp2211.group6.view.BreakdownView?>
 <?import org.comp2211.group6.view.EditAnObstacleView?>
 <?import org.comp2211.group6.view.CreateAnObstacleView?>
-<?import org.comp2211.group6.view.LoadAnObstacleView?>
 <?import org.comp2211.group6.view.FileView?>
 <?import org.comp2211.group6.view.FolderView?>
 <?import org.comp2211.group6.view.SaveBreakdown?>
@@ -74,7 +73,6 @@
 
   <AirportConfigView fx:id="airportConfigView" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="1" />
   <CreateAnObstacleView fx:id="createAnObstacleView" GridPane.rowIndex="1" GridPane.columnIndex="0" visible="false"></CreateAnObstacleView> 
-  <LoadAnObstacleView fx:id="loadAnObstacleView" GridPane.rowIndex="1" GridPane.columnIndex="0" visible="false"></LoadAnObstacleView> 
   <EditAnObstacleView fx:id="editAnObstacleView" GridPane.rowIndex="1" GridPane.columnIndex="0" visible="false"></EditAnObstacleView> 
   <BreakdownView fx:id="breakdownView" GridPane.rowIndex="1" GridPane.columnIndex="0" visible="false"></BreakdownView>
   <RunwayView fx:id="runwayView" GridPane.rowIndex="1" GridPane.columnIndex="0" visible="false"></RunwayView> 

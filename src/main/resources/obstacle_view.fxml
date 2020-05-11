@@ -45,7 +45,7 @@
 						<Font name="System Bold" size="14.0" />
 					</font>
 				</Button>
-				<Button fx:id="obstacleExportButton" disable="true" mnemonicParsing="false" onAction="#exportAction" text="Export" textAlignment="CENTER" GridPane.columnIndex="2">
+				<Button fx:id="obstacleExportButton" disable="true" mnemonicParsing="false" onAction="#exportAction" text="Export and Save" textAlignment="CENTER" GridPane.columnIndex="2">
 					<font>
 						<Font name="System Bold" size="14.0" />
 					</font>
@@ -120,18 +120,6 @@
 					</font>
 				</Label>
 				<TextField fx:id="obstacleDistanceFromRight" minWidth="10.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-            <Label text="Obstacle Length" GridPane.rowIndex="1">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Label>
-            <TextField fx:id="obstacleLength" minWidth="10.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <TextField fx:id="obstacleWidth" minWidth="10.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <Label text="Obstacle Width" GridPane.rowIndex="2">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Label>
 			</children>
 		</GridPane>
 	</children>

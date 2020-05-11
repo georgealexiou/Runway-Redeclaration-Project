@@ -57,41 +57,41 @@ public class RunwayTest {
     public static Collection<Object[]> testData() {
         RunwayParameters params = new RunwayParameters(1111, 2222, 3333, 4444);
         return Arrays.asList(new Object[][] {
-                        {"Runway1", new Obstacle("Obs1", "A380", 333, 555, 50, 123, 747, 145),
+                        {"Runway1", new Obstacle("Obs1", "A380", 50, 123, 747, 145),
                                         new LogicalRunway(9, 111, 'L', params),
                                         new LogicalRunway(27, 111, 'R', params),
                                         new LogicalRunway(9, 111, 'C', params),
                                         new LogicalRunway(27, 111, 'C', params), errorMsg3},
-                        {"Runway1", new Obstacle("Obs1", "A350", 566, 267, 2356, 256, 168, 444),
+                        {"Runway1", new Obstacle("Obs1", "A350", 2356, 256, 168, 444),
                                         new LogicalRunway(9, 111, 'L', params),
                                         new LogicalRunway(27, 111, 'R', params),
                                         new LogicalRunway(27, 111, 'C', params), null, null},
-                        {"Runway1", new Obstacle("Obs3", "A310", 4442, 3522, 3523, 2727, 572, 2711),
+                        {"Runway1", new Obstacle("Obs3", "A310", 3523, 2727, 572, 2711),
                                         new LogicalRunway(9, 111, 'R', params),
                                         new LogicalRunway(27, 111, 'L', params), null, null,
                                         errorMsg2},
-                        {"Runway1", new Obstacle("Obs4", "A320", 3311, 555, 50, 123, 747, 3795),
+                        {"Runway1", new Obstacle("Obs4", "A320", 50, 123, 747, 3795),
                                         new LogicalRunway(9, 111, 'R', params),
                                         new LogicalRunway(27, 111, 'L', params),
                                         new LogicalRunway(9, 111, 'C', params), null, null},
-                        {"Runway1", new Obstacle("Obs5", "A319", 632, 555, 50, 123, 747, 589), null,
+                        {"Runway1", new Obstacle("Obs5", "A319", 50, 123, 747, 589), null,
                                         new LogicalRunway(27, 111, 'R', params),
                                         new LogicalRunway(9, 111, 'C', params), null, errorMsg2},
-                        {"Runway1", new Obstacle("Obs6", "A321", 779, 555, 50, 123, 747, 689),
+                        {"Runway1", new Obstacle("Obs6", "A321", 50, 123, 747, 689),
                                         new LogicalRunway(9, 111, 'L', params), null,
                                         new LogicalRunway(9, 111, 'C', params), null, errorMsg2},
-                        {"Runway1", new Obstacle("Obs7", "A340", 346, 555, 50, 123, 747, 367),
+                        {"Runway1", new Obstacle("Obs7", "A340", 50, 123, 747, 367),
                                         new LogicalRunway(9, 111, 'L', params), null, null, null,
                                         errorMsg2},
-                        {"Runway1", new Obstacle("Obs8", "BOEING787", 33, 555, 50, 123, 747, 690),
+                        {"Runway1", new Obstacle("Obs8", "BOEING787", 50, 123, 747, 690),
                                         new LogicalRunway(9, 111, 'L', params),
                                         new LogicalRunway(27, 111, 'R', params), null, null,
                                         errorMsg2},
-                        {"Runway1", new Obstacle("Obs9", "BOEING737-200", 89, 54, 503, 4123, 334,
-                                        2678), null, new LogicalRunway(27, 111, 'R', params),
+                        {"Runway1", new Obstacle("Obs9", "BOEING737-200", 503, 4123, 334, 2678),
+                                        null, new LogicalRunway(27, 111, 'R', params),
                                         new LogicalRunway(9, 111, 'C', params), null, errorMsg2},
-                        {"Runway1", new Obstacle("Obs10", "BOEING737-700", 37, 456, 520, 6893, 422,
-                                        3578), new LogicalRunway(9, 111, 'R', params),
+                        {"Runway1", new Obstacle("Obs10", "BOEING737-700", 520, 6893, 422, 3578),
+                                        new LogicalRunway(9, 111, 'R', params),
                                         new LogicalRunway(27, 111, 'L', params),
                                         new LogicalRunway(9, 111, 'C', params), null, null}});
     }
@@ -149,7 +149,6 @@ public class RunwayTest {
     public String printObstacle(Obstacle obstacle) {
         if (obstacle != null)
             return "name: " + obstacle.getName() + " description: " + obstacle.getDescription()
-                            + " length: " + obstacle.getLength() + " width: " + obstacle.getWidth()
                             + " height: " + obstacle.getHeight() + " distanceToCL: "
                             + obstacle.getDistanceToCentreLine() + " distanceFromLeft: "
                             + obstacle.getDistanceFromLeft() + " distanceFromRight: "

@@ -167,15 +167,6 @@ public class XMLHandler {
             obstacleDescElem.appendChild(dom.createTextNode(obstacle.getDescription()));
             obstacleElem.appendChild(obstacleDescElem);
 
-            Element obstacleLenghtElem = dom.createElement("length");
-            obstacleLenghtElem
-                            .appendChild(dom.createTextNode(Double.toString(obstacle.getLength())));
-            obstacleElem.appendChild(obstacleLenghtElem);
-
-            Element obstacleWidthElem = dom.createElement("width");
-            obstacleWidthElem.appendChild(dom.createTextNode(Double.toString(obstacle.getWidth())));
-            obstacleElem.appendChild(obstacleWidthElem);
-
             Element obstacleHeightElem = dom.createElement("height");
             obstacleHeightElem
                             .appendChild(dom.createTextNode(Double.toString(obstacle.getHeight())));
@@ -374,7 +365,7 @@ public class XMLHandler {
                             obstacleElement.getElementsByTagName("distanceFromRightThreshold")
                                             .item(0).getTextContent());
 
-            obstacle = new Obstacle(name, description, length, width, height, distanceToCentreLine,
+            obstacle = new Obstacle(name, description, height, distanceToCentreLine,
                             distanceFromLeftThreshold, distanceFromRightThreshold);
 
             return obstacle;

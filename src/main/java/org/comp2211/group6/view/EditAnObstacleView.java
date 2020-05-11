@@ -9,11 +9,6 @@ public class EditAnObstacleView extends ObstacleView {
         super();
         loadFxml(getClass().getResource("/obstacle_view.fxml"), this);
         this.obstacleViewTitle.setText("Edit an Obstacle");
-        this.obstacleName.setEditable(false);
-        this.obstacleDescription.setEditable(false);
-        this.obstacleLength.setEditable(false);
-        this.obstacleWidth.setEditable(false);
-        this.obstacleHeight.setEditable(false);
     }
 
     /*
@@ -22,24 +17,20 @@ public class EditAnObstacleView extends ObstacleView {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        disableBindings = obstacleName.textProperty().isEmpty().or(obstacleLength.textProperty()
+        disableBindings = obstacleName.textProperty().isEmpty().or(obstacleHeight.textProperty()
                         .isEmpty()
-                        .or(obstacleWidth.textProperty().isEmpty().or(obstacleHeight.textProperty()
-                                        .isEmpty()
-                                        .or(obstacleDistanceFromCentreLine.textProperty().isEmpty()
-                                                        .or(obstacleDistanceFromLeft.textProperty()
-                                                                        .isEmpty()
-                                                                        .or(obstacleDistanceFromRight
-                                                                                        .textProperty()
-                                                                                        .isEmpty()))))));
+                        .or(obstacleDistanceFromCentreLine.textProperty().isEmpty()
+                                        .or(obstacleDistanceFromLeft.textProperty().isEmpty()
+                                                        .or(obstacleDistanceFromRight.textProperty()
+                                                                        .isEmpty()))));
         obstacleSaveButton.disableProperty().bind(disableBindings);
+        obstacleExportButton.disableProperty().unbind();
+        obstacleExportButton.setDisable(false);
 
         currentObstacle.addListener((e, origVal, newVal) -> {
             if (newVal != null) {
                 this.obstacleName.setText(newVal.getName());
                 this.obstacleDescription.setText(newVal.getDescription());
-                this.obstacleLength.setText(String.valueOf(newVal.getLength()));
-                this.obstacleWidth.setText(String.valueOf(newVal.getWidth()));
                 this.obstacleHeight.setText(String.valueOf(newVal.getHeight()));
                 this.obstacleDistanceFromCentreLine
                                 .setText(String.valueOf(newVal.getDistanceToCentreLine()));

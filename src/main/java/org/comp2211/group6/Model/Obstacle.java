@@ -23,9 +23,7 @@ public class Obstacle {
      */
     private String name;
     private String description;
-    private double length;
     private double height;
-    private double width;
 
     /**
      * Public Methods
@@ -43,13 +41,10 @@ public class Obstacle {
      * @param distanceFromLeftThreshold
      * @param distanceFromRightThreshold
      */
-    public Obstacle(String name, String description, double length, double width, double height,
-                    double distanceToCentreLine, double distanceFromLeftThreshold,
-                    double distanceFromRightThreshold) {
+    public Obstacle(String name, String description, double height, double distanceToCentreLine,
+                    double distanceFromLeftThreshold, double distanceFromRightThreshold) {
         this.name = name;
         this.description = description;
-        this.length = length;
-        this.width = width;
         this.height = height;
         this.distanceToCentreLine = distanceToCentreLine;
         this.distanceFromLeftThreshold = distanceFromLeftThreshold;
@@ -72,14 +67,6 @@ public class Obstacle {
         this.description = description;
     }
 
-    public double getLength() {
-        return this.length;
-    }
-
-    public double getWidth() {
-        return this.width;
-    }
-
     public double getHeight() {
         return this.height;
     }
@@ -87,13 +74,9 @@ public class Obstacle {
     /**
      * Update the dimensions of the obstacle
      * 
-     * @param length The length - inline with the runway
-     * @param width The width - perpendicular to runway
      * @param height The height
      */
-    public void setDimensions(double length, double width, double height) {
-        this.length = length;
-        this.width = width;
+    public void setDimensions(double height) {
         this.height = height;
     }
 

@@ -362,7 +362,7 @@ public class AirportConfigView extends GridPane implements Initializable {
         currentRunway = null;
         currentLogicalRunway = null;
 
-        if(newName != null)
+        if (newName != null)
             airportName.setText(newName);
         else if (newAirport)
             airportName.clear();
@@ -474,11 +474,11 @@ public class AirportConfigView extends GridPane implements Initializable {
         lda.textProperty().addListener(listener);
     }
 
-    private void setEditableRunway(boolean editable){
+    private void setEditableRunway(boolean editable) {
         runwayName.setEditable(editable);
     }
 
-    private void setEditableLogicalRunway(boolean editable){
+    private void setEditableLogicalRunway(boolean editable) {
         logicalRunwayName.setEditable(editable);
         displacedThreshold.setEditable(editable);
         tora.setEditable(editable);
@@ -510,7 +510,8 @@ public class AirportConfigView extends GridPane implements Initializable {
         setEditableRunway(false);
         setEditableLogicalRunway(false);
     }
-    public void reset(){
+
+    public void reset() {
         airport = null;
         isChanged = false;
         newAirport = false;

@@ -1,11 +1,6 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.text.Font?>
-<?import org.comp2211.group6.view.RunwayView?>
-<?import org.comp2211.group6.view.BreakdownView?>
-<?import org.comp2211.group6.view.EditAnObstacleView?>
-<?import org.comp2211.group6.view.CreateAnObstacleView?>
-<?import org.comp2211.group6.view.LoadAnObstacleView?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.RowConstraints?>
 

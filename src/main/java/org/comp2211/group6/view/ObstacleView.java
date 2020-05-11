@@ -46,12 +46,6 @@ public abstract class ObstacleView extends GridPane implements Initializable {
     protected TextField obstacleDescription;
 
     @FXML
-    protected TextField obstacleLength;
-
-    @FXML
-    protected TextField obstacleWidth;
-
-    @FXML
     protected TextField obstacleHeight;
 
     @FXML
@@ -83,16 +77,12 @@ public abstract class ObstacleView extends GridPane implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        disableBindings = obstacleName.textProperty().isEmpty().or(obstacleLength.textProperty()
+        disableBindings = obstacleName.textProperty().isEmpty().or(obstacleHeight.textProperty()
                         .isEmpty()
-                        .or(obstacleWidth.textProperty().isEmpty().or(obstacleHeight.textProperty()
-                                        .isEmpty()
-                                        .or(obstacleDistanceFromCentreLine.textProperty().isEmpty()
-                                                        .or(obstacleDistanceFromLeft.textProperty()
-                                                                        .isEmpty()
-                                                                        .or(obstacleDistanceFromRight
-                                                                                        .textProperty()
-                                                                                        .isEmpty()))))));
+                        .or(obstacleDistanceFromCentreLine.textProperty().isEmpty()
+                                        .or(obstacleDistanceFromLeft.textProperty().isEmpty()
+                                                        .or(obstacleDistanceFromRight.textProperty()
+                                                                        .isEmpty()))));
         obstacleSaveButton.disableProperty().bind(disableBindings);
         obstacleExportButton.disableProperty().bind(disableBindings);
     }
@@ -116,8 +106,6 @@ public abstract class ObstacleView extends GridPane implements Initializable {
      */
     protected Obstacle getNewObstacle() {
         return new Obstacle(obstacleName.getText(), obstacleDescription.getText(),
-                        Double.parseDouble(obstacleLength.getText()),
-                        Double.parseDouble(obstacleWidth.getText()),
                         Double.parseDouble(obstacleHeight.getText()),
                         Double.parseDouble(obstacleDistanceFromCentreLine.getText()),
                         Double.parseDouble(obstacleDistanceFromLeft.getText()),

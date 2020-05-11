@@ -261,9 +261,15 @@ public class MainView extends GridPane implements Initializable {
         changeView(airportConfigView);
     };
 
+    /**
+     * Handler for export button ActionEvent in airportConfigView
+     * @param airportConfigView
+     * @return
+     */
     private EventHandler<ActionEvent> airportExportButtonClicked(
             AirportConfigView airportConfigView) {
         EventHandler<ActionEvent> exportButtonHandler = new EventHandler<ActionEvent>() {
+
             @Override
             public void handle(ActionEvent event) {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
@@ -272,36 +278,67 @@ public class MainView extends GridPane implements Initializable {
                 alert.showAndWait();
 
                 if (alert.getResult() == ButtonType.YES) {
+                    try{
+                        airportConfigView.save.setDisable(true);
+                        if (airportConfigView.newAirport && airportConfigView.newName == null)
+                            throw new Exception("Please add a name to the runway");
 
-                    airportConfigView.save.setDisable(true);
-                    if (airportConfigView.newAirport && airportConfigView.newName == null) {
-                        alert = new Alert(Alert.AlertType.ERROR, "Please input an airport name",
+                        if (airportConfigView.airport.getRunways().size() == 0)
+                            throw new Exception("Please add a runway");
+
+                        Iterator<Runway> iter = airportConfigView.airport.getRunways().iterator();
+                        boolean logicalRunwayError = false;
+                        while (iter.hasNext()){
+                            if(iter.next().getLogicalRunways().size() == 0)
+                                logicalRunwayError = true;
+                        }
+
+                        if(logicalRunwayError)
+                            throw new Exception("One or more runways does not contain a logical runway");
+
+                        if (airportConfigView.newAirport && airportConfigView.newName != null) {
+                            currentAirport.set(airportConfigView.getAirport()
+                                    .getNewInstance(airportConfigView.newName));
+                            changeView(runwayView);
+                            notifyUpdate("Airport", "Updated");
+                            airportConfigView.airport = null;
+
+                            export(airportConfigView.airport);
+
+                        }
+
+                        if (!airportConfigView.newAirport) {
+                            currentAirport.set(airportConfigView.getAirport()
+                                    .getNewInstance(airportConfigView.newName));
+                            changeView(runwayView);
+                            notifyUpdate("Airport", "Updated");
+                            airportConfigView.airport = null;
+                            airportConfigView.reset();
+
+                            export(airportConfigView.airport);
+                        }
+
+                    } catch(Exception e){
+                        alert = new Alert(Alert.AlertType.ERROR, "Error: " + e.getMessage(),
                                 ButtonType.OK);
                         alert.showAndWait();
-
-                    } else if (airportConfigView.newAirport && airportConfigView.newName != null) {
-                        currentAirport.set(airportConfigView.getAirport()
-                                .getNewInstance(airportConfigView.newName));
-                        changeView(runwayView);
-                        notifyUpdate("Airport", "Updated");
-                        airportConfigView.airport = null;
-
-                    } else if (!airportConfigView.newAirport) {
-                        currentAirport.set(airportConfigView.getAirport()
-                                .getNewInstance(airportConfigView.newName));
-                        changeView(runwayView);
-                        notifyUpdate("Airport", "Updated");
-                        airportConfigView.airport = null;
                     }
-                    airportConfigView.reset();
                 }
                 event.consume();
             }
         };
-
         return exportButtonHandler;
     }
 
+    private void export(Airport airport){
+
+    }
+
+    /**
+     * Handler for save button ActionEvent in airportConfigView
+     * @param airportConfigView
+     * @return
+     */
     private EventHandler<ActionEvent> airportSaveButtonClicked(
                     AirportConfigView airportConfigView) {
 

@@ -48,6 +48,14 @@ public class FolderView extends GridPane implements Initializable {
         validateButton.setText("Export");
     }
 
+    public FolderView(String savetype) {
+        loadFxml(getClass().getResource("/file_view.fxml"), this);
+        title.setText("Choose a directory to save the " + savetype);
+        filePath.set("No directory selected");
+        validateButton.setText("Export");
+    }
+
+
     private static void loadFxml(URL fxmlFile, Object rootController) {
         FXMLLoader loader = new FXMLLoader(fxmlFile);
         loader.setController(rootController);

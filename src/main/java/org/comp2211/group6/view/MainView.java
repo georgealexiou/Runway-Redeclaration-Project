@@ -35,7 +35,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import org.comp2211.group6.XMLHandler;
-
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -265,6 +264,7 @@ public class MainView extends GridPane implements Initializable {
     private void createAirport(ActionEvent e) {
         this.returnToRunwayViewButton.setVisible(true);
         airportConfigView.newAirport();
+        airportConfigView.export.setOnAction(airportExportButtonClicked(airportConfigView));
         airportConfigView.save.setOnAction(airportSaveButtonClicked(airportConfigView));
         changeView(airportConfigView);
     }
@@ -273,43 +273,77 @@ public class MainView extends GridPane implements Initializable {
     private void editAirport(ActionEvent e) {
         this.returnToRunwayViewButton.setVisible(true);
         airportConfigView.loadAirport(currentAirport.get());
+        airportConfigView.export.setOnAction(airportExportButtonClicked(airportConfigView));
         airportConfigView.save.setOnAction(airportSaveButtonClicked(airportConfigView));
         changeView(airportConfigView);
     };
 
+    /**
+     * Handler for export button ActionEvent in airportConfigView
+     * 
+     * @param airportConfigView
+     * @return
+     */
     private EventHandler<ActionEvent> airportExportButtonClicked(
                     AirportConfigView airportConfigView) {
         EventHandler<ActionEvent> exportButtonHandler = new EventHandler<ActionEvent>() {
+
             @Override
             public void handle(ActionEvent event) {
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
-                                "Save airport " + airportConfigView.airport.getName() + "?",
+                Alert alert = new Alert(
+                                Alert.AlertType.CONFIRMATION, "Save and export airport "
+                                                + airportConfigView.airport.getName() + "?",
                                 ButtonType.YES, ButtonType.NO);
                 alert.showAndWait();
 
                 if (alert.getResult() == ButtonType.YES) {
+                    try {
+                        airportConfigView.save.setDisable(true);
+                        if (airportConfigView.newAirport && airportConfigView.newName == null)
+                            throw new Exception("Please add a name to the runway");
 
-                    airportConfigView.save.setDisable(true);
-                    if (airportConfigView.newAirport && airportConfigView.newName == null) {
-                        alert = new Alert(Alert.AlertType.ERROR, "Please input an airport name",
+                        if (airportConfigView.airport.getRunways().size() == 0)
+                            throw new Exception("Please add a runway");
+
+                        Iterator<Runway> iter = airportConfigView.airport.getRunways().iterator();
+                        boolean logicalRunwayError = false;
+                        while (iter.hasNext()) {
+                            if (iter.next().getLogicalRunways().size() == 0)
+                                logicalRunwayError = true;
+                        }
+
+                        if (logicalRunwayError)
+                            throw new Exception(
+                                            "One or more runways does not contain a logical runway");
+
+                        if (airportConfigView.newAirport && airportConfigView.newName != null) {
+                            currentAirport.set(airportConfigView.getAirport()
+                                            .getNewInstance(airportConfigView.newName));
+                            changeView(runwayView);
+                            notifyUpdate("Airport", "Updated", true);
+                            airportConfigView.airport = null;
+                        }
+
+                        if (!airportConfigView.newAirport) {
+                            currentAirport.set(airportConfigView.getAirport()
+                                            .getNewInstance(airportConfigView.newName));
+                            changeView(runwayView);
+                            notifyUpdate("Airport", "Updated", true);
+                            airportConfigView.airport = null;
+                            airportConfigView.reset();
+                        }
+
+                        fileView.setTitle("Choose a location to export the airport");
+                        fileView.setLoading(false);
+                        fileView.setValidator(airportExportValidateAction);
+                        changeView(fileView);
+
+
+                    } catch (Exception e) {
+                        alert = new Alert(Alert.AlertType.ERROR, "Error: " + e.getMessage(),
                                         ButtonType.OK);
                         alert.showAndWait();
-
-                    } else if (airportConfigView.newAirport && airportConfigView.newName != null) {
-                        currentAirport.set(airportConfigView.getAirport()
-                                        .getNewInstance(airportConfigView.newName));
-                        changeView(runwayView);
-                        notifyUpdate("Airport", "Updated", true);
-                        airportConfigView.airport = null;
-
-                    } else if (!airportConfigView.newAirport) {
-                        currentAirport.set(airportConfigView.getAirport()
-                                        .getNewInstance(airportConfigView.newName));
-                        changeView(runwayView);
-                        notifyUpdate("Airport", "Updated", true);
-                        airportConfigView.airport = null;
                     }
-                    airportConfigView.reset();
                 }
                 event.consume();
             }
@@ -318,10 +352,29 @@ public class MainView extends GridPane implements Initializable {
         return exportButtonHandler;
     }
 
+    private EventHandler<ActionEvent> airportExportValidateAction =
+                    new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent event) {
+                            XMLHandler xml = new XMLHandler();
+                            xml.saveAirportToXML(fileView.filePath.get(), currentAirport.get());
+                            notifyUpdate("Airport", "exported", true);
+                            changeView(runwayView);
+                            event.consume();
+                        }
+                    };
+
+
+    /**
+     * Handler for save button ActionEvent in airportConfigView
+     * 
+     * @param airportConfigView
+     * @return
+     */
     private EventHandler<ActionEvent> airportSaveButtonClicked(
                     AirportConfigView airportConfigView) {
-
         EventHandler<ActionEvent> saveButtonHandler = new EventHandler<ActionEvent>() {
+
             @Override
             public void handle(ActionEvent event) {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
@@ -470,7 +523,6 @@ public class MainView extends GridPane implements Initializable {
                     alert.setContentText(xml.errorMessage);
                 }
                 alert.showAndWait();
-                notifyUpdate("Obstacle", "loaded to system", false);
             }
         }
     };

@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.ResourceBundle;
 
@@ -260,33 +261,100 @@ public class MainView extends GridPane implements Initializable {
         changeView(airportConfigView);
     };
 
+    private EventHandler<ActionEvent> airportExportButtonClicked(
+            AirportConfigView airportConfigView) {
+        EventHandler<ActionEvent> exportButtonHandler = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
+                        "Save airport " + airportConfigView.airport.getName() + "?", ButtonType.YES,
+                        ButtonType.NO);
+                alert.showAndWait();
+
+                if (alert.getResult() == ButtonType.YES) {
+
+                    airportConfigView.save.setDisable(true);
+                    if (airportConfigView.newAirport && airportConfigView.newName == null) {
+                        alert = new Alert(Alert.AlertType.ERROR, "Please input an airport name",
+                                ButtonType.OK);
+                        alert.showAndWait();
+
+                    } else if (airportConfigView.newAirport && airportConfigView.newName != null) {
+                        currentAirport.set(airportConfigView.getAirport()
+                                .getNewInstance(airportConfigView.newName));
+                        changeView(runwayView);
+                        notifyUpdate("Airport", "Updated");
+                        airportConfigView.airport = null;
+
+                    } else if (!airportConfigView.newAirport) {
+                        currentAirport.set(airportConfigView.getAirport()
+                                .getNewInstance(airportConfigView.newName));
+                        changeView(runwayView);
+                        notifyUpdate("Airport", "Updated");
+                        airportConfigView.airport = null;
+                    }
+                    airportConfigView.reset();
+                }
+                event.consume();
+            }
+        };
+
+        return exportButtonHandler;
+    }
+
     private EventHandler<ActionEvent> airportSaveButtonClicked(
                     AirportConfigView airportConfigView) {
+
         EventHandler<ActionEvent> saveButtonHandler = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
+                        "Save airport " + airportConfigView.airport.getName() + "?", ButtonType.YES,
+                        ButtonType.NO);
+                alert.showAndWait();
 
-                airportConfigView.save.setDisable(true);
-                if (airportConfigView.newAirport && airportConfigView.newName == null) {
-                    Alert alert = new Alert(Alert.AlertType.ERROR, "Please input an airport name",
-                                    ButtonType.OK);
-                    alert.showAndWait();
+                if (alert.getResult() == ButtonType.YES) {
+                    try{
+                        airportConfigView.save.setDisable(true);
+                        if (airportConfigView.newAirport && airportConfigView.newName == null)
+                            throw new Exception("Please add a name to the runway");
 
-                } else if (airportConfigView.newAirport && airportConfigView.newName != null) {
-                    currentAirport.set(airportConfigView.getAirport()
+                        if (airportConfigView.airport.getRunways().size() == 0)
+                            throw new Exception("Please add a runway");
+
+                        Iterator<Runway> iter = airportConfigView.airport.getRunways().iterator();
+                        boolean logicalRunwayError = false;
+                        while (iter.hasNext()){
+                            if(iter.next().getLogicalRunways().size() == 0)
+                                logicalRunwayError = true;
+                        }
+
+                        if(logicalRunwayError)
+                            throw new Exception("One or more runways does not contain a logical runway");
+
+                        if (airportConfigView.newAirport && airportConfigView.newName != null) {
+                            currentAirport.set(airportConfigView.getAirport()
                                     .getNewInstance(airportConfigView.newName));
-                    changeView(runwayView);
-                    notifyUpdate("Airport", "Updated");
-                    airportConfigView.airport = null;
+                            changeView(runwayView);
+                            notifyUpdate("Airport", "Updated");
+                            airportConfigView.airport = null;
+                        }
 
-                } else if (!airportConfigView.newAirport) {
-                    currentAirport.set(airportConfigView.getAirport()
+                        if (!airportConfigView.newAirport) {
+                            currentAirport.set(airportConfigView.getAirport()
                                     .getNewInstance(airportConfigView.newName));
-                    changeView(runwayView);
-                    notifyUpdate("Airport", "Updated");
-                    airportConfigView.airport = null;
+                            changeView(runwayView);
+                            notifyUpdate("Airport", "Updated");
+                            airportConfigView.airport = null;
+                            airportConfigView.reset();
+                        }
+
+                    } catch(Exception e){
+                        alert = new Alert(Alert.AlertType.ERROR, "Error: " + e.getMessage(),
+                                ButtonType.OK);
+                        alert.showAndWait();
+                    }
                 }
-                airportConfigView.reset();
                 event.consume();
             }
         };

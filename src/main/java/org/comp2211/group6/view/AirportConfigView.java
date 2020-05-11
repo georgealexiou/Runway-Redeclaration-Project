@@ -117,12 +117,6 @@ public class AirportConfigView extends GridPane implements Initializable {
     @FXML
     private Button deleteLogicalRunway;
 
-    @FXML
-    void exportClicked(MouseEvent event) {
-
-    }
-
-
     /*
      * Logical Runway Buttons
      */
@@ -137,7 +131,7 @@ public class AirportConfigView extends GridPane implements Initializable {
         newLogical = true;
         saveLogicalRunway.setDisable(false);
         selectLogicalRunway.getSelectionModel().clearSelection();
-        setEditableLogicalRunway(false);
+        setEditableLogicalRunway(true);
 
     }
 
@@ -229,6 +223,7 @@ public class AirportConfigView extends GridPane implements Initializable {
                 airport.getRunway(currentRunway.getIdentifier()).getLogicalRunways()
                                 .remove(currentLogicalRunway);
                 isChanged = true;
+                setEditableLogicalRunway(false);
                 load();
             }
         }
@@ -366,6 +361,8 @@ public class AirportConfigView extends GridPane implements Initializable {
             airportName.setText(newName);
         else if (newAirport)
             airportName.clear();
+        else if (airport == null)
+            airportName.clear();
         else
             airportName.setText(airport.getName());
 
@@ -378,9 +375,10 @@ public class AirportConfigView extends GridPane implements Initializable {
         runwayName.clear();
 
         ObservableList runwayObservable = FXCollections.observableArrayList();
-        runwayObservable.addAll(airport.getRunwayNames());
-        selectRunway.setItems(runwayObservable);
-
+        if(airport != null) {
+            runwayObservable.addAll(airport.getRunwayNames());
+            selectRunway.setItems(runwayObservable);
+        }
         selectLogicalRunway.getItems().clear();
         logicalRunwayName.clear();
         displacedThreshold.clear();
@@ -399,8 +397,10 @@ public class AirportConfigView extends GridPane implements Initializable {
         });
 
         deleteRunway.setDisable(true);
-        if (airport.getRunways().size() < 3)
-            addRunway.setDisable(false);
+        if(airport != null) {
+            if (airport.getRunways().size() < 3)
+                addRunway.setDisable(false);
+        }
 
         if (isChanged) {
             save.setDisable(false);

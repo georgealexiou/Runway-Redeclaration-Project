@@ -8,7 +8,9 @@
 #+select_tags: export
 #+exclude_tags: noexport
 #+latex_class: article
+#+latex_class_options: [10pt]
 #+latex_header_extra: \usepackage{pdfpages}
+#+latex_header_extra: \usepackage{fullpage}
 #+subtitle: COMP2211 SEG - Group 6
 #+date: \today
 
@@ -34,9 +36,28 @@ Below are storyboards we have updated as a result of design changes. There is no
 #+label: fig:updated-wrapper
 [[file:storyboards/component-wrapper.png]]
 
+#+caption: Updated Obstacle View
+#+attr_latex: :placement [H]
+#+label: fig:update-obstacle-view
+[[file:storyboards/updated-obstacle-view.png]]
+
+#+caption: Updated Breakdown View
+#+attr_latex: :placement [H]
+#+label: fig:update-breakdown-view
+[[file:storyboards/updated-breakdown-view.png]]
+
+#+caption: Updated Airport View
+#+attr_latex: :placement [H]
+#+label: fig:update-airport-view
+[[file:storyboards/updated-airport-view.png]]
+
 * Design Decisions
 It was decided that we should modify the views slightly in order to combat an issue with DPI scaling.
 This resulted with a reasonable user experience across multiple scales but we feel that fundamental design changes would be the best case scenario for this issue, but due to the time constraints and our satisfaction with the user experience we did not attempt to do this.
+
+We made the decision to remove the CLI functionality as we were constrained on time and it was always just a way of initially demonstrating the calculations.
+
+We decided to omit importing/exporting multiple obstacles as it was not required and time was constrained.
 * Scenarios and Test Output
 ** Scenarios
 We created some new scenarios in this sprint and also modified some previous scenarios to reflect the design decisions from Sprint 2. This was based on feedback provided by out Sprint review meeting in which it was suggested we should update our design artefacts.
@@ -112,11 +133,16 @@ In the top menu bar the only options she has are to create or load an airport.
 She chooses one of these options and sees that the menu items update according the view she is on.
 She has the option to return to the runway view or toggle the colour scheme from the menu bar.
 ** Manual Testing
-*** TODO include the testing report again
+#+begin_export latex
+\includepdf[pages=-, width=\textwidth]{testing.pdf}
+#+end_export
 ** Unit Testing
-This sprint saw some changes to the way we handle validation and tests were updated to reflect this.
-We continued to test using Travis CI and here is the console output from the execution of our unit tests.
-*** TODO Add a screen shot of regression tests
+Some minor modifications were made to tests to accommodate for the removal of length and width from obstacles.
+We continued to carry out regression testing through continuous integration and all tests passed.
+#+caption: Evidence of regression testing
+#+attr_latex: :placement [H]
+#+label: fig:evidence-of-regression-tests
+[[file:unit-test.png]]
 * Sprint Overview
 ** Our Definition of Done
 We define a task as being done when the scenarios corresponding to the task are able to be completed without error.
@@ -132,6 +158,11 @@ We included some tasks in this sprint that were slightly open ended - such as th
 - As a <MOCT> I want to <change the colour scheme of the system> so that I can <use it at different times of the day and show my colourblind colleagues>.
 - As a <MOCT> I want to <print out the results of simulations in a textual format> so that I can <keep records of previous simulations>.
 - As a <MOCT> I want to <export displays as images> so that I can <keep clear records and share with other interested parties>.
+** Tasks Not Completed
+- CLI Improvements: See design decisions
+- Importing/Exporting Multiple Obstacles: See design decisions
 ** Burndown Chart
-*** TODO Make sure there is no mention of time
-*** TODO Include both burndown charts
+#+caption: Burndown Chart for Sprint 3
+#+attr_latex: :placement [H]
+#+label: fig:burndown-chart
+[[file:burndown.png]]

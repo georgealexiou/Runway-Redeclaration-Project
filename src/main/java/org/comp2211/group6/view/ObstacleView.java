@@ -91,10 +91,10 @@ public abstract class ObstacleView extends GridPane implements Initializable {
                                                                         .isEmpty()))));
         obstacleSaveButton.disableProperty().bind(disableBindings);
         obstacleExportButton.disableProperty().bind(disableBindings);
-        obstacleHeight.setTextFormatter(numberFormatter(true));
-        obstacleDistanceFromCentreLine.setTextFormatter(numberFormatter(false));
-        obstacleDistanceFromLeft.setTextFormatter(numberFormatter(false));
-        obstacleDistanceFromRight.setTextFormatter(numberFormatter(false));
+        obstacleHeight.setTextFormatter(Formatters.numberFormatter(true));
+        obstacleDistanceFromCentreLine.setTextFormatter(Formatters.numberFormatter(false));
+        obstacleDistanceFromLeft.setTextFormatter(Formatters.numberFormatter(false));
+        obstacleDistanceFromRight.setTextFormatter(Formatters.numberFormatter(false));
     }
 
     /*
@@ -122,21 +122,6 @@ public abstract class ObstacleView extends GridPane implements Initializable {
                         Double.parseDouble(obstacleDistanceFromRight.getText()));
     }
 
-    private TextFormatter<Change> numberFormatter(Boolean positive) {
-        Pattern decimalPattern;
-        if (positive) {
-            decimalPattern = Pattern.compile("\\d*(\\.\\d*)?");
-        } else {
-            decimalPattern = Pattern.compile("-?\\d*(\\.\\d*)?");
-        }
-        UnaryOperator<Change> filter = change -> {
-            if (decimalPattern.matcher(change.getControlNewText()).matches()) {
-                return change;
-            } else {
-                return null;
-            }
-        };
-        return new TextFormatter<>(filter);
-    }
+    
 
 }

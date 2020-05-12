@@ -604,23 +604,41 @@ public class RunwayView extends GridPane implements Initializable {
     private void drawSlope(GraphicsContext gc) {
         boolean towards = this.currentLogicalRunway.get().breakdown.getDirection();
         double startY, endY, startX, endX;
-        if (currentLogicalRunway.get().getHeading() <= 18) {
-            startX = scale(leftOffset + currentLogicalRunway.get().getDisplacedThreshold()
-                            + currentObstacle.get().distanceFromLeftThreshold,
-                            runwayCanvas.getWidth());
-            endX = startX + scale(50 * currentObstacle.get().getHeight(), runwayCanvas.getWidth());
-        } else {
-            endX = scale(leftOffset + runwayLength
-                            - currentObstacle.get().distanceFromRightThreshold,
-                            runwayCanvas.getWidth());
-            startX = endX + scale(50 * currentObstacle.get().getHeight(), runwayCanvas.getWidth());
-        }
+
         if (towards) {
             startY = runwayCanvas.getHeight() / 2 - runwayWidth / 2;
             endY = startY - 2 * currentObstacle.get().getHeight();
+            if (currentLogicalRunway.get().getHeading() <= 18) {
+                endX = scale(leftOffset + currentLogicalRunway.get().getDisplacedThreshold()
+                                + currentObstacle.get().distanceFromLeftThreshold,
+                                runwayCanvas.getWidth());
+                startX = endX - scale(50 * currentObstacle.get().getHeight(),
+                                runwayCanvas.getWidth());
+            } else {
+                endX = scale(leftOffset + runwayLength
+                                - currentLogicalRunway.get().getDisplacedThreshold()
+                                - currentObstacle.get().distanceFromRightThreshold,
+                                runwayCanvas.getWidth());
+                startX = endX + scale(50 * currentObstacle.get().getHeight(),
+                                runwayCanvas.getWidth());
+            }
         } else {
             endY = runwayCanvas.getHeight() / 2 - runwayWidth / 2;
             startY = endY - 2 * currentObstacle.get().getHeight();
+            if (currentLogicalRunway.get().getHeading() <= 18) {
+                startX = scale(leftOffset + currentLogicalRunway.get().getDisplacedThreshold()
+                                + currentObstacle.get().distanceFromLeftThreshold,
+                                runwayCanvas.getWidth());
+                endX = startX + scale(50 * currentObstacle.get().getHeight(),
+                                runwayCanvas.getWidth());
+            } else {
+                startX = scale(leftOffset + runwayLength
+                                - currentLogicalRunway.get().getDisplacedThreshold()
+                                - currentObstacle.get().distanceFromRightThreshold,
+                                runwayCanvas.getWidth());
+                endX = startX - scale(50 * currentObstacle.get().getHeight(),
+                                runwayCanvas.getWidth());
+            }
         }
         drawArrow(gc, startX, startY, endX, endY, this.colours.getSlopeCalculationColour());
     }

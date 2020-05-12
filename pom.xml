@@ -34,9 +34,19 @@
     </dependency>
     <dependency>
         <groupId>org.openjfx</groupId>
-        <artifactId>javafx-controls</artifactId>
+        <artifactId>javafx-base</artifactId>
         <version>13</version>
     </dependency>
+    <dependency>
+        <groupId>org.openjfx</groupId>
+        <artifactId>javafx-controls</artifactId>
+        <version>13</version>
+    </dependency>  
+    <dependency>
+        <groupId>org.openjfx</groupId>
+        <artifactId>javafx-swing</artifactId>
+        <version>13</version>
+    </dependency>    
     <dependency>
         <groupId>org.openjfx</groupId>
         <artifactId>javafx-fxml</artifactId>

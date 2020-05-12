@@ -24,8 +24,7 @@ public class AppTest {
         LogicalRunway logicalRunway2 = new LogicalRunway(27, 0, 'R', runwayParameters2);
 
         // Creating the obstacle, runway and calculator.
-        Obstacle obstacle1 = new Obstacle("TestObstacle1", "For testing", 0.0, 0.0, 12.0, 0.0,
-                        -50.0, 3646.0);
+        Obstacle obstacle1 = new Obstacle("TestObstacle1", "For testing", 12.0, 0.0, -50.0, 3646.0);
         Runway runway1 = new Runway("TestRunway1");
         runway1.setObstacle(obstacle1);
         runway1.addRunway(logicalRunway1);
@@ -69,8 +68,8 @@ public class AppTest {
         LogicalRunway logicalRunway2 = new LogicalRunway(27, 0, 'L', runwayParameters2);
 
         // Creating the obstacle, runway and calculator.
-        Obstacle obstacle1 = new Obstacle("TestObstacle1", "For testing", 0.0, 0.0, 25.0, -20.0,
-                        2853.0, 500.0);
+        Obstacle obstacle1 =
+                        new Obstacle("TestObstacle1", "For testing", 25.0, -20.0, 2853.0, 500.0);
         Runway runway1 = new Runway("TestRunway1");
         runway1.setObstacle(obstacle1);
         runway1.addRunway(logicalRunway1);
@@ -114,8 +113,8 @@ public class AppTest {
         LogicalRunway logicalRunway2 = new LogicalRunway(27, 0, 'L', runwayParameters2);
 
         // Creating the obstacle, runway and calculator.
-        Obstacle obstacle1 = new Obstacle("TestObstacle1", "For testing", 0.0, 0.0, 15.0, 60.0,
-                        150.0, 3203.0);
+        Obstacle obstacle1 =
+                        new Obstacle("TestObstacle1", "For testing", 15.0, 60.0, 150.0, 3203.0);
         Runway runway1 = new Runway("TestRunway1");
         runway1.setObstacle(obstacle1);
         runway1.addRunway(logicalRunway1);
@@ -160,8 +159,7 @@ public class AppTest {
         LogicalRunway logicalRunway2 = new LogicalRunway(27, 0, 'R', runwayParameters2);
 
         // Creating the obstacle, runway and calculator.
-        Obstacle obstacle1 = new Obstacle("TestObstacle1", "For testing", 0.0, 0.0, 20.0, 20.0,
-                        3546.0, 50.0);
+        Obstacle obstacle1 = new Obstacle("TestObstacle1", "For testing", 20.0, 20.0, 3546.0, 50.0);
         Runway runway1 = new Runway("TestRunway1");
         runway1.setObstacle(obstacle1);
         runway1.addRunway(logicalRunway1);
@@ -206,8 +204,7 @@ public class AppTest {
         LogicalRunway logicalRunway2 = new LogicalRunway(27, 0, 'R', runwayParameters2);
 
         // Creating the obstacle, runway and calculator.
-        Obstacle obstacle1 = new Obstacle("TestObstacle1", "For testing", 0.0, 0.0, 20.0, 80.0,
-                        3546.0, 50.0);
+        Obstacle obstacle1 = new Obstacle("TestObstacle1", "For testing", 20.0, 80.0, 3546.0, 50.0);
         Runway runway1 = new Runway("TestRunway1");
         runway1.setObstacle(obstacle1);
         runway1.addRunway(logicalRunway1);
@@ -252,8 +249,8 @@ public class AppTest {
         LogicalRunway logicalRunway2 = new LogicalRunway(27, 0, 'R', runwayParameters2);
 
         // Creating the obstacle, runway and calculator.
-        Obstacle obstacle1 = new Obstacle("TestObstacle1", "For testing", 0.0, 0.0, 20.0, -80.0,
-                        3546.0, 50.0);
+        Obstacle obstacle1 =
+                        new Obstacle("TestObstacle1", "For testing", 20.0, -80.0, 3546.0, 50.0);
         Runway runway1 = new Runway("TestRunway1");
         runway1.setObstacle(obstacle1);
         runway1.addRunway(logicalRunway1);
@@ -298,8 +295,8 @@ public class AppTest {
         LogicalRunway logicalRunway2 = new LogicalRunway(27, 0, 'R', runwayParameters2);
 
         // Creating the obstacle, runway and calculator.
-        Obstacle obstacle1 = new Obstacle("TestObstacle1", "For testing", 0.0, 0.0, 20.0, 20.0,
-                        3546.0, -70.0);
+        Obstacle obstacle1 =
+                        new Obstacle("TestObstacle1", "For testing", 20.0, 20.0, 3546.0, -70.0);
         Runway runway1 = new Runway("TestRunway1");
         runway1.setObstacle(obstacle1);
         runway1.addRunway(logicalRunway1);
@@ -344,8 +341,8 @@ public class AppTest {
         LogicalRunway logicalRunway2 = new LogicalRunway(27, 0, 'R', runwayParameters2);
 
         // Creating the obstacle, runway and calculator.
-        Obstacle obstacle1 = new Obstacle("TestObstacle1", "For testing", 0.0, 0.0, 20.0, 20.0,
-                        -70.0, 3546.0);
+        Obstacle obstacle1 =
+                        new Obstacle("TestObstacle1", "For testing", 20.0, 20.0, -70.0, 3546.0);
         Runway runway1 = new Runway("TestRunway1");
         runway1.setObstacle(obstacle1);
         runway1.addRunway(logicalRunway1);
@@ -390,8 +387,7 @@ public class AppTest {
         LogicalRunway logicalRunway2 = new LogicalRunway(27, 0, 'R', runwayParameters2);
 
         // Creating the obstacle, runway and calculator.
-        Obstacle obstacle1 = new Obstacle("TestObstacle1", "For testing", 0.0, 0.0, 12.0, 0.0,
-                        -50.0, 3646.0);
+        Obstacle obstacle1 = new Obstacle("TestObstacle1", "For testing", 12.0, 0.0, -50.0, 3646.0);
         Runway runway1 = new Runway("TestRunway1");
         runway1.setObstacle(obstacle1);
         runway1.addRunway(logicalRunway1);

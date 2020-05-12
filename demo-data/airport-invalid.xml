@@ -1,0 +1,27 @@
+<airport>
+    <name>Invalid Aiport</name>
+    <runway>
+        <name>09R27R</name>
+        <logicalRunway>
+            <tora>3902</tora>
+            <asda>3902</asda>
+            <lda>3595</lda>
+            <heading>09</heading>
+            <displacedThreshold>306</displacedThreshold>
+            <position>L</position>
+        </logicalRunway>
+        <logicalRunway>
+            <tora>3884</tora>
+        </logicalRunway>
+    </runway>
+        <name>09R27L</name>
+        <logicalRunway>
+            <tora>3660</tora>
+            <toda>3660</toda>
+            <asda>3660</asda>
+            <heading>27</heading>
+            <displacedThreshold>0</displacedThreshold>
+            <position>L</position>
+        </logicalRunway>
+    </runway>
+</airport>

@@ -1,0 +1,51 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="tora" type="xs:decimal"/>
+  <xs:element name="toda" type="xs:decimal"/>
+  <xs:element name="asda" type="xs:decimal"/>
+  <xs:element name="lda" type="xs:decimal"/>
+  <xs:element name="heading">
+    <xs:simpleType>
+      <xs:restriction base="xs:integer">
+        <xs:pattern value="[1-9]|0[1-9]|[12][0-9]|3[0-6]"/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="displacedThreshold" type="xs:decimal"/>
+  <xs:element name="position">
+    <xs:simpleType>
+      <xs:restriction base="xs:string">
+        <xs:pattern value="C|L|R"/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="name" type="xs:string"/>
+  <xs:element name="logicalRunway">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="tora"/>
+        <xs:element ref="toda"/>
+        <xs:element ref="asda"/>
+        <xs:element ref="lda"/>
+        <xs:element ref="heading"/>
+        <xs:element ref="displacedThreshold"/>
+        <xs:element ref="position"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="runway">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="name"/>
+        <xs:element ref="logicalRunway" maxOccurs="unbounded" minOccurs="1"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="airport">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="name"/>
+        <xs:element ref="runway" maxOccurs="unbounded" minOccurs="1"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

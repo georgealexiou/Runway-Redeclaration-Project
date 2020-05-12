@@ -2,7 +2,6 @@ package org.comp2211.group6.view;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-import org.comp2211.group6.Model.Obstacle;
 
 public class EditAnObstacleView extends ObstacleView {
 
@@ -10,11 +9,6 @@ public class EditAnObstacleView extends ObstacleView {
         super();
         loadFxml(getClass().getResource("/obstacle_view.fxml"), this);
         this.obstacleViewTitle.setText("Edit an Obstacle");
-        this.obstacleName.setEditable(false);
-        this.obstacleDescription.setEditable(false);
-        this.obstacleLength.setEditable(false);
-        this.obstacleWidth.setEditable(false);
-        this.obstacleHeight.setEditable(false);
     }
 
     /*
@@ -23,33 +17,29 @@ public class EditAnObstacleView extends ObstacleView {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        disableBindings = obstacleName.textProperty().isEmpty().or(obstacleLength.textProperty()
+        disableBindings = obstacleName.textProperty().isEmpty().or(obstacleHeight.textProperty()
                         .isEmpty()
-                        .or(obstacleWidth.textProperty().isEmpty().or(obstacleHeight.textProperty()
-                                        .isEmpty()
-                                        .or(obstacleDistanceFromCentreLine.textProperty().isEmpty()
-                                                        .or(obstacleDistanceFromLeft.textProperty()
-                                                                        .isEmpty()
-                                                                        .or(obstacleDistanceFromRight
-                                                                                        .textProperty()
-                                                                                        .isEmpty()))))));
+                        .or(obstacleDistanceFromCentreLine.textProperty().isEmpty()
+                                        .or(obstacleDistanceFromLeft.textProperty().isEmpty()
+                                                        .or(obstacleDistanceFromRight.textProperty()
+                                                                        .isEmpty()))));
         obstacleSaveButton.disableProperty().bind(disableBindings);
-    }
+        obstacleExportButton.disableProperty().unbind();
+        obstacleExportButton.setDisable(false);
 
-    /*
-     * Fetch data of the current obstacle(selected item of Obstacle ComboBox) and fill in TextFields
-     */
-    public void loadCurrentObstacle(Obstacle currentObstacle) {
-        this.obstacleName.setText(currentObstacle.getName());
-        this.obstacleDescription.setText(currentObstacle.getDescription());
-        this.obstacleLength.setText(String.valueOf(currentObstacle.getLength()));
-        this.obstacleWidth.setText(String.valueOf(currentObstacle.getWidth()));
-        this.obstacleHeight.setText(String.valueOf(currentObstacle.getHeight()));
-        this.obstacleDistanceFromCentreLine
-                        .setText(String.valueOf(currentObstacle.getDistanceToCentreLine()));
-        this.obstacleDistanceFromLeft
-                        .setText(String.valueOf(currentObstacle.getDistanceFromLeft()));
-        this.obstacleDistanceFromRight
-                        .setText(String.valueOf(currentObstacle.getDistanceFromRight()));
+        currentObstacle.addListener((e, origVal, newVal) -> {
+            if (newVal != null) {
+                this.obstacleName.setText(newVal.getName());
+                this.obstacleDescription.setText(newVal.getDescription());
+                this.obstacleHeight.setText(String.valueOf(newVal.getHeight()));
+                this.obstacleDistanceFromCentreLine
+                                .setText(String.valueOf(newVal.getDistanceToCentreLine()));
+                this.obstacleDistanceFromLeft.setText(String.valueOf(newVal.getDistanceFromLeft()));
+                this.obstacleDistanceFromRight
+                                .setText(String.valueOf(newVal.getDistanceFromRight()));
+            }
+
+
+        });
     }
 }

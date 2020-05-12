@@ -1,6 +1,6 @@
 package org.comp2211.group6.Model;
 
-public class LogicalRunway {
+public class LogicalRunway implements Comparable {
 
     /**
      * Private Properties
@@ -12,14 +12,19 @@ public class LogicalRunway {
     private RunwayParameters originalParameters;
     private RunwayParameters recalculatedParameters;
 
-    public final Breakdown breakdown;
+    public Breakdown breakdown;
 
-    /**
+    /*
+     *
+     * 
      * Constructor for logical runway class
      * 
      * @param heading The heading of the runway 1-36
+     * 
      * @param displacedThreshold The displaced threshold of the runway
+     * 
      * @param position The position of the runway L,R,C
+     * 
      * @param params The base runway parameters
      */
     public LogicalRunway(int heading, double displacedThreshold, char position,
@@ -81,8 +86,11 @@ public class LogicalRunway {
         return recalculatedParameters;
     }
 
-    /**
-     * Private Methods
-     */
+    @Override
+    public int compareTo(Object obj) {
+        return (this.getHeading() < ((LogicalRunway) obj).getHeading() ? -1
+                        : (this.getHeading() == ((LogicalRunway) obj).getHeading() ? 0 : 1));
+    }
+
 
 }

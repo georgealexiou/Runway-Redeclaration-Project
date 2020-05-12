@@ -8,10 +8,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
-import java.util.stream.Collectors;
+import org.comp2211.group6.Controller.Calculator;
 import org.comp2211.group6.Model.LogicalRunway;
+import org.comp2211.group6.Model.Runway;
 import org.comp2211.group6.Model.RunwayParameters;
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -49,8 +51,10 @@ public class BreakdownView extends GridPane implements Initializable {
     private TextArea breakdownDetails;
 
 
-    private Map<LogicalRunway, String> availableBreakdowns;
-    private LogicalRunway currentLogicalRunway;
+    public SimpleObjectProperty<Runway> currentRunway = new SimpleObjectProperty<Runway>();
+    public SimpleObjectProperty<LogicalRunway> currentLogicalRunway =
+                    new SimpleObjectProperty<LogicalRunway>();
+    public SimpleObjectProperty<Calculator> calculator = new SimpleObjectProperty<Calculator>();
 
     public BreakdownView() {
         loadFxml(getClass().getResource("/breakdown_view.fxml"), this);
@@ -59,9 +63,7 @@ public class BreakdownView extends GridPane implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         setupBreakdownPicker(FXCollections.observableArrayList());
-        this.availableBreakdowns = new HashMap<LogicalRunway, String>();
         this.breakdownDetails.setStyle("-fx-font-family: 'monospaced';");
-        this.currentLogicalRunway = null;
         parameterColumn.setCellValueFactory(
                         new PropertyValueFactory<BreakdownComparison, String>("property"));
         originalValueColumn.setCellValueFactory(
@@ -78,34 +80,57 @@ public class BreakdownView extends GridPane implements Initializable {
         this.getRowConstraints().get(1).prefHeightProperty()
                         .bind(Bindings.size(valuesTable.getItems())
                                         .multiply(valuesTable.getFixedCellSize()).add(30));
-    }
-
-    private List<BreakdownComparison> generateComparisons() {
-        if (this.currentLogicalRunway == null)
-            return null;
-        if (this.availableBreakdowns == null)
-            return null;
-
-        List<BreakdownComparison> comparisons = new ArrayList<BreakdownComparison>();
-        RunwayParameters original = this.currentLogicalRunway.getParameters();
-        RunwayParameters recalc = this.currentLogicalRunway.getRecalculatedParameters();
-        comparisons.add(new BreakdownComparison("TORA", original.getTORA(), recalc.getTORA()));
-        comparisons.add(new BreakdownComparison("TODA", original.getTODA(), recalc.getTODA()));
-        comparisons.add(new BreakdownComparison("ASDA", original.getASDA(), recalc.getASDA()));
-        comparisons.add(new BreakdownComparison("LDA", original.getLDA(), recalc.getLDA()));
-        return comparisons;
+        this.calculator.addListener((e, origVal, newVal) -> {
+            if (newVal != null) {
+                this.breakdownDetails.setText(currentLogicalRunway.get().breakdown
+                                .getBreakdownString(currentLogicalRunway.get()));
+                List<BreakdownComparison> comparisons = new ArrayList<BreakdownComparison>();
+                RunwayParameters original = currentLogicalRunway.get().getParameters();
+                RunwayParameters recalc = currentLogicalRunway.get().getRecalculatedParameters();
+                comparisons.add(new BreakdownComparison("TORA", original.getTORA(),
+                                recalc.getTORA()));
+                comparisons.add(new BreakdownComparison("TODA", original.getTODA(),
+                                recalc.getTODA()));
+                comparisons.add(new BreakdownComparison("ASDA", original.getASDA(),
+                                recalc.getASDA()));
+                comparisons.add(new BreakdownComparison("LDA", original.getLDA(), recalc.getLDA()));
+                this.breakdownDetails.setText(currentLogicalRunway.get().breakdown
+                                .getBreakdownString(currentLogicalRunway.get()));
+                valuesTable.getItems().setAll(comparisons);
+            }
+        });
+        this.currentLogicalRunway.addListener((e, origVal, newVal) -> {
+            if (newVal != null) {
+                this.breakdownDetails.setText(currentLogicalRunway.get().breakdown
+                                .getBreakdownString(currentLogicalRunway.get()));
+                List<BreakdownComparison> comparisons = new ArrayList<BreakdownComparison>();
+                RunwayParameters original = currentLogicalRunway.get().getParameters();
+                RunwayParameters recalc = currentLogicalRunway.get().getRecalculatedParameters();
+                comparisons.add(new BreakdownComparison("TORA", original.getTORA(),
+                                recalc.getTORA()));
+                comparisons.add(new BreakdownComparison("TODA", original.getTODA(),
+                                recalc.getTODA()));
+                comparisons.add(new BreakdownComparison("ASDA", original.getASDA(),
+                                recalc.getASDA()));
+                comparisons.add(new BreakdownComparison("LDA", original.getLDA(), recalc.getLDA()));
+                this.breakdownDetails.setText(currentLogicalRunway.get().breakdown
+                                .getBreakdownString(currentLogicalRunway.get()));
+                valuesTable.getItems().setAll(comparisons);
+            }
+        });
+        this.currentRunway.addListener((e, origVal, newVal) -> {
+            if (newVal != null) {
+                setupBreakdownPicker(FXCollections.observableArrayList(newVal.getLogicalRunways()));
+            }
+        });
     }
 
     private void setupBreakdownPicker(ObservableList<LogicalRunway> data) {
         // Update the values
-        currentLogicalRunway = null;
         breakdownPicker.setItems(data);
-        breakdownPicker.getSelectionModel().selectFirst();
         // Re-create the event listener and string coverter
         breakdownPicker.valueProperty().addListener((obs, oldVal, newVal) -> {
-            this.currentLogicalRunway = newVal;
-            if (newVal != null)
-                this.updateBreakdown();
+            this.currentLogicalRunway.set(newVal);
         });
         breakdownPicker.setConverter(new StringConverter<LogicalRunway>() {
             @Override
@@ -122,23 +147,8 @@ public class BreakdownView extends GridPane implements Initializable {
                                 .orElse(null);
             }
         });
-        // Update the current logical runway
-        currentLogicalRunway = breakdownPicker.getValue();
-    }
 
-    public void setAvailableBreakdowns(Map<LogicalRunway, String> breakdowns) {
-        this.availableBreakdowns = breakdowns;
-        setupBreakdownPicker(FXCollections.observableArrayList(breakdowns.keySet()));
-    }
-
-    private void updateBreakdown() {
-        if (this.currentLogicalRunway != null) {
-            if (this.availableBreakdowns != null) {
-                this.breakdownDetails
-                                .setText(this.availableBreakdowns.get(this.currentLogicalRunway));
-                valuesTable.getItems().setAll(generateComparisons());
-            }
-        }
+        breakdownPicker.getSelectionModel().selectFirst();
     }
 
     private static void loadFxml(URL fxmlFile, Object rootController) {

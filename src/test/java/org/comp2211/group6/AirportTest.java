@@ -1,8 +1,9 @@
 package org.comp2211.group6;
 
 import static org.junit.Assert.assertEquals;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import org.comp2211.group6.Model.Airport;
 import org.comp2211.group6.Model.Runway;
@@ -29,8 +30,8 @@ public class AirportTest {
 
     @Test
     @Parameters(method = "testDataForConfigRunway")
-    public void testAddRemoveGetRunway(Set<Runway> runwaysToAdd, Set<Runway> expected1,
-                    Set<Runway> runwaysToRemove, Set<Runway> expected2, Class errorClass,
+    public void testAddRemoveGetRunway(List<Runway> runwaysToAdd, List<Runway> expected1,
+                    List<Runway> runwaysToRemove, List<Runway> expected2, Class errorClass,
                     String errorMsg) {
         if (errorClass != null)
             exception.expect(errorClass);
@@ -57,27 +58,28 @@ public class AirportTest {
         Runway r6 = new Runway("Runway6");
 
         return new Object[] {
-                        new Object[] {new HashSet<Runway>(Arrays.asList(r1, r2, r3, r4, r5)),
-                                        new HashSet<Runway>(Arrays.asList(r1, r2, r3, r4, r5)),
-                                        new HashSet<Runway>(Arrays.asList(r1, r2, r3, r6)),
-                                        new HashSet<Runway>(Arrays.asList(r4, r5)), null, null},
-                        new Object[] {new HashSet<Runway>(Arrays.asList(r1, r5)),
-                                        new HashSet<Runway>(Arrays.asList(r1, r5)),
-                                        new HashSet<Runway>(Arrays.asList(r1)),
-                                        new HashSet<Runway>(Arrays.asList(r5)), null, null},
-                        new Object[] {new HashSet<Runway>(Arrays.asList(r3, r5, r4, r1, r2)),
-                                        new HashSet<Runway>(Arrays.asList(r1, r2, r3, r4, r5)),
-                                        new HashSet<Runway>(Arrays.asList(r2, r5, null)),
-                                        new HashSet<Runway>(Arrays.asList(r1, r3, r4)), null, null},
-                        new Object[] {new HashSet<Runway>(Arrays.asList(r1, r2, null, r5)),
-                                        new HashSet<Runway>(Arrays.asList(r1, r2, r3, r4, r5)),
-                                        new HashSet<Runway>(Arrays.asList(r1, r2, r3, null)),
-                                        new HashSet<Runway>(Arrays.asList(r4, r5)),
+                        new Object[] {new ArrayList<Runway>(Arrays.asList(r1, r2, r3, r4, r5)),
+                                        new ArrayList<Runway>(Arrays.asList(r1, r2, r3, r4, r5)),
+                                        new ArrayList<Runway>(Arrays.asList(r1, r2, r3, r6)),
+                                        new ArrayList<Runway>(Arrays.asList(r4, r5)), null, null},
+                        new Object[] {new ArrayList<Runway>(Arrays.asList(r1, r5)),
+                                        new ArrayList<Runway>(Arrays.asList(r1, r5)),
+                                        new ArrayList<Runway>(Arrays.asList(r1)),
+                                        new ArrayList<Runway>(Arrays.asList(r5)), null, null},
+                        new Object[] {new ArrayList<Runway>(Arrays.asList(r3, r5, r4, r1, r2)),
+                                        new ArrayList<Runway>(Arrays.asList(r1, r2, r3, r4, r5)),
+                                        new ArrayList<Runway>(Arrays.asList(r2, r5)),
+                                        new ArrayList<Runway>(Arrays.asList(r1, r3, r4)), null,
+                                        null},
+                        new Object[] {new ArrayList<Runway>(Arrays.asList(r1, r2, null, r5)),
+                                        new ArrayList<Runway>(Arrays.asList(r1, r2, r3, r4, r5)),
+                                        new ArrayList<Runway>(Arrays.asList(r1, r2, r3)),
+                                        new ArrayList<Runway>(Arrays.asList(r4, r5)),
                                         IllegalArgumentException.class, errorMsg},
-                        new Object[] {new HashSet<Runway>(Arrays.asList(r1, r2, r3, r4, r5)),
-                                        new HashSet<Runway>(Arrays.asList(r1, r2, r3, r4, r5)),
-                                        new HashSet<Runway>(Arrays.asList(r6)),
-                                        new HashSet<Runway>(Arrays.asList(r4, r5, r3, r1, r2)),
+                        new Object[] {new ArrayList<Runway>(Arrays.asList(r1, r2, r3, r4, r5)),
+                                        new ArrayList<Runway>(Arrays.asList(r1, r2, r3, r4, r5)),
+                                        new ArrayList<Runway>(Arrays.asList(r6)),
+                                        new ArrayList<Runway>(Arrays.asList(r1, r2, r3, r4, r5)),
                                         null, null}};
     }
 

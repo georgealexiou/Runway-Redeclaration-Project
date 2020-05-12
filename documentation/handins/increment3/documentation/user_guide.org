@@ -1,0 +1,136 @@
+#+options: ':t *:t -:t ::t <:t H:5 \n:nil ^:t arch:headline author:t
+#+options: broken-links:nil c:nil creator:nil d:(not "LOGBOOK") date:t e:t
+#+options: email:nil f:t inline:t num:t p:nil pri:nil prop:nil stat:t tags:nil
+#+options: tasks:nil tex:nil timestamp:nil title:t toc:nil todo:nil |:t
+#+title: Runway Re-declaration Tool User Guide
+#+author: Jonathan Bartlett \\ George Alexiou \\ Odysseas Kalatzis \\ Manqi Dong \\ Liyu Su
+#+language: en
+#+select_tags: export
+#+exclude_tags: noexport
+#+latex_class: article
+#+latex_class_options: [10pt]
+#+latex_header_extra: \usepackage{pdfpages}
+#+latex_header_extra: \renewcommand{\familydefault}{\sfdefault}
+#+latex_header_extra: \usepackage[utf8]{inputenc}
+#+latex_header_extra: \usepackage[T1]{fontenc}
+#+latex_header_extra: \usepackage{fullpage}
+#+subtitle: COMP2211 SEG - Group 6
+#+date: \today
+
+* Operating the Program
+** Prerequisites
+- Java 8u251
+- Windows, MacOS or Linux
+** How do I start the program?
+  #+BEGIN_SRC bash
+  java -jar runwayredeclaration.jar 
+  #+END_SRC
+** How do I create/load an Airport?
+You can load an Airport from the ~Airports > Load Airport~ button on the top menu bar. 
+You will be asked to browse for an XML file which must be in the format specified in the [[Example XML for Obstacles and Airports][Example XML section]].
+When you have selected a valid file, click ~Validate and Load~.
+
+
+To create an airport you will need to click the ~Airport > Create an Airport~ button from the top menu bar and provide all of the information the program asks for.
+When you have provided enough information the ~Save~ button will no longer be greyed out and you can save the airport to use in the program. This will overwrite any current runways or obstacles.
+** How do I create/load an Obstacle?
+You can load an Obstacle from the ~Obstacles > Load Obstacle~ button on the top menu bar. 
+You will be asked to browse for an XML file which must be in the format specified in the [[Example XML for Obstacles and Airports][Example XML section]].
+When you have selected a valid file, click ~Validate and Load~.
+
+To create an obstacle you will need to click the ~Obstacles > Create Obstacle~ button from the top menu bar and provide all of the information the program asks for.
+When you have provided enough information the ~Save~ button will no longer be greyed out and you can save the obstacle to use in the program. This will overwrite any current runways or obstacles.
+** How do I see a representation of an Airport?
+You must first load/create an airport by using the ~Airports > Load Airport / Create an Airport~ option from the top menu bar.
+
+Following this you will see a representation of one of the runways in airport.
+You can switch between runways or logical runways using the dropdown boxes located in the top left corner.
+This will immediately update the view to reflect the changes you have made.
+** How do I see a representation of an Obstacle and its impacts?
+*You will need an airport loaded to see an obstacle on the runway!*
+
+You must load one or more obstacles into the system using the ~Obstacles > Load Obstacle / Create Obstalce~ options from the top menu bar.
+
+The obstacle will immediately be drawn on the currently selected runway and recalculated values will be displayed underneath the runway representation. To see more about the impacts the obstacle is having on the runway and its logical runways you can view a breakdown by selected ~Calculations > View Calculations~ from the top menu bar.
+** How do I return to the Runway View from any other view? 
+You can return the Runway view by selecting ~View > Return to Runway View~ from the top menu bar.
+** How do I change the colour scheme?
+You can select to invert the default colour scheme from the ~View > Invert Colours~ option in the top menu bar.
+** How do I manipulate the Runway View? 
+You can toggle the view between Top Down and Side On views of the runway by selected ~View > Toggle View~ from the top menu bar.
+In addition to this you can follow the on-screen instructions to zoom, pan and reset the view.
+** How do I edit an Obstacle or Airport?
+You can edit an Obstacle or Airport by choosing ~Obstacles > Edit Obstacle~ and ~Airports > Edit Airport~ respectively from the top menu bar. 
+This will show the same form you will have seen when loading or creating an obstacle. From here you can change any of the distances relating to an obstacle and save for use in the program.
+** How do I export an Obstacle or Airport?
+There is an ~Export~ button displayed on the edit screen for Obstacles and Airports that will prompt you to select an XML file in which to save the Obstacle or Airport for future use.
+** How do I export the current simulation?
+To export a textual description of the current view including the airport, runway, obstacle and breakdown of calculations, you can select ~Calculations > Export Breakdown Calculations~ from the top menu bar.
+This will allow you to choose the location to export data to.
+
+To export a capture of the current runway view and export to an image you can select the ~View > Export Runway View as Image~ option from the top menu bar. 
+You will then be prompted to choose a directory in which to save the file.
+Upon hitting export you will see the image file appear in the chosen directory.
+* Data Required to Operate the Program
+** Logical Runway Data
+  - TORA (A positive real number)
+  - TODA (A positive real number)
+  - ASDA (A positive real number)
+  - LDA (A positive real number)
+  - Heading (An integer in the range 1-36)
+  - Position (Either L, R or C)
+  - Displaced Threshold (A positive real number - 0 if not applicable)
+** Obstacle Data
+  - Distance from 'left' threshold (A real number representing the distance from a threshold with heading \(\le 18\))
+  - Distance from 'right' threshold (A real number representing the distance from a threshold with heading \(\gt 18\))
+  - Distance from the runway centre line (A real number, positive is above the centre line on the view)
+* Format for Persisted Data
+** Example XML for Obstacles and Airports
+#+caption: Heathrow Airport with a single runway and two logical runways in XML format
+#+label: fig:airport:xml
+#+BEGIN_SRC xml
+<airport>
+    <name>Heathrow</name>
+    <runway>
+        <name>09L27R</name>
+            <logicalRunway>
+                <tora>3902</tora>
+                <toda>3902</toda>
+                <asda>3902</asda>
+                <lda>3595</lda>
+                <heading>09</heading>
+                <displacedThreshold>306</displacedThreshold>
+                <position>L</position>
+             </logicalRunway>
+             ... Up to 3 logical runways
+    </runway>
+    ... Any number or runways
+</airport>
+#+END_SRC
+#+caption: Obstacle named 'Plane Crash' with various data relating it to a runway
+#+label: fig:obstacle-xml
+#+BEGIN_SRC xml
+<obstacle>
+    <name>Plane Crash</name>
+    <description>A plane that has crash</description>
+    <height>12</height>
+    <distanceToCentreLine>0</distanceToCentreLine>
+    <distanceFromLeftThreshold>-50</distanceFromLeftThreshold>
+    <distanceFromRightThreshold>3646</distanceFromRightThreshold>
+</obstacle>
+#+END_SRC
+
+* Known Issues
+** DPI Scaling
+When DPI scaling is used JavaFX does not scale everything accordingly by default. We suggest using the 100% DPI scale for your operating system but on Hi-DPI displays this may not be possible. Please be aware that you may have to zoom out and pan on the runway view to see all data.
+** Runway Data Validation
+Due to a lack of constraints on real world airports some runway values are permitted that could cause strange behaviour in the application. We do however feel that any likely runway will result in a useful and realistic representation.
+* Glossary of Key Terms
+- *Obstacle:* Refers to the data representing any obstruction on a given runway including the distance from each threshold and form the centre line.
+- *Airport:* Refers to the data representing a physical airport such as London Heathrow
+- *Runway:* Refers to the physical stretch of tarmac such at ~09L27R~ at London Heathrow
+- *Logical Runway:* Refers to a particular heading and collection of thresholds as part of a *Runway*.
+- *TORA*: TORA is defined as length of runway suitable for normal operations. It need not always equal to LDA (landing distance available). TORA doesn’t include Stopway or Clearway.
+- *TODA*: TODA is the length of runway plus any clearway if available. In case no clearway exists, TODA is same as TORA.
+- *ASDA*: It is defined as sum of LDA/TORA (as applicable) and Stopway.
+- *LDA*: LDA is the runway length declared available and suitable for landing an airplane.

@@ -1,91 +1,95 @@
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.control.*?>
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+
+<?import org.comp2211.group6.view.AirportConfigView?>
 <?import org.comp2211.group6.view.RunwayView?>
 <?import org.comp2211.group6.view.BreakdownView?>
 <?import org.comp2211.group6.view.EditAnObstacleView?>
 <?import org.comp2211.group6.view.CreateAnObstacleView?>
-<?import org.comp2211.group6.view.LoadAnObstacleView?>
+<?import org.comp2211.group6.view.FileView?>
+<?import org.comp2211.group6.view.FolderView?>
+<?import org.comp2211.group6.view.SaveBreakdown?>
+<?import org.comp2211.group6.view.Scale?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<?import javafx.geometry.Insets?>
-
-<fx:root type="javafx.scene.layout.GridPane"
-         xmlns:fx="http://javafx.com/fxml"
-         maxHeight="-Infinity"
-         maxWidth="-Infinity" minHeight="-Infinity"
-         minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0">
+<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" type="javafx.scene.layout.GridPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
 
   <columnConstraints>
-              <ColumnConstraints minWidth="600" prefWidth="600"
-                                 maxWidth="Infinity" halignment="CENTER" hgrow="ALWAYS">
+              <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="Infinity" minWidth="600.0" prefWidth="600.0">
               </ColumnConstraints>
+      <ColumnConstraints />
   </columnConstraints>
   <rowConstraints>
-    <RowConstraints minHeight="50" maxHeight="Infinity" vgrow="NEVER">
+    <RowConstraints maxHeight="Infinity" minHeight="50.0" vgrow="NEVER">
     </RowConstraints>
-    <RowConstraints minHeight="350" maxHeight="Infinity" vgrow="ALWAYS">
+    <RowConstraints maxHeight="Infinity" minHeight="350.0" vgrow="ALWAYS">
     </RowConstraints>
-    <RowConstraints maxHeight="200" vgrow="NEVER">
+    <RowConstraints maxHeight="200.0" vgrow="NEVER">
     </RowConstraints>
+      <RowConstraints />
   </rowConstraints>
-  <MenuBar GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.columnSpan="2" useSystemMenuBar="false">
+  <MenuBar useSystemMenuBar="false" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="0">
        <menus>
            <Menu text="View">
               <items>
-                <MenuItem text="Toggle View" onAction="#toggleView" fx:id="toggleViewButton"></MenuItem>
-                <MenuItem text="Return to Runway View" onAction="#returnToRunwayView" fx:id="returnToRunwayViewButton"></MenuItem>
+                <MenuItem fx:id="toggleViewButton" onAction="#toggleView" text="Toggle View" />
+                <MenuItem fx:id="returnToRunwayViewButton" onAction="#returnToRunwayView" text="Return to Runway View" />
+                <MenuItem fx:id="exportImageButton" disable="false" onAction="#exportImage" text="Export Runway View as Image" />
+                <MenuItem fx:id="invertColoursButton" onAction="#invertColourScheme" text="Invert Colours" />
               </items>
            </Menu>
            <Menu text="Airports">
               <items>
-                <MenuItem text="Load Airport" onAction="#loadAirport" fx:id="loadAirportButton"></MenuItem>
-                <MenuItem text="Create new Airport" onAction="#createAirport" fx:id="createAirportButton"></MenuItem>
-                <MenuItem text="Edit Airport" onAction="#editAirport" fx:id="editAirportButton"></MenuItem>
+                <MenuItem fx:id="loadAirportButton" onAction="#loadAirport" text="Load Airport" />
+                <MenuItem fx:id="createAirportButton" onAction="#createAirport" text="Create new Airport" />
+                <MenuItem fx:id="editAirportButton" onAction="#editAirport" text="Edit Airport" />
               </items>
            </Menu>
            <Menu text="Obstacles">
             <items>
-              <MenuItem text="Load Obstacle" onAction="#loadObstacle" fx:id="loadObstacleButton"></MenuItem>
-              <MenuItem text="Create Obstacle" onAction="#createObstacle" fx:id="createObstacleButton"></MenuItem>
-              <MenuItem text="Edit Obstacle" onAction="#editObstacle" fx:id="editObstacleButton"></MenuItem>
+              <MenuItem fx:id="loadObstacleButton" onAction="#loadObstacle" text="Load Obstacle" />
+              <MenuItem fx:id="createObstacleButton" onAction="#createObstacle" text="Create Obstacle" />
+              <MenuItem fx:id="editObstacleButton" onAction="#editObstacle" text="Edit Obstacle" />
             </items>
            </Menu>
            <Menu text="Calculations">
             <items>
-              <MenuItem text="View Calculations" onAction="#viewCalculations" fx:id="viewCalculationsButton"></MenuItem>
+              <MenuItem fx:id="viewCalculationsButton" onAction="#viewCalculations" text="View Calculations" />
+              <MenuItem fx:id="exportBreakdownButton" disable="false" onAction="#exportBreakdown" text="Export Breakdown Calculations" />
             </items>
            </Menu>
        </menus>
   </MenuBar>
 
+  <AirportConfigView fx:id="airportConfigView" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="1" />
   <CreateAnObstacleView fx:id="createAnObstacleView" GridPane.rowIndex="1" GridPane.columnIndex="0" visible="false"></CreateAnObstacleView> 
-  <LoadAnObstacleView fx:id="loadAnObstacleView" GridPane.rowIndex="1" GridPane.columnIndex="0" visible="false"></LoadAnObstacleView> 
   <EditAnObstacleView fx:id="editAnObstacleView" GridPane.rowIndex="1" GridPane.columnIndex="0" visible="false"></EditAnObstacleView> 
   <BreakdownView fx:id="breakdownView" GridPane.rowIndex="1" GridPane.columnIndex="0" visible="false"></BreakdownView>
   <RunwayView fx:id="runwayView" GridPane.rowIndex="1" GridPane.columnIndex="0" visible="false"></RunwayView> 
+  <FileView fx:id="fileView" GridPane.rowIndex="1" GridPane.columnIndex="0" visible="false"></FileView>
+  <FolderView fx:id="folderView" GridPane.rowIndex="1" GridPane.columnIndex="0" visible="false"></FolderView>
+  <SaveBreakdown fx:id="saveBreakdown" GridPane.rowIndex="1" GridPane.columnIndex="0" visible="false"></SaveBreakdown>
   <VBox fx:id="splashScreen" GridPane.rowIndex="1" GridPane.columnIndex="0" visible="true" alignment="CENTER">
+
     <Label text="Welcome to the Runway Redeclaration Tool">
           <font>
-              <Font name="System Bold" size="32"></Font>
+              <Font name="System Bold" size="32" />
           </font>
     </Label>
     <Label text="Load an Airport to begin">
           <font>
-              <Font name="System Bold" size="18"></Font>
+              <Font name="System Bold" size="18" />
           </font>
     </Label>
   </VBox>
-  
-  <VBox alignment="CENTER" MaxWidth="Infinity" GridPane.rowIndex="2" GridPane.columnIndex="0">
-      <padding><Insets top="40" right="40" bottom="40" left="40"/></padding>
-      <Label text="Notifications" visible="true">
-        <font>
-          <Font name="System Bold Underline" size="14"></Font>
-        </font>
-      </Label>
-      <Label fx:id="notificationLabel" visible="true">
-      </Label>
-    </VBox>
 </fx:root>

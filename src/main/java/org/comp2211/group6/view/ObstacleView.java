@@ -3,8 +3,13 @@ package org.comp2211.group6.view;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.function.UnaryOperator;
+import java.util.regex.Pattern;
 import org.comp2211.group6.Model.Obstacle;
 import javafx.beans.binding.BooleanBinding;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,6 +18,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
+import javafx.scene.control.TextFormatter.Change;
 
 
 public abstract class ObstacleView extends GridPane implements Initializable {
@@ -20,7 +27,7 @@ public abstract class ObstacleView extends GridPane implements Initializable {
      * DATA
      */
 
-    protected Obstacle newObstacle;
+    protected SimpleObjectProperty<Obstacle> currentObstacle = new SimpleObjectProperty<Obstacle>();
     BooleanBinding disableBindings;
 
     /*
@@ -43,12 +50,6 @@ public abstract class ObstacleView extends GridPane implements Initializable {
 
     @FXML
     protected TextField obstacleDescription;
-
-    @FXML
-    protected TextField obstacleLength;
-
-    @FXML
-    protected TextField obstacleWidth;
 
     @FXML
     protected TextField obstacleHeight;
@@ -82,18 +83,18 @@ public abstract class ObstacleView extends GridPane implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        disableBindings = obstacleName.textProperty().isEmpty().or(obstacleLength.textProperty()
+        disableBindings = obstacleName.textProperty().isEmpty().or(obstacleHeight.textProperty()
                         .isEmpty()
-                        .or(obstacleWidth.textProperty().isEmpty().or(obstacleHeight.textProperty()
-                                        .isEmpty()
-                                        .or(obstacleDistanceFromCentreLine.textProperty().isEmpty()
-                                                        .or(obstacleDistanceFromLeft.textProperty()
-                                                                        .isEmpty()
-                                                                        .or(obstacleDistanceFromRight
-                                                                                        .textProperty()
-                                                                                        .isEmpty()))))));
+                        .or(obstacleDistanceFromCentreLine.textProperty().isEmpty()
+                                        .or(obstacleDistanceFromLeft.textProperty().isEmpty()
+                                                        .or(obstacleDistanceFromRight.textProperty()
+                                                                        .isEmpty()))));
         obstacleSaveButton.disableProperty().bind(disableBindings);
         obstacleExportButton.disableProperty().bind(disableBindings);
+        obstacleHeight.setTextFormatter(Formatters.numberFormatter(true));
+        obstacleDistanceFromCentreLine.setTextFormatter(Formatters.numberFormatter(false));
+        obstacleDistanceFromLeft.setTextFormatter(Formatters.numberFormatter(false));
+        obstacleDistanceFromRight.setTextFormatter(Formatters.numberFormatter(false));
     }
 
     /*
@@ -115,11 +116,12 @@ public abstract class ObstacleView extends GridPane implements Initializable {
      */
     protected Obstacle getNewObstacle() {
         return new Obstacle(obstacleName.getText(), obstacleDescription.getText(),
-                        Double.parseDouble(obstacleLength.getText()),
-                        Double.parseDouble(obstacleWidth.getText()),
                         Double.parseDouble(obstacleHeight.getText()),
                         Double.parseDouble(obstacleDistanceFromCentreLine.getText()),
                         Double.parseDouble(obstacleDistanceFromLeft.getText()),
                         Double.parseDouble(obstacleDistanceFromRight.getText()));
     }
+
+
+
 }

@@ -1,0 +1,39 @@
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<?import javafx.geometry.Insets?>
+
+<fx:root type="javafx.scene.layout.GridPane"
+         xmlns:fx="http://javafx.com/fxml"
+         maxHeight="-Infinity"
+         maxWidth="-Infinity" minHeight="-Infinity"
+         minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0">
+
+  <columnConstraints>
+              <ColumnConstraints minWidth="600" prefWidth="600"
+                                 maxWidth="Infinity" halignment="CENTER" hgrow="ALWAYS">
+              </ColumnConstraints>
+  </columnConstraints>
+  <rowConstraints>
+    <RowConstraints minHeight="350" maxHeight="Infinity" vgrow="ALWAYS">
+    </RowConstraints>
+  </rowConstraints>
+  <VBox fx:id="pickerBox" GridPane.rowIndex="0" GridPane.columnIndex="0" alignment="CENTER">
+    <Label fx:id="title">
+          <font>
+              <Font name="System Bold" size="16"></Font>
+          </font>
+    </Label>
+    <HBox alignment="CENTER">
+      <TextField text="No File Selected" fx:id="pathField"></TextField>
+      <Button fx:id="browseButton" onAction="#openFileChooser" text="Browse"></Button>
+    </HBox>
+    <HBox alignment="CENTER">
+      <Button fx:id="validateButton"></Button>
+      <Button fx:id="cancelButton" text="Cancel"></Button>
+    </HBox>
+  </VBox>
+</fx:root>

@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<fx:root fx:id="baseGrid" alignment="center" hgap="10" prefHeight="735.0" prefWidth="1045.0" type="javafx.scene.layout.GridPane" vgap="10" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+    <padding><Insets bottom="40" left="40" right="40" top="40" /></padding>
+  <columnConstraints>
+    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+  </columnConstraints>
+  <rowConstraints>
+      <RowConstraints maxHeight="193.0" minHeight="10.0" prefHeight="45.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="193.0" minHeight="8.0" prefHeight="56.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="459.0" minHeight="10.0" prefHeight="416.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="440.0" minHeight="0.0" prefHeight="43.0" vgrow="SOMETIMES" />
+  </rowConstraints>
+   <children>
+      <GridPane>
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="355.0" minWidth="10.0" prefWidth="219.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="502.0" minWidth="10.0" prefWidth="502.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Text fx:id="airportConfigText" strokeType="OUTSIDE" strokeWidth="0.0" text="Airport Configuration">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Text>
+         </children>
+      </GridPane>
+      <GridPane fx:id="nameGrid" prefHeight="117.0" prefWidth="600.0" GridPane.rowIndex="1">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="512.0" minWidth="10.0" prefWidth="362.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="514.0" minWidth="10.0" prefWidth="359.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints maxHeight="91.0" minHeight="10.0" prefHeight="48.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <VBox fx:id="nameVBox" prefHeight="66.0" prefWidth="423.0">
+               <children>
+                  <Text fx:id="airportNameText" strokeType="OUTSIDE" strokeWidth="0.0" text="Airport Name" />
+                  <TextField fx:id="airportName" prefHeight="27.0" prefWidth="395.0" />
+               </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </VBox>
+         </children>
+      </GridPane>
+      <GridPane hgap="50.0" prefHeight="100.0" prefWidth="100.0" vgap="5.0" GridPane.rowIndex="2">
+         <columnConstraints>
+            <ColumnConstraints hgrow="ALWAYS" maxWidth="265.3333435058594" minWidth="164.0" percentWidth="35" />
+            <ColumnConstraints hgrow="ALWAYS" maxWidth="449.0" minWidth="20.0" percentWidth="65" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints maxHeight="179.66665649414062" minHeight="71.0" percentHeight="19" vgrow="ALWAYS" />
+            <RowConstraints maxHeight="171.83334350585938" minHeight="10.0" percentHeight="13.5" prefHeight="30.0" vgrow="ALWAYS" />
+            <RowConstraints maxHeight="171.83334350585938" minHeight="10.0" percentHeight="13.5" prefHeight="30.0" vgrow="ALWAYS" />
+            <RowConstraints maxHeight="171.83334350585938" minHeight="10.0" percentHeight="13.5" vgrow="ALWAYS" />
+            <RowConstraints maxHeight="120.0" minHeight="10.0" percentHeight="13.5" vgrow="ALWAYS" />
+            <RowConstraints maxHeight="81.33331298828125" minHeight="10.0" percentHeight="13.5" vgrow="ALWAYS" />
+            <RowConstraints maxHeight="58.333343505859375" minHeight="10.0" percentHeight="13.5" vgrow="ALWAYS" />
+            <RowConstraints maxHeight="58.333343505859375" minHeight="10.0" percentHeight="13.5" prefHeight="30.0" vgrow="ALWAYS" />
+         </rowConstraints>
+         <padding>
+            <Insets right="10.0" />
+         </padding>
+         <children>
+            <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0">
+               <children>
+                  <Label minHeight="20.0" minWidth="95.0" text="Runway Name">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="runwayName" minWidth="10.0" />
+               </children>
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+            </VBox>
+            <GridPane GridPane.columnIndex="1">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0" GridPane.columnIndex="1">
+                     <children>
+                        <Label minHeight="20.0" minWidth="130.0" text="Select  Logical Runway">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <ChoiceBox fx:id="selectLogicalRunway" prefWidth="150.0" />
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0">
+                     <children>
+                        <Label minHeight="20.0" minWidth="130.0" text="Select  Runway">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <ChoiceBox fx:id="selectRunway" prefWidth="150.0" />
+                     </children>
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                  </VBox>
+               </children>
+            </GridPane>
+            <Label text="TORA" GridPane.rowIndex="3">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <TextField fx:id="tora" minWidth="10.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Label text="TODA" GridPane.rowIndex="4">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <TextField fx:id="toda" minWidth="10.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <Label text="ASDA" GridPane.rowIndex="5">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <TextField fx:id="asda" minWidth="10.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <Label text="LDA" GridPane.rowIndex="6">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <TextField fx:id="lda" minWidth="10.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+            <Label text="Logical Runway Name" GridPane.rowIndex="1">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <TextField fx:id="logicalRunwayName" minWidth="10.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="displacedThreshold" minWidth="10.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Label text="Displaced Threshold" GridPane.rowIndex="2">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+         </children>
+      </GridPane>
+      <ButtonBar prefHeight="46.0" prefWidth="445.0" GridPane.rowIndex="3">
+        <buttons>
+            <Button fx:id="addRunway" mnemonicParsing="false" onMouseClicked="#addRunwayClicked" text="Add Runway" />
+            <Button fx:id="saveRunway" mnemonicParsing="false" onMouseClicked="#saveRunwayClicked" prefHeight="27.0" prefWidth="181.0" text="Save  Runway" />
+            <Button fx:id="deleteRunway" mnemonicParsing="false" onMouseClicked="#deleteRunwayClicked" prefHeight="27.0" prefWidth="120.0" text="Delete Runway" />
+            <Separator orientation="VERTICAL" prefHeight="37.0" rotate="137.1" />
+            <Button fx:id="addLogicalRunway" mnemonicParsing="false" onMouseClicked="#addLogicalRunwayClicked" text="Add Logical Runway" />
+            <Button fx:id="saveLogicalRunway" mnemonicParsing="false" onMouseClicked="#saveLogicalRunwayClicked" text="Save Logical Runway" />
+          <Button fx:id="deleteLogicalRunway" mnemonicParsing="false" onMouseClicked="#deleteLogicalRunwayClicked" prefHeight="27.0" prefWidth="159.0" text="Delete Logical Runway" />
+        </buttons>
+      </ButtonBar>
+      <ButtonBar fx:id="optionsBar" prefHeight="60.0" prefWidth="662.0">
+         <buttons>
+            <Button fx:id="save" mnemonicParsing="false" text="Save" />
+            <Button fx:id="export" mnemonicParsing="false" text="Export" />
+         </buttons>
+      </ButtonBar>
+   </children>
+</fx:root>

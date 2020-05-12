@@ -137,6 +137,7 @@ public class AirportConfigView extends GridPane implements Initializable {
 
     @FXML
     void saveLogicalRunwayClicked(MouseEvent event) {
+        setEditableLogicalRunway(false);
         try {
             saveLogicalRunway.setDisable(true);
 
@@ -200,6 +201,7 @@ public class AirportConfigView extends GridPane implements Initializable {
             }
 
         } catch (Exception e) {
+            setEditableLogicalRunway(true);
             Alert alert = new Alert(Alert.AlertType.ERROR, "Error: " + e.getMessage(),
                             ButtonType.OK);
             alert.showAndWait();
@@ -234,7 +236,6 @@ public class AirportConfigView extends GridPane implements Initializable {
      */
     @FXML
     void addRunwayClicked(MouseEvent event) {
-        System.out.println("DSDS");
         runwayName.clear();
         logicalRunwayName.clear();
         displacedThreshold.clear();
@@ -458,23 +459,25 @@ public class AirportConfigView extends GridPane implements Initializable {
     }
 
     public void setLogicalRunway(String logicalRunwayID) {
-        currentLogicalRunway = currentRunway.getLogicalRunwayFromName(logicalRunwayID);
-        logicalRunwayName.setText(currentLogicalRunway.getIdentifier());
-        displacedThreshold.setText(currentLogicalRunway.getDisplacedThreshold() + "");
-        tora.setText(currentLogicalRunway.getParameters().getTORA() + "");
-        toda.setText(currentLogicalRunway.getParameters().getTODA() + "");
-        asda.setText(currentLogicalRunway.getParameters().getASDA() + "");
-        lda.setText(currentLogicalRunway.getParameters().getLDA() + "");
-        ChangeListener<String> listener = ((observable, oldValue, newValue) -> {
-            saveLogicalRunway.setDisable(false);
-        });
+        if(currentRunway != null || currentRunway.getLogicalRunways().size() == 0) {
+            currentLogicalRunway = currentRunway.getLogicalRunwayFromName(logicalRunwayID);
+            logicalRunwayName.setText(currentLogicalRunway.getIdentifier());
+            displacedThreshold.setText(currentLogicalRunway.getDisplacedThreshold() + "");
+            tora.setText(currentLogicalRunway.getParameters().getTORA() + "");
+            toda.setText(currentLogicalRunway.getParameters().getTODA() + "");
+            asda.setText(currentLogicalRunway.getParameters().getASDA() + "");
+            lda.setText(currentLogicalRunway.getParameters().getLDA() + "");
+            ChangeListener<String> listener = ((observable, oldValue, newValue) -> {
+                saveLogicalRunway.setDisable(false);
+            });
 
-        logicalRunwayName.textProperty().addListener(listener);
-        displacedThreshold.textProperty().addListener(listener);
-        tora.textProperty().addListener(listener);
-        toda.textProperty().addListener(listener);
-        asda.textProperty().addListener(listener);
-        lda.textProperty().addListener(listener);
+            logicalRunwayName.textProperty().addListener(listener);
+            displacedThreshold.textProperty().addListener(listener);
+            tora.textProperty().addListener(listener);
+            toda.textProperty().addListener(listener);
+            asda.textProperty().addListener(listener);
+            lda.textProperty().addListener(listener);
+        }
     }
 
     private void setEditableRunway(boolean editable) {
@@ -482,6 +485,7 @@ public class AirportConfigView extends GridPane implements Initializable {
     }
 
     private void setEditableLogicalRunway(boolean editable) {
+        System.out.println(editable);
         logicalRunwayName.setEditable(editable);
         displacedThreshold.setEditable(editable);
         tora.setEditable(editable);

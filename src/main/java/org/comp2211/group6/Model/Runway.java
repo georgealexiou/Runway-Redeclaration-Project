@@ -47,6 +47,7 @@ public class Runway implements Comparable {
             throw new IllegalArgumentException(
                             "Error. Invalid logical runway to be added to runway, cannot be null.");
 
+
         Iterator<String> iterator = getLogicalRunwayNames().iterator();
         while (iterator.hasNext()) {
             String name = iterator.next();
@@ -57,6 +58,12 @@ public class Runway implements Comparable {
         }
 
         if (logicalRunways.size() < 3) {
+            for (Iterator<LogicalRunway> it = this.logicalRunways.iterator(); it.hasNext();) {
+                LogicalRunway temp = it.next();
+                if(!((temp.getHeading() == runway.getHeading() || temp.getHeading() == 36 - runway.getHeading()) && temp.getHeading() > 0 && runway.getHeading() > 0)){
+                    throw new Exception("Invalid heading for logical runway. Must be " + temp.getHeading() + " or " + (36-temp.getHeading()));
+                }
+            }
             logicalRunways.add(runway);
 
             StringBuilder identifierBuilder = new StringBuilder("");

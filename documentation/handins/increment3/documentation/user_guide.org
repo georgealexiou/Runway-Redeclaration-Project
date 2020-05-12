@@ -8,6 +8,7 @@
 #+select_tags: export
 #+exclude_tags: noexport
 #+latex_class: article
+#+latex_class_options: [10pt]
 #+latex_header_extra: \usepackage{pdfpages}
 #+latex_header_extra: \renewcommand{\familydefault}{\sfdefault}
 #+latex_header_extra: \usepackage[utf8]{inputenc}
@@ -64,9 +65,25 @@ This will show the same form you will have seen when loading or creating an obst
 ** How do I export an Obstacle or Airport?
 There is an ~Export~ button displayed on the edit screen for Obstacles and Airports that will prompt you to select an XML file in which to save the Obstacle or Airport for future use.
 ** How do I export the current simulation?
-*** TODO Textual and Graphical Instructions
+To export a textual description of the current view including the airport, runway, obstacle and breakdown of calculations, you can select ~Calculations > Export Breakdown Calculations~ from the top menu bar.
+This will allow you to choose the location to export data to.
+
+To export a capture of the current runway view and export to an image you can select the ~View > Export Runway View as Image~ option from the top menu bar. 
+You will then be prompted to choose a directory in which to save the file.
+Upon hitting export you will see the image file appear in the chosen directory.
 * Data Required to Operate the Program
-** TODO Talk about the required measurements in order to operate the program
+** Logical Runway Data
+  - TORA (A positive real number)
+  - TODA (A positive real number)
+  - ASDA (A positive real number)
+  - LDA (A positive real number)
+  - Heading (An integer in the range 1-36)
+  - Position (Either L, R or C)
+  - Displaced Threshold (A positive real number - 0 if not applicable)
+** Obstacle Data
+  - Distance from 'left' threshold (A real number representing the distance from a threshold with heading \(\le 18\))
+  - Distance from 'right' threshold (A real number representing the distance from a threshold with heading \(\gt 18\))
+  - Distance from the runway centre line (A real number, positive is above the centre line on the view)
 * Format for Persisted Data
 ** Example XML for Obstacles and Airports
 #+caption: Heathrow Airport with a single runway and two logical runways in XML format
@@ -85,17 +102,9 @@ There is an ~Export~ button displayed on the edit screen for Obstacles and Airpo
                 <displacedThreshold>306</displacedThreshold>
                 <position>L</position>
              </logicalRunway>
-             <logicalRunway>
-                 <tora>3884</tora>
-                 <toda>3962</toda>
-                 <asda>3884</asda>
-                 <lda>3884</lda>
-                 <heading>27</heading>
-                 <displacedThreshold>0</displacedThreshold>
-                 <position>R</position>
-             </logicalRunway>
-
+             ... Up to 3 logical runways
     </runway>
+    ... Any number or runways
 </airport>
 #+END_SRC
 #+caption: Obstacle named 'Plane Crash' with various data relating it to a runway
@@ -104,8 +113,6 @@ There is an ~Export~ button displayed on the edit screen for Obstacles and Airpo
 <obstacle>
     <name>Plane Crash</name>
     <description>A plane that has crash</description>
-    <length>20</length>
-    <width>15</width>
     <height>12</height>
     <distanceToCentreLine>0</distanceToCentreLine>
     <distanceFromLeftThreshold>-50</distanceFromLeftThreshold>
@@ -113,10 +120,11 @@ There is an ~Export~ button displayed on the edit screen for Obstacles and Airpo
 </obstacle>
 #+END_SRC
 
-** TODO Show the format of a textual export
 * Known Issues
 ** DPI Scaling
 When DPI scaling is used JavaFX does not scale everything accordingly by default. We suggest using the 100% DPI scale for your operating system but on Hi-DPI displays this may not be possible. Please be aware that you may have to zoom out and pan on the runway view to see all data.
+** Runway Data Validation
+Due to a lack of constraints on real world airports some runway values are permitted that could cause strange behaviour in the application. We do however feel that any likely runway will result in a useful and realistic representation.
 * Glossary of Key Terms
 - *Obstacle:* Refers to the data representing any obstruction on a given runway including the distance from each threshold and form the centre line.
 - *Airport:* Refers to the data representing a physical airport such as London Heathrow

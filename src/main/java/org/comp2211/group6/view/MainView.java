@@ -255,8 +255,8 @@ public class MainView extends GridPane implements Initializable {
                     alert.setContentText(handler.errorMessage);
                 }
                 alert.showAndWait();
-                fileView.reset();
             }
+            fileView.reset();
         }
     };
 
@@ -533,7 +533,9 @@ public class MainView extends GridPane implements Initializable {
                     alert.setContentText(xml.errorMessage);
                 }
                 alert.showAndWait();
+                notifyUpdate("Obstacle", "loaded to system", false);
             }
+            fileView.reset();
         }
     };
 

@@ -3,9 +3,13 @@ package org.comp2211.group6.view;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.function.UnaryOperator;
+import java.util.regex.Pattern;
 import org.comp2211.group6.Model.Obstacle;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,6 +18,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
+import javafx.scene.control.TextFormatter.Change;
 
 
 public abstract class ObstacleView extends GridPane implements Initializable {
@@ -85,6 +91,10 @@ public abstract class ObstacleView extends GridPane implements Initializable {
                                                                         .isEmpty()))));
         obstacleSaveButton.disableProperty().bind(disableBindings);
         obstacleExportButton.disableProperty().bind(disableBindings);
+        obstacleHeight.setTextFormatter(Formatters.numberFormatter(true));
+        obstacleDistanceFromCentreLine.setTextFormatter(Formatters.numberFormatter(false));
+        obstacleDistanceFromLeft.setTextFormatter(Formatters.numberFormatter(false));
+        obstacleDistanceFromRight.setTextFormatter(Formatters.numberFormatter(false));
     }
 
     /*
@@ -111,4 +121,7 @@ public abstract class ObstacleView extends GridPane implements Initializable {
                         Double.parseDouble(obstacleDistanceFromLeft.getText()),
                         Double.parseDouble(obstacleDistanceFromRight.getText()));
     }
+
+    
+
 }

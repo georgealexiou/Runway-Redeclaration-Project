@@ -255,8 +255,8 @@ public class MainView extends GridPane implements Initializable {
                     alert.setContentText(handler.errorMessage);
                 }
                 alert.showAndWait();
-                fileView.reset();
             }
+            fileView.reset();
         }
     };
 
@@ -442,6 +442,16 @@ public class MainView extends GridPane implements Initializable {
             @Override
             public void handle(ActionEvent event) {
                 Obstacle newObstacle = obstacleView.getNewObstacle();
+                if (newObstacle == null || newObstacle.distanceFromLeftThreshold
+                                + newObstacle.distanceFromRightThreshold > currentLogicalRunway
+                                                .get().getParameters().getTODA()) {
+                    Alert alert = new Alert(AlertType.ERROR, "Invalid Obstacle - Try Again!");
+                    alert.showAndWait();
+                    return;
+                }
+                if (obstacleView == editAnObstacleView) {
+                    obstacles.remove(currentObstacle.get());
+                }
                 obstacles.add(newObstacle);
                 // If the obstacle has been edited remove it and add the edited obstacle
                 currentObstacle.set(newObstacle);
@@ -523,7 +533,9 @@ public class MainView extends GridPane implements Initializable {
                     alert.setContentText(xml.errorMessage);
                 }
                 alert.showAndWait();
+                notifyUpdate("Obstacle", "loaded to system", false);
             }
+            fileView.reset();
         }
     };
 

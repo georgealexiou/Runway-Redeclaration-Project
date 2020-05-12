@@ -442,6 +442,13 @@ public class MainView extends GridPane implements Initializable {
             @Override
             public void handle(ActionEvent event) {
                 Obstacle newObstacle = obstacleView.getNewObstacle();
+                if (newObstacle == null || newObstacle.distanceFromLeftThreshold
+                                + newObstacle.distanceFromRightThreshold > currentLogicalRunway
+                                                .get().getParameters().getTODA()) {
+                    Alert alert = new Alert(AlertType.ERROR, "Invalid Obstacle - Try Again!");
+                    alert.showAndWait();
+                    return;
+                }
                 if (obstacleView == editAnObstacleView) {
                     obstacles.remove(currentObstacle.get());
                 }

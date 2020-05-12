@@ -372,7 +372,6 @@ public class AirportConfigView extends GridPane implements Initializable {
             newName = airportName.getText();
             save.setDisable(false);
             export.setDisable(false);
-            System.out.println(newName);
             isChanged = true;
         });
         runwayName.clear();
@@ -485,7 +484,6 @@ public class AirportConfigView extends GridPane implements Initializable {
     }
 
     private void setEditableLogicalRunway(boolean editable) {
-        System.out.println(editable);
         logicalRunwayName.setEditable(editable);
         displacedThreshold.setEditable(editable);
         tora.setEditable(editable);

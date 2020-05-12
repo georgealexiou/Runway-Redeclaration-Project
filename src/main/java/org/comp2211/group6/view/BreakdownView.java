@@ -51,7 +51,6 @@ public class BreakdownView extends GridPane implements Initializable {
     private TextArea breakdownDetails;
 
 
-    private Map<LogicalRunway, String> availableBreakdowns;
     public SimpleObjectProperty<Runway> currentRunway = new SimpleObjectProperty<Runway>();
     public SimpleObjectProperty<LogicalRunway> currentLogicalRunway =
                     new SimpleObjectProperty<LogicalRunway>();
@@ -64,7 +63,6 @@ public class BreakdownView extends GridPane implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         setupBreakdownPicker(FXCollections.observableArrayList());
-        this.availableBreakdowns = new HashMap<LogicalRunway, String>();
         this.breakdownDetails.setStyle("-fx-font-family: 'monospaced';");
         parameterColumn.setCellValueFactory(
                         new PropertyValueFactory<BreakdownComparison, String>("property"));
@@ -84,17 +82,11 @@ public class BreakdownView extends GridPane implements Initializable {
                                         .multiply(valuesTable.getFixedCellSize()).add(30));
         this.calculator.addListener((e, origVal, newVal) -> {
             if (newVal != null) {
-                this.availableBreakdowns.clear();
-                this.availableBreakdowns.putAll(newVal.getAllBreakdowns());
-                this.breakdownDetails
-                                .setText(this.availableBreakdowns.get(currentLogicalRunway.get()));
-            }
-        });
-        this.currentLogicalRunway.addListener((e, origVal, newVal) -> {
-            if (newVal != null) {
+                this.breakdownDetails.setText(currentLogicalRunway.get().breakdown
+                                .getBreakdownString(currentLogicalRunway.get()));
                 List<BreakdownComparison> comparisons = new ArrayList<BreakdownComparison>();
-                RunwayParameters original = newVal.getParameters();
-                RunwayParameters recalc = newVal.getRecalculatedParameters();
+                RunwayParameters original = currentLogicalRunway.get().getParameters();
+                RunwayParameters recalc = currentLogicalRunway.get().getRecalculatedParameters();
                 comparisons.add(new BreakdownComparison("TORA", original.getTORA(),
                                 recalc.getTORA()));
                 comparisons.add(new BreakdownComparison("TODA", original.getTODA(),
@@ -102,7 +94,27 @@ public class BreakdownView extends GridPane implements Initializable {
                 comparisons.add(new BreakdownComparison("ASDA", original.getASDA(),
                                 recalc.getASDA()));
                 comparisons.add(new BreakdownComparison("LDA", original.getLDA(), recalc.getLDA()));
-                this.breakdownDetails.setText(this.availableBreakdowns.get(newVal));
+                this.breakdownDetails.setText(currentLogicalRunway.get().breakdown
+                                .getBreakdownString(currentLogicalRunway.get()));
+                valuesTable.getItems().setAll(comparisons);
+            }
+        });
+        this.currentLogicalRunway.addListener((e, origVal, newVal) -> {
+            if (newVal != null) {
+                this.breakdownDetails.setText(currentLogicalRunway.get().breakdown
+                                .getBreakdownString(currentLogicalRunway.get()));
+                List<BreakdownComparison> comparisons = new ArrayList<BreakdownComparison>();
+                RunwayParameters original = currentLogicalRunway.get().getParameters();
+                RunwayParameters recalc = currentLogicalRunway.get().getRecalculatedParameters();
+                comparisons.add(new BreakdownComparison("TORA", original.getTORA(),
+                                recalc.getTORA()));
+                comparisons.add(new BreakdownComparison("TODA", original.getTODA(),
+                                recalc.getTODA()));
+                comparisons.add(new BreakdownComparison("ASDA", original.getASDA(),
+                                recalc.getASDA()));
+                comparisons.add(new BreakdownComparison("LDA", original.getLDA(), recalc.getLDA()));
+                this.breakdownDetails.setText(currentLogicalRunway.get().breakdown
+                                .getBreakdownString(currentLogicalRunway.get()));
                 valuesTable.getItems().setAll(comparisons);
             }
         });

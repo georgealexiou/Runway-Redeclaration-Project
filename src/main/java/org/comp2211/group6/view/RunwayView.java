@@ -264,8 +264,9 @@ public class RunwayView extends GridPane implements Initializable {
         this.currentObstacle.addListener((e, origVal, newVal) -> {
             if (newVal != null) {
                 this.runway.get().setObstacle(newVal);
-                this.calculator.set(new Calculator(this.runway.get()));
-                this.calculator.get().recalculateRunwayParameters();
+                Calculator calc = new Calculator(this.runway.get());
+                calc.recalculateRunwayParameters();
+                this.calculator.set(calc);
                 obstaclePicker.getSelectionModel().select(newVal);
             } else {
                 this.calculator.set(null);

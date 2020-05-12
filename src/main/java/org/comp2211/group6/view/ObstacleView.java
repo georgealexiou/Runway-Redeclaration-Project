@@ -122,6 +122,6 @@ public abstract class ObstacleView extends GridPane implements Initializable {
                         Double.parseDouble(obstacleDistanceFromRight.getText()));
     }
 
-    
+
 
 }

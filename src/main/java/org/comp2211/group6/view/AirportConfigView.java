@@ -458,7 +458,7 @@ public class AirportConfigView extends GridPane implements Initializable {
     }
 
     public void setLogicalRunway(String logicalRunwayID) {
-        if(currentRunway != null || currentRunway.getLogicalRunways().size() == 0) {
+        if (currentRunway != null || currentRunway.getLogicalRunways().size() == 0) {
             currentLogicalRunway = currentRunway.getLogicalRunwayFromName(logicalRunwayID);
             logicalRunwayName.setText(currentLogicalRunway.getIdentifier());
             displacedThreshold.setText(currentLogicalRunway.getDisplacedThreshold() + "");
